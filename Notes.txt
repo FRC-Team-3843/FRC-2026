@@ -1,0 +1,19 @@
+CAN Asssignments
+0 - PDP
+1-19 - Drive Trains
+	1-4 - Drive Motors
+		1 - FL
+		2 - FR
+		3 - RL
+		4 - RR
+	5-8 - Steer Motors
+		5 - FL
+		6 - FR
+		7 - RL
+		8 - RR
+	9-12 - Pod Angle Sensors
+		9 - FL
+		10 - FR
+		11 - RL
+		12 - RR
+20-99 - Other Mechanisms
