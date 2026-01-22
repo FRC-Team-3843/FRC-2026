@@ -45,6 +45,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase {
 
   private final SwerveDrive swerveDrive;
+  private final Vision vision;
 
   /**
    * Initialize the swerve subsystem from JSON configuration files.
@@ -72,6 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Disable auto-sync (enable if encoders drift during match)
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
 
+    this.vision = new Vision(this::getPose, swerveDrive.field);
     setupPathPlanner();
   }
 
@@ -88,6 +90,7 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive = new SwerveDrive(
         driveCfg, controllerCfg, Constants.MAX_SPEED,
         new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)), Rotation2d.fromDegrees(0)));
+    this.vision = new Vision(this::getPose, swerveDrive.field);
   }
 
   /**
@@ -97,6 +100,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Odometry is updated automatically by YAGSL's odometry thread
+    vision.updatePoseEstimation(swerveDrive);
   }
 
   /**
