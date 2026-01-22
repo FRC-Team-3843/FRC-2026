@@ -1,19 +1,699 @@
-CAN Asssignments
-0 - PDP
-1-19 - Drive Trains
-	1-4 - Drive Motors
-		1 - FL
-		2 - FR
-		3 - RL
-		4 - RR
-	5-8 - Steer Motors
-		5 - FL
-		6 - FR
-		7 - RL
-		8 - RR
-	9-12 - Pod Angle Sensors
-		9 - FL
-		10 - FR
-		11 - RL
-		12 - RR
-20-99 - Other Mechanisms
+================================================================================
+FRC Team 3843 - 2026 Robot Notes
+================================================================================
+
+TABLE OF CONTENTS
+  1. CAN Bus Assignments
+  2. Hardware Specifications
+  3. Software Architecture Overview
+  4. JSON Configuration File Reference
+  5. Pre-Test Setup Checklist
+     5a. Mechanical Verification
+     5b. Electrical Verification
+     5c. Firmware Updates
+     5d. Software Configuration
+     5e. First Power-On Checks
+  6. Encoder Calibration Procedure
+  7. First Drive Test Procedure
+  8. SysId Characterization Procedure
+  9. PathPlanner Setup
+  10. LED/Light Indicators Reference
+  11. Troubleshooting Guide
+  12. Driver Controls Reference
+
+================================================================================
+1. CAN BUS ASSIGNMENTS
+================================================================================
+
+ID    Device                  Type          Location
+----  ----------------------  -----------   --------
+0     Power Distribution      PDP/PDH       Chassis
+1     Drive Motor FL          SparkMax+NEO  Front Left
+2     Drive Motor FR          SparkMax+NEO  Front Right
+3     Drive Motor BL          SparkMax+NEO  Back Left
+4     Drive Motor BR          SparkMax+NEO  Back Right
+5     Steer Motor FL          SparkMax+NEO  Front Left
+6     Steer Motor FR          SparkMax+NEO  Front Right
+7     Steer Motor BL          SparkMax+NEO  Back Left
+8     Steer Motor BR          SparkMax+NEO  Back Right
+9     Angle Encoder FL        CANCoder      Front Left
+10    Angle Encoder FR        CANCoder      Front Right
+11    Angle Encoder BL        CANCoder      Back Left
+12    Angle Encoder BR        CANCoder      Back Right
+20-99 Mechanism Motors        (Reserved)    Various
+
+Gyro: NavX2 on MXP SPI port (not CAN)
+
+Module Corner Identification (looking from above, front of robot facing up):
+  FL = Front Left   (CAN 1, 5, 9)
+  FR = Front Right  (CAN 2, 6, 10)
+  BL = Back Left    (CAN 3, 7, 11)
+  BR = Back Right   (CAN 4, 8, 12)
+
+================================================================================
+2. HARDWARE SPECIFICATIONS
+================================================================================
+
+Drivetrain: SDS MK4 Swerve, L1 (Regular) Gearing
+  - Frame: 27" x 27" (center-to-module distance: 13.5")
+  - Drive gear ratio: 8.14:1
+  - Steer gear ratio: 12.8:1
+  - Wheel diameter: 4" (0.1016m)
+  - Max theoretical speed: 3.71 m/s (12.2 ft/s)
+  - Drive motors: NEO (brushless) + SparkMax controller
+  - Steer motors: NEO (brushless) + SparkMax controller
+  - Absolute encoders: CTRE CANCoder (one per module)
+  - Gyro: NavX2 (SPI connection to MXP port)
+
+Robot Physical Properties:
+  - Approximate mass: 47.6 kg (~105 lbs with battery and bumpers)
+  - Bumper-to-bumper: ~32" x 32" (estimate with bumpers)
+  - Battery: 12V FRC legal battery
+
+Controllers:
+  - Driver: Xbox controller on USB port 0
+  - Operator: Xbox controller on USB port 1
+
+================================================================================
+3. SOFTWARE ARCHITECTURE OVERVIEW
+================================================================================
+
+Framework: WPILib Command-Based (2026)
+Swerve Library: YAGSL (Yet Another Generic Swerve Library) v2026.1.20
+Autonomous: PathPlanner v2026.1.2
+Vision: PhotonVision (stub - ready for cameras)
+Telemetry: DataLogManager + YAGSL HIGH verbosity (AdvantageScope compatible)
+
+Source Files:
+  src/main/java/frc/robot/
+    Main.java              - Entry point (do not modify)
+    Robot.java             - Lifecycle: logging, brake timer, mode transitions
+    RobotContainer.java    - Subsystems, drive streams, button bindings
+    Constants.java         - All tuning values, CAN IDs, speeds, PIDs
+
+  src/main/java/frc/robot/subsystems/swervedrive/
+    SwerveSubsystem.java   - YAGSL swerve drive, PathPlanner, SysId
+    Vision.java            - PhotonVision stub (empty Cameras enum)
+
+Configuration Files:
+  src/main/deploy/swerve/
+    swervedrive.json              - Gyro type, module file references
+    controllerproperties.json     - Heading hold PID
+    modules/physicalproperties.json  - Gear ratios, current limits, wheel specs
+    modules/pidfproperties.json      - Drive/angle motor PID values
+    modules/frontleft.json           - FL module CAN IDs and location
+    modules/frontright.json          - FR module CAN IDs and location
+    modules/backleft.json            - BL module CAN IDs and location
+    modules/backright.json           - BR module CAN IDs and location
+
+  src/main/deploy/pathplanner/
+    settings.json           - Robot dimensions and constraints for PathPlanner
+    paths/                  - PathPlanner path files (created in PP GUI)
+    autos/                  - PathPlanner auto routines (created in PP GUI)
+
+================================================================================
+4. JSON CONFIGURATION FILE REFERENCE
+================================================================================
+
+NOTE: JSON does not support comments. This section documents what each field
+means so you know what to change.
+
+--- swervedrive.json ---
+  imu.type: "navx_spi"     Gyro type. Options: navx_spi, navx_usb, pigeon2, etc.
+  imu.id: 0                For SPI gyros, this is ignored (SPI has fixed address)
+  imu.canbus: null          null = RoboRIO CAN bus. Set to "canivore" if using CANivore
+  invertedIMU: false        Set true if robot drives BACKWARD when stick pushed forward
+  modules: [...]            Ordered list: FL, FR, BL, BR
+
+--- controllerproperties.json ---
+  angleJoystickRadiusDeadband: 0.5   Minimum stick deflection to activate heading hold
+  heading.p/i/d: 0.4/0/0.01          PID for holding a target heading angle
+
+--- modules/physicalproperties.json ---
+  wheelGripCoefficientOfFriction: 1.19   Colson/tread grip coefficient (higher = more grip assumed)
+  optimalVoltage: 12.0                   Nominal battery voltage for speed calculations
+  currentLimit.drive: 40                 Drive motor current limit in amps
+  currentLimit.angle: 20                 Steer motor current limit in amps
+  rampRate.drive: 0.25                   Seconds from 0 to full power (drive)
+  rampRate.angle: 0.25                   Seconds from 0 to full power (steer)
+  wheelDiameter: 4                       Wheel diameter in INCHES
+  angleGearRatio: 12.8                   Steer motor rotations per wheel rotation
+  driveGearRatio: 8.14                   Drive motor rotations per wheel rotation
+  driveMotorFreeSpeed: 5676              NEO free speed in RPM
+  conversionFactors.drive.factor: 0      0 = YAGSL auto-calculates from gearRatio+diameter
+  conversionFactors.angle.factor: 0      0 = YAGSL auto-calculates from gearRatio
+
+--- modules/pidfproperties.json ---
+  drive.p: 0.0020645     Drive velocity PID - proportional (START VALUE - tune with SysId)
+  drive.i/d/f/iz: 0      Drive velocity PID - other terms
+  angle.p: 0.01          Steer position PID - proportional (START VALUE - tune with SysId)
+  angle.i/d/f/iz: 0      Steer position PID - other terms
+
+--- modules/frontleft.json (and similar for other corners) ---
+  drive.type: "sparkmax"        Motor controller type
+  drive.id: 1                   CAN ID of the drive motor controller
+  angle.type: "sparkmax"        Motor controller type for steering
+  angle.id: 5                   CAN ID of the steer motor controller
+  encoder.type: "cancoder"      Absolute encoder type
+  encoder.id: 9                 CAN ID of the absolute encoder
+  inverted.drive: false          Set true if drive wheel spins backward
+  inverted.angle: false          Set true if steer wheel turns backward
+  absoluteEncoderOffset: 0       *** MUST CALIBRATE ON REAL ROBOT ***
+  location.front: 13.5           Distance from center in inches (+ = toward front)
+  location.left: 13.5            Distance from center in inches (+ = toward left)
+
+--- pathplanner/settings.json ---
+  robotWidth/Length: 0.6858      Frame dimensions in meters (27" = 0.6858m)
+  defaultMaxVel: 3.71            Max path speed in m/s
+  defaultMaxAccel: 3.0           Max acceleration in m/s^2
+  robotMass: 47.6                Robot mass in kg
+  wheelRadius: 0.0508            Wheel radius in meters (2" = 0.0508m)
+  driveGearRatio: 8.14           Must match physicalproperties.json
+  maxDriveRPM: 5676              NEO free speed
+  driveCurrentLimit: 40          Must match physicalproperties.json
+
+================================================================================
+5. PRE-TEST SETUP CHECKLIST
+================================================================================
+
+Complete ALL sections before first power-on with this code.
+
+------------------------------------------------------------------------------
+5a. MECHANICAL VERIFICATION
+------------------------------------------------------------------------------
+
+[ ] All four swerve modules are securely bolted to the chassis
+[ ] All module gears are properly meshed (no stripped teeth)
+[ ] Wheels spin freely by hand when drive belt/gear is disengaged
+[ ] Steering rotates freely through full 360 degrees on all modules
+[ ] No wires are pinched or at risk of being caught in rotating parts
+[ ] All belt tensions are correct (drive and steer belts)
+[ ] Wheel treads are in good condition (no flat spots or chunks missing)
+[ ] Battery holder is secure and battery cannot shift during driving
+[ ] Bumpers are attached (recommended for initial testing to protect robot)
+[ ] All fasteners are tight (Loctite on critical bolts)
+
+Wheel Alignment Check:
+[ ] Place a straight edge (aluminum extrusion works well) along the side of
+    the robot frame
+[ ] Rotate each module by hand until the wheel is parallel to the straight edge
+[ ] All four wheels should point in the same direction (straight ahead)
+[ ] This is the position where absoluteEncoderOffset should read the values
+    you'll record during calibration (Section 6)
+
+------------------------------------------------------------------------------
+5b. ELECTRICAL VERIFICATION
+------------------------------------------------------------------------------
+
+[ ] Battery is fully charged (>12.5V under no load)
+[ ] Main breaker is accessible and functional
+[ ] All CAN wires are connected in a daisy chain with proper termination
+[ ] CAN bus has 120-ohm termination resistor at each end of the chain
+[ ] All motor controller power wires (12V) are securely connected
+[ ] All motor phase wires (3-wire to NEO motors) are connected to correct motors
+[ ] CANCoder data wires are connected to CAN bus
+[ ] NavX2 is seated firmly in the MXP port on the RoboRIO
+[ ] RoboRIO power is connected (use 10A or 20A slot on PDP)
+[ ] Radio is powered and configured for Team 3843 (via FRC Radio Configuration Tool)
+[ ] Robot Signal Light (RSL) is connected and visible
+[ ] All breakers in PDP/PDH are rated appropriately:
+    - 40A breakers for drive motors
+    - 30A breakers for steer motors (or 40A if using same slots)
+    - 20A for RoboRIO
+
+CAN Bus Wiring Order (recommended):
+  RoboRIO -> PDP -> Drive1 -> Steer5 -> Encoder9 -> Drive2 -> Steer6 ->
+  Encoder10 -> Drive3 -> Steer7 -> Encoder11 -> Drive4 -> Steer8 -> Encoder12
+
+Verify CAN IDs match the assignment table (Section 1):
+[ ] Use REV Hardware Client to verify SparkMax IDs 1-8
+[ ] Use Phoenix Tuner X to verify CANCoder IDs 9-12
+[ ] No duplicate CAN IDs exist on the bus
+
+------------------------------------------------------------------------------
+5c. FIRMWARE UPDATES
+------------------------------------------------------------------------------
+
+SparkMax Controllers (IDs 1-8):
+[ ] Connect via USB or CAN using REV Hardware Client
+[ ] Update ALL SparkMax controllers to latest 2026 firmware
+[ ] Verify firmware version matches across all 8 controllers
+    Expected: REV SparkMax firmware 25.x.x or later (2026 season)
+[ ] After firmware update, power cycle the robot
+
+CANCoder Encoders (IDs 9-12):
+[ ] Connect via USB or CAN using Phoenix Tuner X
+[ ] Update ALL CANCoders to latest firmware
+    Expected: CANCoder firmware 25.x or later
+[ ] NOTE: CANCoders do NOT require a Phoenix license for basic operation
+    (License is only needed for FOC on TalonFX/Kraken motors)
+
+NavX2 Gyro:
+[ ] Check firmware version via NavX2 web interface or FRC tools
+[ ] Update if not on latest version
+[ ] Verify NavX2 is configured for SPI communication (default)
+
+RoboRIO:
+[ ] Image RoboRIO with 2026 FRC Game Tools image
+[ ] Verify team number is set to 3843
+[ ] Verify RoboRIO firmware is 2026-compatible
+
+------------------------------------------------------------------------------
+5d. SOFTWARE CONFIGURATION
+------------------------------------------------------------------------------
+
+Build Verification:
+[ ] Open terminal in FRC-2026/2026Robot/
+[ ] Run: JAVA_HOME="C:/Users/Public/wpilib/2026/jdk" ./gradlew build
+[ ] Verify "BUILD SUCCESSFUL" with no errors (warnings are OK)
+
+Deploy Code:
+[ ] Connect to robot network (WiFi or Ethernet/USB)
+[ ] Run: JAVA_HOME="C:/Users/Public/wpilib/2026/jdk" ./gradlew deploy
+[ ] Wait for "BUILD SUCCESSFUL" (deploy takes longer than build)
+[ ] Robot will reboot after first deploy
+
+Driver Station Setup:
+[ ] Open FRC Driver Station 2026
+[ ] Verify team number 3843 is set
+[ ] Verify communication with robot (green indicators)
+[ ] Plug in driver Xbox controller to USB port 0
+[ ] Plug in operator Xbox controller to USB port 1 (if available)
+[ ] Verify controller inputs register in Driver Station "USB" tab
+
+NetworkTables/SmartDashboard Verification:
+[ ] Open Shuffleboard, Glass, or AdvantageScope
+[ ] Connect to robot (localhost in sim, robot IP when deployed)
+[ ] Verify "Auto Chooser" widget appears
+[ ] Verify swerve telemetry data is publishing:
+    - Look for /SmartDashboard/swerve/ entries
+    - Should see module states, robot pose, etc.
+
+------------------------------------------------------------------------------
+5e. FIRST POWER-ON CHECKS (Robot on blocks or wheels off ground!)
+------------------------------------------------------------------------------
+
+*** CRITICAL: Elevate the robot so wheels are OFF THE GROUND for first tests ***
+*** This prevents the robot from driving unexpectedly ***
+
+Power On Sequence:
+1. [ ] Verify battery voltage >12.5V on Driver Station
+2. [ ] Check for CAN errors on Driver Station (should be 0%)
+3. [ ] Verify all 12 CAN devices appear (8 SparkMax + 4 CANCoder)
+
+SparkMax LED Verification (on each controller):
+  Each SparkMax has a multi-color status LED. After power-on with code deployed:
+
+  EXPECTED STATES (robot disabled):
+    Solid MAGENTA/PINK     = No CAN communication (BAD - check wiring)
+    Blinking CYAN/YELLOW   = In coast mode, not receiving commands (NORMAL when disabled)
+    Blinking MAGENTA       = Motor controller not configured (BAD - code issue)
+
+  EXPECTED STATES (robot enabled in teleop):
+    Solid GREEN            = Motor at 0% output, brake mode (NORMAL at rest)
+    Blinking GREEN/YELLOW  = Motor running forward
+    Blinking RED/YELLOW    = Motor running reverse
+    Solid ORANGE           = Motor at current limit (may indicate stalling)
+    Solid RED              = Fault condition (check REV Hardware Client for details)
+
+  IDENTIFYING WHICH SPARKMAX IS WHICH:
+    - In REV Hardware Client, click "Identify" to blink the LED
+    - Or command individual motors from test mode to see which moves
+
+CANCoder LED Verification:
+    Solid GREEN            = Good CAN communication, providing data
+    Blinking GREEN         = Good, actively sending frames
+    Solid RED              = No CAN communication
+    Blinking ORANGE        = Bootloader mode (needs firmware update)
+    OFF                    = No power (check CAN wiring)
+
+NavX2 LED Verification:
+    CAL (orange LED)       = Calibrating (normal for first ~10 seconds after power on)
+                             WAIT for this to turn off before driving
+    3.3V (green LED)       = 3.3V power good (should always be on)
+    S (data LED)           = Blinking = sending data (GOOD)
+                             Off = no communication (BAD)
+
+RoboRIO LEDs:
+    POWER (green)          = Robot powered (should always be on)
+    STATUS (heartbeat)     = User code running (slow blink = code running, GOOD)
+                             Solid on = no user code or error
+    RSL (Robot Signal Light):
+      Solid ON             = Robot ENABLED (be careful!)
+      Blinking             = Robot connected but DISABLED (safe to approach)
+      OFF                  = No communication with Driver Station
+
+First-Boot Motor Test (wheels elevated!):
+4. [ ] Enable robot in teleop mode
+5. [ ] Gently push left stick forward - all 4 drive wheels should spin FORWARD
+       - If wheels spin backward: set invertedIMU to true in swervedrive.json
+         OR check inverted.drive in module JSONs
+6. [ ] Twist right stick - modules should rotate
+       - If they oscillate/jitter: reduce angle PID P value in pidfproperties.json
+7. [ ] Press Back button - all modules should snap to 0 degrees (straight ahead)
+       - If they don't all point the same direction: encoder offsets are wrong
+         (proceed to Section 6 for calibration)
+8. [ ] Press Start button - gyro zeros (heading resets to 0 or 180 based on alliance)
+9. [ ] Disable robot - wheels should hold position for 10 seconds then release
+
+================================================================================
+6. ENCODER CALIBRATION PROCEDURE
+================================================================================
+
+The absoluteEncoderOffset values in each module JSON file are PLACEHOLDERS (all 0).
+You MUST calibrate these on the real robot.
+
+WHAT THIS DOES:
+  The CANCoder reads an absolute angle (0-360 degrees). The offset tells the code
+  "when the wheel is pointing straight ahead, the encoder reads THIS value."
+  Without correct offsets, the modules will point in random directions.
+
+CALIBRATION STEPS:
+
+1. Position all wheels straight forward:
+   - Use a straight edge or T-square against the chassis rail
+   - Rotate each module BY HAND until the wheel is perfectly parallel to the frame
+   - All four wheels should point toward the front of the robot
+
+2. Read the raw CANCoder positions:
+   - Open Phoenix Tuner X
+   - Connect to the robot
+   - Select each CANCoder (IDs 9, 10, 11, 12)
+   - Read the "Absolute Position" value (in degrees, 0-360 range)
+   - Record each value:
+     CANCoder 9  (FL): ___________  degrees
+     CANCoder 10 (FR): ___________  degrees
+     CANCoder 11 (BL): ___________  degrees
+     CANCoder 12 (BR): ___________  degrees
+
+3. Enter the values into the module JSON files:
+   - modules/frontleft.json:  "absoluteEncoderOffset": <CANCoder 9 value>
+   - modules/frontright.json: "absoluteEncoderOffset": <CANCoder 10 value>
+   - modules/backleft.json:   "absoluteEncoderOffset": <CANCoder 11 value>
+   - modules/backright.json:  "absoluteEncoderOffset": <CANCoder 12 value>
+
+4. Rebuild and redeploy:
+   JAVA_HOME="C:/Users/Public/wpilib/2026/jdk" ./gradlew deploy
+
+5. Verify calibration:
+   - Enable the robot (wheels still elevated!)
+   - Press Back button (center modules command)
+   - All four wheels should now point perfectly straight ahead
+   - If not, double-check which encoder goes with which module
+
+TIPS:
+  - If a module is 180 degrees off (pointing backward), check inverted.drive
+    and inverted.angle settings in the module JSON
+  - If a module slowly drifts, the offset may be slightly wrong - fine-tune it
+  - Re-calibrate if you ever remove and reinstall a swerve module
+  - CANCoder offsets should NOT change between power cycles (they're absolute)
+
+================================================================================
+7. FIRST DRIVE TEST PROCEDURE
+================================================================================
+
+Prerequisites:
+  - Encoder calibration complete (Section 6)
+  - All wheels point straight when center modules command is issued
+  - Robot is on the ground in an open area (at least 10'x10' clear space)
+  - Safety glasses on, people standing clear
+
+Test Sequence:
+
+1. TRANSLATION TEST (Left Stick):
+   [ ] Push left stick forward gently (25% deflection)
+       - Robot should drive FORWARD (away from driver station orientation)
+       - If it drives sideways: a module's CAN IDs are swapped
+       - If it drives backward: set invertedIMU=true in swervedrive.json
+   [ ] Push left stick left
+       - Robot should strafe LEFT
+   [ ] Push left stick in a circle
+       - Robot should move in a circle while maintaining its heading
+
+2. ROTATION TEST (Right Stick):
+   [ ] Push right stick right
+       - Robot should spin clockwise (when viewed from above)
+       - If it spins the wrong way: check controller axis inversion in RobotContainer
+   [ ] Push right stick left
+       - Robot should spin counter-clockwise
+
+3. FIELD-RELATIVE TEST:
+   [ ] Face robot away from you, push stick forward
+       - Robot should drive away from you
+   [ ] Rotate robot 90 degrees, push stick forward again
+       - Robot should STILL drive away from you (not in the robot's forward direction)
+       - This confirms field-relative driving is working
+
+4. GYRO ZERO TEST:
+   [ ] Face robot toward the far end of the field (away from driver station)
+   [ ] Press Start button on driver controller
+   [ ] Push left stick forward - robot should drive toward the far end
+   [ ] If robot drives in wrong direction after zeroing:
+       - Blue alliance: pushing forward should drive AWAY from your alliance wall
+       - Red alliance: pushing forward should drive AWAY from your alliance wall
+
+5. SLOW MODE TEST:
+   [ ] Hold left trigger and push left stick forward
+       - Robot should drive at half speed
+   [ ] Release trigger - speed should return to full
+
+6. LOCK TEST:
+   [ ] Press and hold POV Up (D-pad up)
+       - All wheels should form an X pattern
+       - Try pushing the robot - it should resist movement
+   [ ] Release D-pad up - robot should return to normal driving
+
+7. BRAKE/COAST TEST:
+   [ ] Drive robot forward, then disable
+       - Robot should stop and hold position (brake mode)
+       - After 10 seconds, you should be able to push it freely (coast mode)
+
+================================================================================
+8. SysId CHARACTERIZATION PROCEDURE
+================================================================================
+
+SysId generates accurate PID and feedforward values for your specific robot.
+The starting PID values in the config files work but are not optimized.
+
+WHEN TO RUN:
+  - After initial setup to get accurate PID values
+  - After any mechanical change (new wheels, different gearing, weight change)
+  - If the robot oscillates, overshoots, or feels sluggish
+
+HOW TO RUN:
+
+1. Put the Driver Station in TEST MODE (not teleop)
+2. Place robot in a large open area (it will drive in both directions)
+3. The robot MUST be on the ground (not elevated)
+
+Drive Motor Characterization:
+  - Hold X button on driver controller
+  - The robot will automatically:
+    a. Ramp voltage slowly forward (quasistatic forward) - 3 seconds
+    b. Apply full voltage forward (dynamic forward) - 5 seconds
+    c. Ramp voltage slowly backward (quasistatic reverse) - 3 seconds
+    d. Apply full voltage backward (dynamic reverse) - 3 seconds
+  - Release X when complete (or if robot is about to hit something)
+
+Angle Motor Characterization:
+  - Hold Y button on driver controller
+  - Modules will rotate through their range slowly then quickly
+  - Release Y when complete
+
+After Running SysId:
+  - Data is logged automatically via DataLogManager
+  - Open log files in AdvantageScope (look in ~/Documents/logs/ or on RoboRIO)
+  - Export SysId-compatible data
+  - Use WPILib SysId tool to calculate kP, kI, kD, kS, kV, kA
+  - Update values in modules/pidfproperties.json
+
+================================================================================
+9. PATHPLANNER SETUP
+================================================================================
+
+PathPlanner GUI Configuration:
+1. Download PathPlanner from pathplanner.dev
+2. Open PathPlanner and point it to: FRC-2026/2026Robot/
+3. It should auto-detect the settings.json in src/main/deploy/pathplanner/
+4. Verify robot dimensions match (27" x 27" frame, 32" x 32" with bumpers)
+5. Create paths in the GUI - they are saved to src/main/deploy/pathplanner/paths/
+6. Create auto routines - they are saved to src/main/deploy/pathplanner/autos/
+
+PathPlanner Auto Chooser:
+  - Auto routines appear in SmartDashboard "Auto Chooser" dropdown
+  - Select the desired auto before the match starts
+  - The selected auto runs when autonomous mode begins
+
+Path Mirroring:
+  - Paths created on the BLUE side of the field are automatically mirrored
+    for RED alliance
+  - This is handled by the alliance supplier in setupPathPlanner()
+  - You only need to create paths for one alliance
+
+================================================================================
+10. LED/LIGHT INDICATORS REFERENCE
+================================================================================
+
+This section consolidates all LED meanings for quick field-side reference.
+
+--- SparkMax Status LED (multi-color, on each controller) ---
+
+  Color/Pattern          Meaning                              Action
+  -------------------    ---------------------------------    ----------------------
+  Solid MAGENTA          No CAN communication                 Check CAN wires
+  Blink CYAN/YELLOW      Coast mode, disabled                 Normal when disabled
+  Blink MAGENTA          Not configured                       Check code/deploy
+  Solid GREEN            Brake mode, 0% output                Normal at idle
+  Blink GREEN/YELLOW     Running forward                      Normal
+  Blink RED/YELLOW       Running reverse                      Normal
+  Solid ORANGE           At current limit                     Motor may be stalling
+  Solid RED              Fault                                Check Hardware Client
+  Fast blink YELLOW      Identifying (from Hardware Client)   ID verification tool
+
+--- CANCoder LED ---
+
+  Color/Pattern          Meaning                              Action
+  -------------------    ---------------------------------    ----------------------
+  Solid/Blink GREEN      Good communication                   Normal
+  Solid RED              No CAN communication                 Check wiring
+  Blink ORANGE           Bootloader mode                      Update firmware
+  OFF                    No power                             Check power/CAN wires
+
+--- NavX2 LEDs ---
+
+  LED        State                Meaning                     Action
+  --------   ------------------   -------------------------   ---------------------
+  CAL (org)  ON                   Calibrating gyro            WAIT (10-15 seconds)
+  CAL (org)  OFF                  Calibration complete        Safe to drive
+  3.3V (grn) ON                   Power good                  Normal
+  S (data)   Blinking             Sending data                Normal
+  S (data)   OFF                  No communication            Check MXP connection
+
+--- RoboRIO ---
+
+  LED        State                Meaning                     Action
+  --------   ------------------   -------------------------   ---------------------
+  POWER      ON (green)           Power good                  Normal
+  STATUS     Slow blink           User code running           Normal
+  STATUS     Solid ON             No user code / error        Check deploy
+  STATUS     OFF                  No power to RIO             Check power
+  COMM       ON                   DS connected                Normal
+  COMM       OFF                  No DS connection            Check network
+
+--- Robot Signal Light (RSL) ---
+
+  State                  Meaning                              Safety
+  -------------------    ---------------------------------    ----------------------
+  Solid ON               Robot ENABLED                        DANGER - stay clear!
+  Blinking               Connected, DISABLED                  Safe to approach
+  OFF                    No DS communication                  Check network/power
+
+--- Radio LEDs ---
+
+  Power LED ON           Radio powered                        Normal
+  Wifi LED blinking      Connected to DS / field              Normal
+  Wifi LED OFF           Not connected                        Check radio config
+
+================================================================================
+11. TROUBLESHOOTING GUIDE
+================================================================================
+
+PROBLEM: Robot doesn't move when sticks are pushed
+  - Check Driver Station: is robot Enabled? (RSL should be solid)
+  - Check Driver Station USB tab: are controller inputs registering?
+  - Check controller port: must be USB port 0 for driver, port 1 for operator
+  - Check Driver Station: is there CAN error % > 0?
+  - Check SparkMax LEDs: are they solid magenta? (CAN issue)
+  - Check battery voltage: below 10V can cause brownouts
+
+PROBLEM: Robot drives in wrong direction (forward = backward)
+  - Set "invertedIMU": true in swervedrive.json
+  - Redeploy code
+
+PROBLEM: One module points the wrong direction
+  - Encoder offset for that module is incorrect
+  - Re-run calibration procedure (Section 6) for that module
+  - Check that the CAN IDs in the module JSON match the physical hardware
+
+PROBLEM: Modules oscillate / jitter when steering
+  - Angle PID P value is too high
+  - Reduce angle.p in pidfproperties.json (try 0.005, then increase slowly)
+  - Make sure there's no mechanical binding in the steer mechanism
+
+PROBLEM: Robot doesn't hold straight heading while driving
+  - This is normal with angular velocity control (heading will drift slightly)
+  - If severe: increase angular velocity compensation coefficient above 0.1
+  - Or switch to direct angle drive mode for heading-hold behavior
+
+PROBLEM: Robot is sluggish / too slow
+  - Check FULL_SPEED_SCALE in Constants.java (should be 1.0)
+  - Check battery voltage (low battery = slow robot)
+  - Check if left trigger is being held (slow mode activates at 50% trigger)
+  - Check currentLimit.drive in physicalproperties.json (40A should be fine)
+
+PROBLEM: PathPlanner auto doesn't run
+  - Check SmartDashboard "Auto Chooser" - is the right auto selected?
+  - Verify the auto file exists in deploy/pathplanner/autos/
+  - Check console output for PathPlanner errors
+  - Verify settings.json is correct (robot dimensions, speeds)
+
+PROBLEM: CAN bus errors in Driver Station
+  - Check all CAN wire connections (green/yellow twisted pair)
+  - Look for damaged CAN wires or loose crimps
+  - Ensure 120-ohm termination resistors are present
+  - Try reducing CAN bus length or re-routing away from motor power wires
+  - Check for duplicate CAN IDs
+
+PROBLEM: Code won't deploy
+  - Verify robot radio is on and computer is connected to robot network
+  - Check team number in .wpilib/wpilib_preferences.json (should be 3843)
+  - Verify JAVA_HOME points to 2026 JDK
+  - Try: ./gradlew clean, then ./gradlew deploy
+  - Check that RoboRIO has 2026 image
+
+PROBLEM: NavX2 CAL LED stays on (>30 seconds)
+  - Keep robot completely still during calibration
+  - Power cycle and keep robot motionless on flat surface
+  - Check MXP SPI connection (reseat NavX2)
+  - Try USB connection temporarily to rule out SPI issue
+
+PROBLEM: AdvantageScope shows no swerve data
+  - Verify SwerveDriveTelemetry.verbosity is set to HIGH in SwerveSubsystem.java
+  - Check NetworkTables connection in AdvantageScope (localhost:5810 for sim)
+  - Make sure DataLogManager.start() is called in Robot constructor
+
+================================================================================
+12. DRIVER CONTROLS REFERENCE
+================================================================================
+
+--- DRIVER CONTROLLER (Port 0) ---
+
+  Input                  Action                              Notes
+  -------------------    ---------------------------------   ----------------------
+  Left Stick             Translate (field-relative)          Push direction = drive direction
+  Right Stick X          Rotate (angular velocity)           Left=CCW, Right=CW
+  Start Button           Zero Gyro                           Face away from wall first
+  Back Button            Center Modules                      Wheels snap to 0 degrees
+  POV Up (D-Pad)         Lock Wheels (X-pattern)             Hold to maintain lock
+  Left Trigger (hold)    Slow Mode (50% speed)               For precision alignment
+
+--- DRIVER CONTROLLER - TEST MODE ONLY ---
+
+  Input                  Action                              Notes
+  -------------------    ---------------------------------   ----------------------
+  X Button (hold)        SysId Drive Motors                  Robot will drive autonomously!
+  Y Button (hold)        SysId Angle Motors                  Modules will rotate
+
+--- OPERATOR CONTROLLER (Port 1) ---
+
+  Currently unbound - ready for mechanism subsystem bindings.
+
+--- SIMULATION MODE ---
+
+  In simulation, the default drive command uses direct angle control:
+  - Right stick direction = target heading direction
+  - This works better with keyboard simulation than angular velocity
+
+================================================================================
+END OF NOTES
+================================================================================
