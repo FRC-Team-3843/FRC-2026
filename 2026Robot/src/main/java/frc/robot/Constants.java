@@ -104,6 +104,38 @@ public final class Constants {
     public static final int OPERATOR_CONTROLLER_PORT = 1;
   }
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // DRIVER ASSIST & CONTROL MODES
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Driver assist and control mode configuration.
+   *
+   * <p>Keep these as simple toggles so we can A/B test without touching command code.
+   * Only one drive control mode should be active at a time.
+   */
+  public static final class AssistConstants {
+    public enum DriveControlMode {
+      STANDARD,            // Direct YAGSL drive (lowest CPU usage)
+      SETPOINT_GENERATOR   // Smoother acceleration using setpoint generator
+    }
+
+    /** Select the default drive control mode for teleop. */
+    public static final DriveControlMode DEFAULT_DRIVE_MODE = DriveControlMode.STANDARD;
+
+    public enum DriverAssistMode {
+      OFF,
+      AUTO_ALIGN,
+      PATH_TO_POSE,
+      SNAP_HEADING,
+      MICRO_ADJUST_RATE,
+      MICRO_ADJUST_NUDGE
+    }
+
+    /** Select the default assist mode (only one active at a time). */
+    public static final DriverAssistMode DEFAULT_ASSIST_MODE = DriverAssistMode.OFF;
+  }
+
   // ──────────────────────────────────────────────────────────────────────────
   // DRIVE PROFILES
   // ──────────────────────────────────────────────────────────────────────────
@@ -185,5 +217,49 @@ public final class Constants {
   public static final class VisionConstants {
     /** PhotonVision camera name - must match the name configured in the PV UI. */
     public static final String CAMERA_NAME = "YOUR_CAMERA_NAME";
+
+    /**
+     * Global vision enable.
+     *
+     * <p>Keep false until cameras + coprocessor are ready. The robot should run
+     * normally with vision disabled (failsafe).
+     */
+    public static final boolean ENABLE_VISION = false;
+
+    /**
+     * Maximum acceptable vision latency in seconds before rejecting measurements.
+     * Adjust after initial testing.
+     */
+    public static final double MAX_LATENCY_SECONDS = 0.25;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SHOOTER MODEL (FUTURE)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  public static final class ShooterConstants {
+    /** Enable loading shooter lookup table JSON (kept false until shooter is ready). */
+    public static final boolean ENABLE_SHOT_TABLE = false;
+
+    /** Path relative to deploy directory for shooter table JSON. */
+    public static final String SHOT_TABLE_PATH = "shooter/shooter_table.json";
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TELEMETRY
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  public static final class TelemetryConstants {
+    /** Global telemetry enable (keep false while tuning drivetrain). */
+    public static final boolean ENABLE_TELEMETRY = false;
+
+    /** Enable higher-detail telemetry for tuning sessions. */
+    public static final boolean TUNING_MODE = false;
+
+    /** Publish rate in Hz for normal NetworkTables telemetry. */
+    public static final double PUBLISH_HZ = 10.0;
+
+    /** Publish rate in Hz for tuning telemetry (keep modest to protect RoboRIO 1). */
+    public static final double TUNING_PUBLISH_HZ = 20.0;
   }
 }

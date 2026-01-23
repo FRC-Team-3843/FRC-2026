@@ -82,11 +82,18 @@ public class RobotContainer {
     // --- Default drive command ---
     Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedSetpoint =
+        drivebase.driveWithSetpointGeneratorFieldRelative(driveAngularVelocity::get);
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
     } else {
-      drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+      if (Constants.AssistConstants.DEFAULT_DRIVE_MODE
+          == Constants.AssistConstants.DriveControlMode.SETPOINT_GENERATOR) {
+        drivebase.setDefaultCommand(driveFieldOrientedSetpoint);
+      } else {
+        drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+      }
     }
 
     // --- Driver controls ---
@@ -103,6 +110,10 @@ public class RobotContainer {
     // Left trigger held: slow mode for precision alignment
     driverXbox.leftTrigger(0.5).whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
 
+    // --- Driver assist modes (placeholder bindings, OFF by default) ---
+    Command assistCommand = getDriverAssistCommand();
+    driverXbox.rightBumper().whileTrue(assistCommand);
+
     // --- Test mode bindings (SysId characterization) ---
     if (DriverStation.isTest()) {
       driverXbox.x().whileTrue(drivebase.sysIdDriveMotorCommand());
@@ -111,6 +122,21 @@ public class RobotContainer {
 
     // --- Operator controls ---
     // Add mechanism bindings here as subsystems are added
+  }
+
+  private Command getDriverAssistCommand() {
+    switch (Constants.AssistConstants.DEFAULT_ASSIST_MODE) {
+      case AUTO_ALIGN:
+      case PATH_TO_POSE:
+      case SNAP_HEADING:
+      case MICRO_ADJUST_RATE:
+      case MICRO_ADJUST_NUDGE:
+        // TODO: implement actual assist commands when mechanisms/targets are defined.
+        return Commands.none();
+      case OFF:
+      default:
+        return Commands.none();
+    }
   }
 
   /**

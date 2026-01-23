@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.util.ModuleTelemetryReader;
+import frc.robot.util.TelemetryPublisher;
 import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,6 +48,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private final SwerveDrive swerveDrive;
   private final Vision vision;
+  private final TelemetryPublisher telemetry;
 
   /**
    * Initialize the swerve subsystem from JSON configuration files.
@@ -73,7 +76,16 @@ public class SwerveSubsystem extends SubsystemBase {
     // Disable auto-sync (enable if encoders drift during match)
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
 
-    this.vision = new Vision(this::getPose, swerveDrive.field);
+    this.vision = Constants.VisionConstants.ENABLE_VISION
+        ? new Vision(this::getPose, swerveDrive.field, Constants.VisionConstants.MAX_LATENCY_SECONDS)
+        : null;
+    this.telemetry = Constants.TelemetryConstants.ENABLE_TELEMETRY
+        ? new TelemetryPublisher(
+            "Robot",
+            Constants.TelemetryConstants.TUNING_MODE
+                ? Constants.TelemetryConstants.TUNING_PUBLISH_HZ
+                : Constants.TelemetryConstants.PUBLISH_HZ)
+        : null;
     setupPathPlanner();
   }
 
@@ -90,7 +102,16 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive = new SwerveDrive(
         driveCfg, controllerCfg, Constants.MAX_SPEED,
         new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)), Rotation2d.fromDegrees(0)));
-    this.vision = new Vision(this::getPose, swerveDrive.field);
+    this.vision = Constants.VisionConstants.ENABLE_VISION
+        ? new Vision(this::getPose, swerveDrive.field, Constants.VisionConstants.MAX_LATENCY_SECONDS)
+        : null;
+    this.telemetry = Constants.TelemetryConstants.ENABLE_TELEMETRY
+        ? new TelemetryPublisher(
+            "Robot",
+            Constants.TelemetryConstants.TUNING_MODE
+                ? Constants.TelemetryConstants.TUNING_PUBLISH_HZ
+                : Constants.TelemetryConstants.PUBLISH_HZ)
+        : null;
   }
 
   /**
@@ -100,7 +121,28 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Odometry is updated automatically by YAGSL's odometry thread
-    vision.updatePoseEstimation(swerveDrive);
+    if (vision != null) {
+      vision.updatePoseEstimation(swerveDrive);
+    }
+    if (telemetry != null) {
+      if (Constants.TelemetryConstants.TUNING_MODE) {
+        telemetry.publishDrivebaseTuning(
+            getPose(),
+            getFieldVelocity(),
+            swerveDrive.getStates(),
+            ModuleTelemetryReader.read(swerveDrive.getModules()),
+            Constants.AssistConstants.DEFAULT_DRIVE_MODE.name(),
+            Constants.AssistConstants.DEFAULT_ASSIST_MODE.name(),
+            Constants.VisionConstants.ENABLE_VISION);
+      } else {
+        telemetry.publishDrivebase(
+            getPose(),
+            getFieldVelocity(),
+            Constants.AssistConstants.DEFAULT_DRIVE_MODE.name(),
+            Constants.AssistConstants.DEFAULT_ASSIST_MODE.name(),
+            Constants.VisionConstants.ENABLE_VISION);
+      }
+    }
   }
 
   /**

@@ -21,6 +21,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Robot;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class Vision {
   public VisionSystemSim visionSim;
   private Supplier<Pose2d> currentPose;
   private Field2d field2d;
+  private final double maxLatencySeconds;
 
   /**
    * Construct Vision with pose supplier and field display.
@@ -65,9 +67,10 @@ public class Vision {
    * @param currentPose Pose supplier from SwerveDrive.
    * @param field       Field2d from SwerveDrive for visualization.
    */
-  public Vision(Supplier<Pose2d> currentPose, Field2d field) {
+  public Vision(Supplier<Pose2d> currentPose, Field2d field, double maxLatencySeconds) {
     this.currentPose = currentPose;
     this.field2d = field;
+    this.maxLatencySeconds = maxLatencySeconds;
 
     if (Robot.isSimulation()) {
       visionSim = new VisionSystemSim("Vision");
@@ -120,6 +123,10 @@ public class Vision {
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if (poseEst.isPresent()) {
         var pose = poseEst.get();
+        double now = Timer.getFPGATimestamp();
+        if (now - pose.timestampSeconds > maxLatencySeconds) {
+          continue;
+        }
         swerveDrive.addVisionMeasurement(
             pose.estimatedPose.toPose2d(),
             pose.timestampSeconds,
