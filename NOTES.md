@@ -84,7 +84,7 @@ consistent, some will drive backward when commanded forward.
 
 **Quick check:**
 1. Point all four wheels straight forward (parallel to frame rails)
-2. Look at each bevel gear - are they all on the same side?
+2. Look at each bevel gear - are they all on the same sideNO
    - All on LEFT: Set `"inverted": {"drive": false}` in all module JSONs
    - All on RIGHT: Set `"inverted": {"drive": true}` in all module JSONs
    - Mixed (some left, some right): Set each module individually
@@ -142,7 +142,7 @@ up correctly, AprilTags let the robot know exactly where it is on the field.
 
 **PhotonVision Calibration:**
 1. Access PhotonVision UI (usually http://photonvision.local:5800)
-2. Go to Settings → Cameras and run camera calibration
+2. Go to Settings -> Cameras and run camera calibration
 3. Print the calibration target and follow the wizard
 4. This step is CRITICAL - skip it and your pose estimates will be garbage
 
@@ -169,7 +169,7 @@ add a camera, you'll need:
 **Example entry:**
 ```java
 FRONT_CAM("frontcam",
-          new Rotation3d(0, Math.toRadians(-15), 0),  // 15° down
+          new Rotation3d(0, Math.toRadians(-15), 0),  // 15 deg down
           new Translation3d(0.3, 0, 0.2),              // 30cm forward, 20cm up
           VecBuilder.fill(4, 4, 8),                    // Single tag uncertainty
           VecBuilder.fill(0.5, 0.5, 1))                // Multi tag uncertainty
@@ -184,7 +184,7 @@ hasn't been released yet.
 
 **IMPORTANT:** When the 2026 game is announced, update Vision.java line 53:
 ```java
-AprilTagFields.k2025ReefscapeAndyMark  →  AprilTagFields.k2026[GameName]
+AprilTagFields.k2025ReefscapeAndyMark  ->  AprilTagFields.k2026[GameName]
 ```
 
 If you forget this step and run on a 2026 field, the robot will use the wrong
@@ -232,30 +232,30 @@ Watch for build errors. If everything compiles, code will auto-start on the RIO.
 1. Open AdvantageScope or SmartDashboard
 2. Look for "Swerve/Modules" or similar telemetry
 3. Physically point FL module forward
-4. Dashboard should show ~0 degrees (±5° is acceptable)
-5. If it shows ~180°, your offset is backwards
+4. Dashboard should show ~0 degrees (+/-5 deg is acceptable)
+5. If it shows ~180 deg, your offset is backwards
 6. Check all four modules
 
 ### Step 4: Drive Direction Test
 1. Enable robot in Teleop mode (KEEP IT ON BLOCKS)
 2. Gently push left joystick forward
 3. Observe ALL wheels:
-   - ✓ All spin to push robot forward
-   - ✗ All spin backward → Fix: Set `inverted.drive: true` in module JSONs
-   - ✗ Mixed (some forward, some back) → Fix: Check bevel gear orientation
+   - OK All spin to push robot forward
+   - NO All spin backward -> Fix: Set `inverted.drive: true` in module JSONs
+   - NO Mixed (some forward, some back) -> Fix: Check bevel gear orientation
 
 ### Step 5: Steering Direction Test
 1. Gently rotate right joystick (or left stick rotation)
 2. All modules should turn in the same rotational direction:
-   - Stick left → modules rotate counterclockwise (viewed from above)
-   - Stick right → modules rotate clockwise
-   - If backwards → Fix: Set `inverted.angle: true` (rare for MK4i)
+   - Stick left -> modules rotate counterclockwise (viewed from above)
+   - Stick right -> modules rotate clockwise
+   - If backwards -> Fix: Set `inverted.angle: true` (rare for MK4i)
 
 ### Step 6: Gyro Alignment
 1. Place robot on ground facing AWAY from driver station
 2. Enable teleop
 3. Press the configured zero button (usually controller Start button)
-4. Push forward on stick → robot should drive away from you
+4. Push forward on stick -> robot should drive away from you
 
 **If robot drives sideways or at an angle:** Gyro and modules disagree on what
 "forward" means. Recheck module offsets in Section 2.3.
@@ -278,13 +278,13 @@ it's actually 0.8m with bumpers, you'll hit walls.
 ### 5.2 Speed Constraints
 Same file, check:
 - `defaultMaxVel`: Maximum robot speed (m/s)
-- `defaultMaxAccel`: Maximum acceleration (m/s²)
+- `defaultMaxAccel`: Maximum acceleration (m/s^2)
 
 **Test your actual max speed first:**
 1. Drive robot in teleop at full throttle
 2. Check velocity in telemetry (usually 3.5-4.5 m/s for L2 gearing)
 3. Set `defaultMaxVel` to 80% of measured max
-4. Set `defaultMaxAccel` to 3-4 m/s²
+4. Set `defaultMaxAccel` to 3-4 m/s^2
 
 **If paths fail or robot stops mid-auto:** Speed constraints are too aggressive.
 
@@ -298,9 +298,9 @@ module PIDs. Check `Constants.java` under `AutonConstants`:
 - `ROTATION_PID`: Controls heading error
 
 **Symptoms:**
-- Robot wanders off path → Increase TRANSLATION_P
-- Robot oscillates/fishtails → Decrease TRANSLATION_P
-- Doesn't face correct direction → Increase ROTATION_P
+- Robot wanders off path -> Increase TRANSLATION_P
+- Robot oscillates/fishtails -> Decrease TRANSLATION_P
+- Doesn't face correct direction -> Increase ROTATION_P
 
 Start with `TRANSLATION_P = 5.0` and `ROTATION_P = 5.0`, tune from there.
 
@@ -316,8 +316,8 @@ the difference between "works okay" and "works great."
 1. Deploy code with SysId routines enabled (already in template)
 2. Open Driver Station, switch to **Test Mode**
 3. Clear at least 15 feet of space in front of robot
-4. Hold controller X button → robot runs drive characterization
-5. Hold controller Y button → robot runs angle characterization
+4. Hold controller X button -> robot runs drive characterization
+5. Hold controller Y button -> robot runs angle characterization
 6. Tests generate `.wpilog` files on the RoboRIO
 
 ### 6.2 Analyzing Results
@@ -328,8 +328,8 @@ the difference between "works okay" and "works great."
 5. Update these in your swerve configuration files
 
 **Where to put values:**
-- Drive gains → `controllerproperties.json` drive section
-- Angle gains → `controllerproperties.json` angle section
+- Drive gains -> `controllerproperties.json` drive section
+- Angle gains -> `controllerproperties.json` angle section
 
 Reference: https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/index.html
 
@@ -338,32 +338,32 @@ SECTION 7: COMMON ISSUES & TROUBLESHOOTING
 ================================================================================
 
 **Robot drives in circles:**
-→ Check module locations match physical robot (Section 2.1)
-→ Verify gyro is mounted flat and `invertedIMU` is correct
+-> Check module locations match physical robot (Section 2.1)
+-> Verify gyro is mounted flat and `invertedIMU` is correct
 
 **Modules jitter/oscillate when stopped:**
-→ Angle PID `p` value too high, reduce by 50%
+-> Angle PID `p` value too high, reduce by 50%
 
 **Robot is sluggish/doesn't reach commanded speed:**
-→ Drive PID `p` value too low, increase gradually
-→ Or battery is low (check voltage)
+-> Drive PID `p` value too low, increase gradually
+-> Or battery is low (check voltage)
 
 **Vision "teleports" robot position:**
-→ Increase standard deviations (Section 3.4)
-→ Recalibrate camera (Section 3.1)
-→ Check camera mounting is secure (wobbling = bad data)
+-> Increase standard deviations (Section 3.4)
+-> Recalibrate camera (Section 3.1)
+-> Check camera mounting is secure (wobbling = bad data)
 
 **Auto path doesn't run:**
-→ Check path constraints vs actual robot speed (Section 5.2)
-→ Verify path starts at robot's current pose
+-> Check path constraints vs actual robot speed (Section 5.2)
+-> Verify path starts at robot's current pose
 
 **CAN errors on startup:**
-→ Check for duplicate IDs
-→ Verify CAN wiring (twisted pairs, proper termination)
-→ Update firmware on all devices
+-> Check for duplicate IDs
+-> Verify CAN wiring (twisted pairs, proper termination)
+-> Update firmware on all devices
 
 **Wheels fight each other (some forward, some backward):**
-→ Bevel gears are inconsistent, fix `inverted.drive` (Section 2.2)
+-> Bevel gears are inconsistent, fix `inverted.drive` (Section 2.2)
 
 ================================================================================
 SECTION 8: COMPETITIVE ADVANTAGE ROADMAP (DRIVER ASSIST + TARGETING)
@@ -473,6 +473,6 @@ Remember:
 - When something goes wrong, check the logs (RoboRIO or Driver Station)
 - Ask for help early - the forum and Chief Delphi are great resources
 
-Good luck this season! 🤖
+Good luck this season! robot
 
 ================================================================================

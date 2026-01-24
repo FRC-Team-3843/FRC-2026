@@ -96,7 +96,7 @@ PathPlanner-based autonomous with:
 
 ### Targeting Pipeline (Planned)
 1. **Perception Layer:** Robot pose + target pose from vision
-2. **Ballistics Layer:** Distance → shooter settings (external JSON lookup table)
+2. **Ballistics Layer:** Distance -> shooter settings (external JSON lookup table)
 3. **Aim/Lead Layer:** Turret angles with optional motion compensation
 
 ### Driver Assist Modes (Planned)
