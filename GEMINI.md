@@ -1,8 +1,8 @@
-# FRC-2026 Repository - Codex Configuration
+# FRC-2026 Repository - Gemini Configuration
 
 ## How to Use This Configuration
 
-This file is for Codex-specific behavior when working in the FRC-2026 repository.
+This file is for Gemini-specific behavior when working in the FRC-2026 repository.
 
 **For technical standards:** Read `STANDARDS.md` in this directory.
 
@@ -22,7 +22,7 @@ That file contains ALL technical rules for FRC-2026:
 
 ---
 
-## Codex-Specific Behavior
+## Gemini-Specific Behavior
 
 ### When Working in FRC-2026
 
@@ -41,19 +41,19 @@ That file contains ALL technical rules for FRC-2026:
    - Log changes to `.agent-log\changelog.md`
    - Use this format:
      ```
-     ### [YYYY-MM-DD HH:MM] CODEX [ACTION_TYPE]
+     ### [YYYY-MM-DD HH:MM] GEMINI [ACTION_TYPE]
      - Description of changes
      - Files: <paths from repo root>
      - Notes: Important context for other agents
      - PENDING: (optional) What needs follow-up
      ```
 
-### Codex Workflow Tips
+### Gemini Workflow Tips
 
-- **Architecture Understanding:** Review the configuration architecture below before making structural changes
-- **Code Generation:** Always follow the patterns in STANDARDS.md when generating new code
-- **Refactoring:** When refactoring legacy code, verify you're using 2026 APIs (not 2024/2025)
-- **Testing:** Suggest running `./gradlew test` after making changes to subsystems or commands
+- **Code Generation:** Always follow the patterns in STANDARDS.md when generating new code.
+- **Refactoring:** When refactoring legacy code, verify you're using 2026 APIs (not 2024/2025).
+- **Testing:** Suggest running `./gradlew test` after making changes to subsystems or commands.
+- **Explanations:** When explaining patterns, reference specific sections of STANDARDS.md.
 
 ---
 
@@ -63,8 +63,8 @@ That file contains ALL technical rules for FRC-2026:
 
 **Location:** `.agent-log\changelog.md`
 
-**Before work:** Check changelog for recent changes by other agents (Claude, Gemini).
-**After work:** Log all significant changes with `[CODEX]` tag.
+**Before work:** Check changelog for recent changes by other agents (Claude, Codex).
+**After work:** Log all significant changes with `[GEMINI]` tag.
 
 ### Handoff Tracking
 
@@ -84,8 +84,8 @@ If you leave work incomplete or encounter blockers:
 FRC-2026/
 ├── STANDARDS.md               ← READ THIS for all technical rules
 ├── CLAUDE.md                  ← Claude behavior for repo
-├── GEMINI.md                  ← Gemini behavior for repo
-├── AGENTS.md (this file)      ← Codex behavior for repo
+├── GEMINI.md (this file)      ← Gemini behavior for repo
+├── AGENTS.md                  ← Codex behavior for repo
 ├── .agent-context.md          ← Current sprint status
 ├── .agent-log/
 │   ├── changelog.md           ← All activity for this repo
@@ -101,45 +101,6 @@ FRC-2026/
 
 ---
 
-## Configuration Architecture (For Reference)
-
-### Standards Single Source of Truth
-
-**STANDARDS.md** is the authoritative source for all FRC-2026 technical rules:
-- Motor APIs (REVLib SparkMax, Phoenix6 TalonFX, Phoenix5 TalonSRX)
-- Command-based architecture (mandatory dependency injection)
-- Modern command factories (preferred pattern)
-- Naming conventions (PascalCase, camelCase, UPPER_SNAKE_CASE)
-- CAN bus base ranges (0-12 reserved, 20-99 mechanisms)
-- Build commands (gradlew build/deploy/test/simulate)
-- Legacy warnings (DO NOT copy from 2024/2025)
-
-### Agent Configuration Files
-
-Each agent (Claude, Gemini, Codex) has its own configuration file:
-- **CLAUDE.md** - Claude-specific behavior
-- **GEMINI.md** - Gemini-specific behavior
-- **AGENTS.md** - Codex-specific behavior (this file)
-
-All agent configs point to STANDARDS.md for technical rules and define agent-specific workflows.
-
-### Activity Tracking
-
-All agents log activity to `.agent-log\changelog.md` at the repo level:
-- Prevents duplicate work
-- Enables cross-agent coordination
-- Tracks configuration changes
-- Documents decisions
-
-### When Standards Change
-
-1. **Update `STANDARDS.md`** (source of truth)
-2. **Test changes** (build/deploy)
-3. **Log in changelog** with `[CONFIG]` action type
-4. **Note what changed** so other agents re-read configs
-
----
-
 ## Key Reminders
 
 - **Always read STANDARDS.md** before making code changes
@@ -150,4 +111,4 @@ All agents log activity to `.agent-log\changelog.md` at the repo level:
 
 ---
 
-For cross-agent coordination protocol, see: `C:\github\AGENTS.md`
+For cross-agent coordination protocol, see: `C:\github\GEMINI.md`
