@@ -28,7 +28,7 @@ Team 3843's robot for the 2026 season. Features a modern swerve drive system pow
 - PathPlanner (Autonomous pathfinding)
 - PhotonVision (AprilTag vision)
 - REVLib 2025+ (SparkMax with config objects)
-- Phoenix6 v25+ (TalonFX with control requests)
+- Phoenix6 v25+ (TalonFX with control requests, no Phoenix Pro features)
 - Command-Based Framework (strict dependency injection)
 
 ## CAN ID Assignments

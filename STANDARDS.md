@@ -176,6 +176,7 @@ motor.set(ControlMode.Position, position);
 ### 3. Phoenix6 (TalonFX) - Version 25+
 
 **Standard:** Use `TalonFX` with control request objects (`MotionMagicVoltage`, `PositionVoltage`).
+**Phoenix Pro:** Team does NOT use Phoenix Pro. Avoid Pro-only APIs (e.g., `TorqueCurrentFOC`, Fused/Sync feedback sources, MotionMagic Expo variants). Use voltage/duty-cycle/position/velocity requests only.
 
 **Required Imports:**
 ```java
