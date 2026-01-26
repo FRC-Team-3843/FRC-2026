@@ -41,24 +41,24 @@ Prefer inline command factories defined in subsystems over creating separate `Co
 ```java
 // ExampleSubsystem.java
 public class Intake extends SubsystemBase {
-    private final SparkMax motor = new SparkMax(1, MotorType.kBrushless);
+    private final SparkMax m_motor = new SparkMax(1, MotorType.kBrushless);
 
     // COMMAND FACTORY: Simple "Run Until" command
     public Command runIntakeCommand() {
         return this.runEnd(
-            () -> motor.set(0.5),   // Execute loop
-            () -> motor.set(0.0)    // End action
+            () -> m_motor.set(0.5),   // Execute loop
+            () -> m_motor.set(0.0)    // End action
         ).withName("RunIntake");
     }
 
     // COMMAND FACTORY: Instant action
     public Command stopCommand() {
-        return this.runOnce(() -> motor.set(0.0));
+        return this.runOnce(() -> m_motor.set(0.0));
     }
 
     // COMMAND FACTORY: Complex sequence with lambda
     public Command scoreCommand() {
-        return this.runOnce(() -> motor.set(1.0))
+        return this.runOnce(() -> m_motor.set(1.0))
                    .withTimeout(1.0)
                    .andThen(stopCommand());
     }
@@ -256,7 +256,9 @@ driver.rightBumper().and(driver.a()).onTrue(combo);   // Compound
 ### General
 
 - **Classes:** `PascalCase` (e.g., `DriveSubsystem`, `Superstructure`)
-- **Methods/Variables:** `camelCase` (e.g., `getPose()`, `targetVelocity`)
+- **Member Variables:** `m_` prefix with camelCase (e.g., `m_driveMotor`, `m_robotContainer`)
+- **Local Variables:** camelCase without prefix (e.g., `targetVelocity`, `tempValue`)
+- **Methods:** camelCase (e.g., `getPose()`, `setPosition()`)
 - **Constants:** `UPPER_SNAKE_CASE` (e.g., `MAX_VELOCITY_MPS`, `DRIVE_MOTOR_ID`)
 
 ### WPILib Specifics
@@ -352,25 +354,25 @@ Vendor dependencies are JSON files in `vendordeps/`.
 
 ```java
 public class ExampleSubsystem extends SubsystemBase {
-    // 1. Hardware (private final)
-    private final SparkMax motor;
-    private final RelativeEncoder encoder;
+    // 1. Hardware (private final, m_ prefix)
+    private final SparkMax m_motor;
+    private final RelativeEncoder m_encoder;
 
     // 2. Constructor (configure hardware here)
     public ExampleSubsystem() {
-        motor = new SparkMax(Constants.ExampleConstants.MOTOR_ID, MotorType.kBrushless);
-        encoder = motor.getEncoder();
+        m_motor = new SparkMax(Constants.ExampleConstants.MOTOR_ID, MotorType.kBrushless);
+        m_encoder = m_motor.getEncoder();
 
         SparkMaxConfig config = new SparkMaxConfig();
         config.inverted(false).smartCurrentLimit(40);
-        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     // 3. Command factories (public, return Command)
     public Command exampleCommand() {
         return this.runEnd(
-            () -> motor.set(0.5),
-            () -> motor.set(0)
+            () -> m_motor.set(0.5),
+            () -> m_motor.set(0)
         );
     }
 
@@ -416,6 +418,219 @@ class ExampleSubsystemTest {
 
 ---
 
+## Code Quality & Warnings
+
+**Strict Policy: NO Warning Suppression.**
+
+- **Do NOT suppress warnings** (e.g., `@SuppressWarnings("deprecation")`).
+- **Fix the root cause:** Find the updated API or method.
+- **If no fix exists:** Leave the warning visible. This ensures technical debt is tracked and not hidden.
+- **Web Search:** Actively research the correct replacement for deprecated methods.
+
+---
+
+## Logging & Telemetry Standards
+
+### DataLog Usage
+
+Initialize logging in Robot.java constructor:
+```java
+if (Constants.LoggingConstants.ENABLE_LOGGING) {
+  DataLogManager.start();
+  DriverStation.startDataLog(DataLogManager.getLog());
+}
+```
+
+### Enable Flags in Constants
+
+```java
+public static final class LoggingConstants {
+  public static final boolean ENABLE_LOGGING = true;
+  public static final boolean ENABLE_DRIVE_TELEMETRY = true;
+}
+```
+
+### NetworkTables Naming Convention
+
+Use structured hierarchical paths for dashboard values:
+- Pattern: `"Subsystem/Category/Value"`
+- Example: `SmartDashboard.putNumber("Drive/Velocity/X", vx);`
+- Example: `SmartDashboard.putBoolean("Vision/HasTarget", hasTarget);`
+
+---
+
+## Vision Integration Standards
+
+### Standard Pattern
+
+1. **Vision class location:** `frc.robot.vision.Vision`
+2. **Enable flag:** `Constants.VisionConstants.ENABLE_VISION`
+3. **AprilTag layout file:** `src/main/deploy/apriltag_layout.json`
+
+### Camera Configuration Enum
+
+```java
+public enum Cameras {
+  FRONT_CAM("front",
+      new Rotation3d(0, Math.toRadians(-15), 0),  // Camera rotation
+      new Translation3d(0.3, 0.0, 0.2),           // Camera position
+      VecBuilder.fill(4, 4, 8),                   // Single-tag std devs
+      VecBuilder.fill(0.5, 0.5, 1));              // Multi-tag std devs
+
+  // Constructor and fields...
+}
+```
+
+### Graceful Degradation
+
+Vision should be optional - robot must function without it:
+```java
+if (Constants.VisionConstants.ENABLE_VISION) {
+  m_vision = new Vision(m_drivebase::getPose, m_drivebase.getSwerveDrive().field);
+}
+```
+
+---
+
+## Autonomous Standards
+
+### PathPlanner Directory Structure
+
+```
+src/main/deploy/pathplanner/
+├── settings.json      # Robot configuration (max velocity, size)
+├── autos/             # Autonomous routines (.auto files)
+└── paths/             # Path segments (.path files)
+```
+
+### Controller Selection
+
+Choose the correct controller for your drive type:
+- **Swerve/Mecanum (holonomic):** `PPHolonomicDriveController`
+- **Tank/Differential:** `PPLTVController`
+
+### Choreo Integration
+
+For Choreo trajectories:
+1. Export trajectories to `src/main/deploy/`
+2. Create auto mode enum: `Constants.AutoConstants.AUTO_MODE`
+3. Implement `ChoreoAutos.java` for trajectory following
+
+### Named Commands
+
+Register subsystem commands for PathPlanner events:
+```java
+NamedCommands.registerCommand("intake", m_intake.runCommand());
+NamedCommands.registerCommand("score", m_scoring.scoreCommand());
+```
+
+---
+
+## Safety Standards
+
+### Motor Current Limits (REQUIRED)
+
+**All motors must have current limits configured:**
+
+```java
+// SparkMax
+SparkMaxConfig config = new SparkMaxConfig();
+config.smartCurrentLimit(40);  // Amps
+
+// TalonFX
+TalonFXConfiguration config = new TalonFXConfiguration();
+config.CurrentLimits.StatorCurrentLimit = 40;
+config.CurrentLimits.StatorCurrentLimitEnable = true;
+```
+
+### Soft Limits for Mechanisms
+
+Prevent mechanism damage with software limits:
+```java
+// SparkMax
+config.softLimit.forwardSoftLimit(MAX_POSITION);
+config.softLimit.forwardSoftLimitEnabled(true);
+config.softLimit.reverseSoftLimit(MIN_POSITION);
+config.softLimit.reverseSoftLimitEnabled(true);
+
+// TalonFX
+config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POSITION;
+config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+```
+
+### Command Timeouts
+
+All mechanism commands should have timeouts to prevent stuck states:
+```java
+public Command moveToPosition(double pos) {
+    return this.run(() -> setPosition(pos))
+               .until(() -> atPosition(pos))
+               .withTimeout(3.0)  // Maximum 3 seconds
+               .finallyDo((interrupted) -> stop());
+}
+```
+
+### Failsafe Behavior
+
+Commands should clean up properly when interrupted:
+```java
+public Command runMotor() {
+    return this.runEnd(
+        () -> m_motor.set(0.5),  // Run action
+        () -> m_motor.set(0.0)   // End action (always runs)
+    );
+}
+```
+
+---
+
+## Brake Management Pattern
+
+### Disabled Mode Brake Delay
+
+Release motor brakes after a delay when disabled to allow robot repositioning:
+
+```java
+// Robot.java
+private final Timer m_disabledTimer = new Timer();
+
+@Override
+public void disabledInit() {
+  m_disabledTimer.reset();
+  m_disabledTimer.start();
+}
+
+@Override
+public void disabledPeriodic() {
+  if (m_disabledTimer.hasElapsed(Constants.DriveConstants.WHEEL_LOCK_TIME)) {
+    m_robotContainer.setMotorBrake(false);
+    m_disabledTimer.stop();
+  }
+}
+
+@Override
+public void autonomousInit() {
+  m_robotContainer.setMotorBrake(true);
+  // ... rest of auto init
+}
+
+@Override
+public void teleopInit() {
+  m_robotContainer.setMotorBrake(true);
+  // ... rest of teleop init
+}
+```
+
+### Constants
+
+```java
+public static final class DriveConstants {
+  public static final double WHEEL_LOCK_TIME = 10.0;  // Seconds before releasing brakes
+}
+```
+
+---
+
 ## Legacy Code Warnings
 
 ### DO NOT Copy from FRC-2024 or FRC-2025
@@ -445,20 +660,20 @@ motor.setIdleMode(IdleMode.kBrake);  // Method removed!
 ```java
 // Dependency injection
 public class DriveCommand extends Command {
-    private final DriveSubsystem drive;
+    private final DriveSubsystem m_drive;
     public DriveCommand(DriveSubsystem drive) {
-        this.drive = drive;
-        addRequirements(drive);
+        m_drive = drive;
+        addRequirements(m_drive);
     }
 }
 
 // Command-based with proper subsystems
 public class Robot extends TimedRobot {
-    private RobotContainer robotContainer;
+    private RobotContainer m_robotContainer;
 
     @Override
     public void robotInit() {
-        robotContainer = new RobotContainer();
+        m_robotContainer = new RobotContainer();
     }
 
     @Override
@@ -468,10 +683,10 @@ public class Robot extends TimedRobot {
 }
 
 // Config objects (2026 REVLib)
-SparkMax motor = new SparkMax(ID, MotorType.kBrushless);
+SparkMax m_motor = new SparkMax(ID, MotorType.kBrushless);
 SparkMaxConfig config = new SparkMaxConfig();
 config.inverted(true).idleMode(SparkBaseConfig.IdleMode.kBrake);
-motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+m_motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 ```
 
 ---

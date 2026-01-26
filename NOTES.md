@@ -175,7 +175,7 @@ FRONT_CAM("frontcam",
           VecBuilder.fill(0.5, 0.5, 1))                // Multi tag uncertainty
 ```
 
-Reference: https://docs.photonvision.org/en/latest/docs/apriltag-pipelines/coordinate-systems.html
+Reference: https://docs.photonvision.org/en/latest/docs/apriltag-pipelines/coordinate-systems.html        
 
 ### 3.3 Field Layout (2025 vs 2026)
 
@@ -461,6 +461,24 @@ Store in deploy assets, e.g. `src/main/deploy/shooter/shooter_table.json`:
     { "distance": 3.5, "rpm": 3600, "hoodAngle": 27.0 }
   ]
 }
+```
+
+================================================================================
+SECTION 9: DEVELOPER UTILITIES
+================================================================================
+
+### 9.1 Alerts System
+A persistent alerts system is available in `frc.robot.utils.Alert`.
+Use this to display critical errors (red), warnings (yellow), or info (green)
+on the dashboard that persist until resolved.
+
+**Usage:**
+```java
+// Create alert in your subsystem
+private final Alert m_alert = new Alert("Intake jammed!", AlertType.ERROR);
+
+// Set active status in periodic() or when fault detected
+m_alert.set(isJammed());
 ```
 
 ================================================================================
