@@ -2,6 +2,11 @@
 
 FRC Team 3843 - 2026 Season
 
+> **Documentation Guide:**
+> - **This file (README):** Project overview and quick start
+> - **NOTES.md:** Setup procedures, tuning values, troubleshooting
+> - **STANDARDS.md:** Coding standards and architecture rules
+
 ## Overview
 Team 3843's robot for the 2026 season. Features a modern swerve drive system powered by YAGSL with vision-assisted localization via PhotonVision. Built using the latest WPILib 2026 APIs with strict command-based architecture and dependency injection patterns.
 
@@ -22,6 +27,8 @@ Team 3843's robot for the 2026 season. Features a modern swerve drive system pow
 ### Mechanisms
 *[To be determined based on 2026 game reveal]*
 
+*See NOTES.md for CAN bus assignments*
+
 ## Software Stack
 - WPILib 2026.1.1+
 - YAGSL (Swerve Drive Library)
@@ -30,27 +37,6 @@ Team 3843's robot for the 2026 season. Features a modern swerve drive system pow
 - REVLib 2025+ (SparkMax with config objects)
 - Phoenix6 v25+ (TalonFX with control requests, no Phoenix Pro features)
 - Command-Based Framework (strict dependency injection)
-
-## CAN ID Assignments
-
-### Swerve Drive System
-| Device | CAN ID | Description |
-|--------|--------|-------------|
-| FL Drive Motor | 1 | Front left drive |
-| FR Drive Motor | 2 | Front right drive |
-| BL Drive Motor | 3 | Back left drive |
-| BR Drive Motor | 4 | Back right drive |
-| FL Steer Motor | 5 | Front left steering |
-| FR Steer Motor | 6 | Front right steering |
-| BL Steer Motor | 7 | Back left steering |
-| BR Steer Motor | 8 | Back right steering |
-| FL CANCoder | 9 | Front left absolute encoder |
-| FR CANCoder | 10 | Front right absolute encoder |
-| BL CANCoder | 11 | Back left absolute encoder |
-| BR CANCoder | 12 | Back right absolute encoder |
-
-### Mechanisms
-*[CAN IDs 20-99 reserved for mechanism motors - assignments TBD]*
 
 ## Architecture
 

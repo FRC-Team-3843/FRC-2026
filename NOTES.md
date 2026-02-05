@@ -1,5 +1,10 @@
 # Working Notes - FRC-2026
 
+> **Documentation Guide:**
+> - **This file (NOTES):** Setup, tuning, troubleshooting, TODOs
+> - **README.md:** Project overview and quick start
+> - **STANDARDS.md:** Coding standards and architecture rules
+
 ================================================================================
 FRC Team 3843 - 2026 Robot Setup Guide
 ================================================================================
@@ -14,13 +19,36 @@ Quick reference links:
 - WPILib Docs: https://docs.wpilib.org/en/stable/
 
 ================================================================================
+CAN BUS ASSIGNMENTS
+================================================================================
+
+### Swerve Drive System
+| Device | CAN ID | Description |
+|--------|--------|-------------|
+| FL Drive Motor | 1 | Front left drive |
+| FR Drive Motor | 2 | Front right drive |
+| BL Drive Motor | 3 | Back left drive |
+| BR Drive Motor | 4 | Back right drive |
+| FL Steer Motor | 5 | Front left steering |
+| FR Steer Motor | 6 | Front right steering |
+| BL Steer Motor | 7 | Back left steering |
+| BR Steer Motor | 8 | Back right steering |
+| FL CANCoder | 9 | Front left absolute encoder |
+| FR CANCoder | 10 | Front right absolute encoder |
+| BL CANCoder | 11 | Back left absolute encoder |
+| BR CANCoder | 12 | Back right absolute encoder |
+
+### Mechanisms
+*[CAN IDs 20-99 reserved for mechanism motors - assignments TBD]*
+
+================================================================================
 SECTION 1: PRE-FLIGHT CHECKLIST
 ================================================================================
 
 Before you write a single line of code, verify the hardware is ready:
 
 **Power & CAN Bus:**
-1. All motor controllers have correct CAN IDs (see CLAUDE.md for assignments)
+1. All motor controllers have correct CAN IDs (see CAN Bus Assignments below)
 2. CANCoders are plugged into data, not just power (yes, this has happened)
 3. NavX is connected via SPI port on RoboRIO
 4. No loose connections - tug test every cable

@@ -1,6 +1,12 @@
 # FRC-2026 Technical Standards
 
-**SINGLE SOURCE OF TRUTH** for all FRC-2026 coding standards.
+> **Single Source of Truth** for all FRC coding standards.
+> Other repositories should reference this file.
+>
+> **Documentation Guide:**
+> - **This file (STANDARDS):** Coding rules, architecture, APIs
+> - **README.md:** Project overview and quick start
+> - **NOTES.md:** Setup procedures, tuning values, troubleshooting
 
 All agents (Claude, Cursor, Gemini) working in FRC-2026 projects must follow these standards. Project-level configs include this content for IDE agent accessibility.
 
@@ -456,6 +462,19 @@ Use structured hierarchical paths for dashboard values:
 - Pattern: `"Subsystem/Category/Value"`
 - Example: `SmartDashboard.putNumber("Drive/Velocity/X", vx);`
 - Example: `SmartDashboard.putBoolean("Vision/HasTarget", hasTarget);`
+
+### Dashboard Standards
+
+**Default Dashboard:** Elastic Dashboard (distributed with WPILib 2026)
+
+Elastic Dashboard is the recommended dashboard for driver station:
+- Modern UI with customizable layouts
+- Full NetworkTables 4 (NT4) support
+- Shuffleboard widget compatibility
+
+**Note:** The SmartDashboard *application* is deprecated (removal planned for 2027). The `SmartDashboard` *API class* remains valid for NetworkTables publishing.
+
+**Launching Elastic:** VS Code → `Ctrl+Shift+P` → `WPILib: Start Tool` → `Elastic`
 
 ---
 
