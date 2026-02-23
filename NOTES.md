@@ -1,7 +1,7 @@
 # Working Notes - FRC-2026
 
 > **Documentation Guide:**
-> - **This file (NOTES):** Setup, tuning, troubleshooting, TODOs
+> - **This file (NOTES):** Setup, tuning, troubleshooting, TODOs, game details
 > - **README.md:** Project overview and quick start
 > - **STANDARDS.md:** Coding standards and architecture rules
 
@@ -17,6 +17,202 @@ Quick reference links:
 - YAGSL Docs: https://broncbotz3481.github.io/YAGSL-Example/
 - PhotonVision Docs: https://docs.photonvision.org/
 - WPILib Docs: https://docs.wpilib.org/en/stable/
+- Game Manual: https://firstfrc.blob.core.windows.net/frc2026/Manual/2026GameManual.pdf
+- Field Drawings: https://firstfrc.blob.core.windows.net/frc2026/FieldAssets/2026-field-dimension-dwgs.pdf
+- Team Updates: https://firstfrc.blob.core.windows.net/frc2026/Manual/TeamUpdates/REBUILT_TeamUpdate-Combined.pdf
+
+================================================================================
+SECTION 0: 2026 GAME - REBUILT (presented by Haas)
+================================================================================
+
+### Game Overview
+
+In REBUILT, two 3-robot alliances score FUEL into their HUB, traverse field
+obstacles, and climb the TOWER before time runs out. The unique mechanic is
+HUB SHIFTING -- alliance hubs alternate between active and inactive during
+teleop, based on which alliance performed better in autonomous.
+
+Theme: Archaeology-inspired -- "re-imagine the past, uncover discoveries."
+
+### Match Structure (2 minutes 40 seconds = 160 seconds total)
+
+```
+Phase            Duration   Hub Status
+-----------      --------   ------------------------------------------
+Autonomous       20 sec     Both hubs ACTIVE
+Transition       10 sec     Both hubs ACTIVE
+Shift 1          25 sec     Alternating (Auto winner's hub INACTIVE)
+Shift 2          25 sec     Alternating (Auto winner's hub ACTIVE)
+Shift 3          25 sec     Alternating (Auto winner's hub INACTIVE)
+Shift 4          25 sec     Alternating (Auto winner's hub ACTIVE)
+Endgame          30 sec     Both hubs ACTIVE
+```
+
+**Hub Shifting Rule:** The alliance that scores MORE fuel during Auto has their
+hub go INACTIVE first (Shifts 1 & 3 inactive, Shifts 2 & 4 active). The losing
+alliance gets the opposite pattern. This rewards strong autonomous programs.
+
+### Game Data (for programming)
+
+A single character is sent via `DriverStation.getGameSpecificMessage()`:
+- `'R'` = Red alliance hub goes inactive first
+- `'B'` = Blue alliance hub goes inactive first
+- Sent ~3 seconds after autonomous ends (empty string before that)
+- Reference: https://docs.wpilib.org/en/stable/docs/yearly-overview/2026-game-data.html
+
+### Game Piece: FUEL
+
+- **Type:** Ball
+- **Diameter:** 5.91 inches (~15 cm)
+- **Weight:** 0.448 - 0.5 lbs
+- **Total on field:** 504 fuel
+- **Robot preload:** 8 fuel per robot (24 per alliance)
+- **Sources:** Preload, human player (Outpost), Depot, neutral zone floor
+- **Control limit:** No limit -- robots may hold any amount of fuel at a time
+
+### Scoring Breakdown
+
+**Hub Scoring (Fuel):**
+- Each fuel scored in an ACTIVE hub = 1 point
+- Fuel scored in an INACTIVE hub = 0 match points
+- No difference in point value between Auto and Teleop
+- Human players can also score fuel into the hub from the Outpost
+- Hub recycles scored fuel back onto the field through shoots into Neutral Zone
+
+**Tower Climbing:**
+| Phase   | Level 1 | Level 2 | Level 3 |
+|---------|---------|---------|---------|
+| Auto    | 15 pts  | --      | --      |
+| Teleop  | 10 pts  | 20 pts  | 30 pts  |
+
+**Climbing Level Definitions:**
+- Level 1: Robot fully supported by TOWER, not touching carpet or TOWER BASE
+- Level 2: Robot's BUMPERS completely above the LOW RUNG
+- Level 3: Robot's BUMPERS completely above the MID RUNG
+
+Robots earn tower points for only one LEVEL during AUTO and one during TELEOP.
+There is no requirement to progress through levels sequentially -- you can
+attempt Level 3 directly, though the 30" height limit makes this impractical.
+
+### Ranking Points (Regional/District Events)
+
+| RP               | Requirement                          |
+|------------------|--------------------------------------|
+| Win RP           | Win match (3 RP), Tie (1 RP each)   |
+| Energized RP     | Score >=100 fuel in active hub (1 RP)|
+| Supercharged RP  | Score >=360 fuel in active hub (1 RP)|
+| Traversal RP     | Earn >=50 tower climbing pts (1 RP)  |
+
+**RP Strategy Notes:**
+- Energized (100 fuel) is achievable by most alliances
+- Supercharged (360 fuel) requires high cycle rate (~3-4 fuel/sec sustained)
+- Traversal (50 tower pts) needs at least 2 robots climbing Level 2+
+  (e.g., two Level 2 = 40 pts + one Level 1 = 10 pts = 50 pts)
+
+### Field Layout
+
+**Dimensions:** ~317.7" x 651.2" (~8.07m x 16.54m) carpeted area
+
+**Field Elements (mirrored for each alliance):**
+
+| Element   | Description                                          | Key Dimensions                    |
+|-----------|------------------------------------------------------|-----------------------------------|
+| Hub       | Central scoring structure, rectangular prism          | 47" x 47", opening at top         |
+| Tower     | 3-rung climbing structure                             | 49.25"W x 45"D x 78.25"H         |
+| Trench    | Low-clearance field crossing (faster for short bots)  | 50.34"W x 22.25"H clearance       |
+| Bump      | Ramp-style field crossing (any bot can use)           | ~6.5" peak height, two ramps      |
+| Depot     | Enclosed fuel storage area with low walls             | 1" tall steel barriers            |
+| Outpost   | Human player station for exchanging fuel              | Alliance wall area                |
+
+**Tower Details:**
+- 3 RUNGS at increasing heights, 18" apart center-to-center
+- Rungs are 1-1/4" Schedule 40 pipe
+- Supports available to assist climbing
+- Scored level based on BUMPER position relative to rungs
+
+**Hub Details:**
+- Rectangular prism with extended opening at top surface
+- Includes net blocking shots from prohibited zones
+- Scored fuel is recycled back to the Neutral Zone through shoots
+
+**Trench vs Bump:**
+- Trench: 22.25" tall clearance -- robots must be short enough to fit
+- Bump: ~6.5" ramps -- any robot can cross but may be slower
+- Strategic choice: build a low-profile robot for trench speed advantage?
+
+### Robot Constraints (2026)
+
+| Rule  | Constraint                                              |
+|-------|---------------------------------------------------------|
+| R104  | Robot perimeter <= 110" (frame perimeter)               |
+| --    | Starting height <= 3'6" (~42")                          |
+| --    | Weight (robot + bumpers) <= 135 lbs                     |
+| --    | Extension beyond perimeter <= 12" in one direction      |
+| --    | Extension above floor <= 30" vertically                 |
+| --    | Bumper height zone: 2.75" to 5.5" from floor            |
+| --    | Bumper extension: <= 4.25" from perimeter               |
+
+### Design Considerations for Team 3843
+
+**Fuel Intake:**
+- 5.91" balls -- similar to 2017 STEAMWORKS fuel but larger
+- Need reliable ground pickup from depot and neutral zone
+- Consider hopper/magazine for holding multiple fuel
+- Simulator data shows top robots carry 14+ fuel per cycle
+
+**Shooting/Scoring:**
+- Hub is stationary with top opening -- consistent target
+- No point difference for shot position (no upper/lower distinction)
+- Human players can also score -- coordinate with HP strategy
+- Accuracy matters: 92%+ accuracy targets from simulator data
+
+**Tower Climbing:**
+- Level 3 = 30 pts is the high-value endgame target
+- Rungs are 1-1/4" pipe, 18" apart -- design hooks/arms accordingly
+- 30" height limit is the primary constraint during climbing
+- Consider: can the climber mechanism also help with intake/shooting?
+
+**Field Traversal:**
+- Trench clearance is 22.25" -- robot must be under this with mechanisms stowed
+- Bump is 6.5" -- swerve drive handles this, but intake must survive the jolt
+- Low-profile robot gains strategic advantage (trench shortcut)
+
+**Autonomous Priority:**
+- Winning auto determines favorable hub shifting schedule
+- Pre-load 8 fuel per robot = 24 fuel alliance auto potential
+- Auto climb to Level 1 = 15 pts (high value if achievable)
+- Strong auto = hub active during Shifts 2 & 4 (more active time overall)
+
+### Mechanism Hardware Summary
+
+**Double Turret Shooter Design:**
+The robot uses a mirrored double turret system. Each turret independently aims
+and fires FUEL into the Hub.
+
+| Component | Motor | Controller | Gear Ratio | Notes |
+|-----------|-------|------------|------------|-------|
+| Turret rotation (x2) | NEO 550 | SparkMax | 68:1 | Independent left/right aim |
+| Preshooter (x2) | Kraken X44 | TalonFX | 5:8 (0.625) | Accelerates fuel before main wheels |
+| Main shooter (x2) | Kraken X60 | TalonFX | 5:6 (0.833) | Final launch velocity |
+| Intake | TBD | TBD | TBD | Ground pickup mechanism |
+| Indexer | TBD | TBD | TBD | Fuel transport to shooter |
+
+**Swerve Drive Gearing (updated):**
+- Drive gear ratio: 5.8267:1 (437/75, SDS MK4 with custom inversion plate)
+- Angle gear ratio: 12:1
+- Theoretical max speed: 5.18 m/s
+- Note: Drive ratio is flagged as possibly high -- subject to change
+
+### Key Resources
+
+- Game Manual (PDF): https://firstfrc.blob.core.windows.net/frc2026/Manual/2026GameManual.pdf
+- Field Dimension Drawings: https://firstfrc.blob.core.windows.net/frc2026/FieldAssets/2026-field-dimension-dwgs.pdf
+- Team Updates (Combined): https://firstfrc.blob.core.windows.net/frc2026/Manual/TeamUpdates/REBUILT_TeamUpdate-Combined.pdf
+- WPILib Game Data: https://docs.wpilib.org/en/stable/docs/yearly-overview/2026-game-data.html
+- FIRST Season Page: https://www.firstinspires.org/programs/frc/game-and-season
+- Tower Build Instructions: https://firstfrc.blob.core.windows.net/frc2026/FieldAssets/TE-26500-build-instructions.pdf
+- Official FUEL (AndyMark): https://andymark.com/products/official-rebuilt-fuel
+- Community Resources: https://www.chiefdelphi.com/t/all-the-rebuilt-resources/510081
 
 ================================================================================
 CAN BUS ASSIGNMENTS
@@ -38,8 +234,22 @@ CAN BUS ASSIGNMENTS
 | BL CANCoder | 11 | Back left absolute encoder |
 | BR CANCoder | 12 | Back right absolute encoder |
 
-### Mechanisms
-*[CAN IDs 20-99 reserved for mechanism motors - assignments TBD]*
+### Mechanism Motors - Double Turret Shooter
+| Device | CAN ID | Controller | Description |
+|--------|--------|------------|-------------|
+| Left Turret Motor | 20 | SparkMax | Left turret rotation (NEO 550, 68:1) |
+| Right Turret Motor | 21 | SparkMax | Right turret rotation (NEO 550, 68:1) |
+| Left Preshooter | 22 | TalonFX | Left preshooter (Kraken X44, 5:8) |
+| Right Preshooter | 23 | TalonFX | Right preshooter (Kraken X44, 5:8) |
+| Left Main Shooter | 24 | TalonFX | Left main shooter (Kraken X60, 5:6) |
+| Right Main Shooter | 25 | TalonFX | Right main shooter (Kraken X60, 5:6) |
+
+### Reserved CAN ID Ranges
+| Range | Purpose |
+|-------|---------|
+| 30-39 | Intake motors (TBD) |
+| 40-49 | Indexer motors (TBD) |
+| 50-99 | Future mechanisms |
 
 ================================================================================
 SECTION 1: PRE-FLIGHT CHECKLIST
@@ -68,6 +278,13 @@ Before you write a single line of code, verify the hardware is ready:
 - Phoenix Tuner X for CTRE devices
 - REV Hardware Client for SparkMax
 - AdvantageScope or Glass for telemetry
+
+**IMPORTANT: Use the WPILib JDK for builds.** The project requires Java 17.
+WPILib installs its own JDK at `C:\Users\Public\wpilib\2026\jdk`.
+If Gradle fails with a Java version error, set JAVA_HOME before building:
+```bash
+JAVA_HOME="C:/Users/Public/wpilib/2026/jdk" ./gradlew build
+```
 
 ================================================================================
 SECTION 2: YAGSL CONFIGURATION
@@ -205,18 +422,19 @@ FRONT_CAM("frontcam",
 
 Reference: https://docs.photonvision.org/en/latest/docs/apriltag-pipelines/coordinate-systems.html        
 
-### 3.3 Field Layout (2025 vs 2026)
+### 3.3 Field Layout (UPDATE REQUIRED)
 
-The code currently loads the 2025 Reefscape field layout because the 2026 game
-hasn't been released yet.
+The code currently loads the 2025 Reefscape field layout. **The 2026 game
+(REBUILT) has been released -- this MUST be updated.**
 
-**IMPORTANT:** When the 2026 game is announced, update Vision.java line 53:
+**ACTION REQUIRED:** Update Vision.java to use the 2026 REBUILT AprilTag layout:
 ```java
-AprilTagFields.k2025ReefscapeAndyMark  ->  AprilTagFields.k2026[GameName]
+AprilTagFields.k2025ReefscapeAndyMark  ->  AprilTagFields.k2026Rebuilt
 ```
+(Check WPILib/PhotonVision release notes for the exact enum name.)
 
-If you forget this step and run on a 2026 field, the robot will use the wrong
-tag positions and think it's somewhere it's not.
+If you skip this step and run on a 2026 REBUILT field, the robot will use the
+wrong tag positions and localize incorrectly.
 
 ### 3.4 Trust Settings (Standard Deviations)
 
@@ -492,10 +710,118 @@ Store in deploy assets, e.g. `src/main/deploy/shooter/shooter_table.json`:
 ```
 
 ================================================================================
-SECTION 9: DEVELOPER UTILITIES
+SECTION 9: ELASTIC DASHBOARD WORKFLOW
 ================================================================================
 
-### 9.1 Alerts System
+### 9.0 Overview
+
+The robot uses Elastic Dashboard as its primary dashboard. The layout is stored
+as a JSON file in the deploy directory and served to the dashboard via a built-in
+web server on port 5800.
+
+**Layout file:** `src/main/deploy/elastic-layout.json`
+**WebServer:** Started automatically in Robot.java on port 5800
+
+### 9.1 Creating and Editing Layouts
+
+**From Elastic Dashboard UI:**
+1. Launch Elastic: VS Code -> `Ctrl+Shift+P` -> `WPILib: Start Tool` -> `Elastic`
+2. Connect to robot (or use localhost for simulation)
+3. Drag widgets from the NT tree onto tabs
+4. Resize and position widgets on the grid
+5. Export layout: `Ctrl+Shift+S` -> save as `elastic-layout.json`
+
+**From JSON (programmatic / AI agent):**
+1. Edit `src/main/deploy/elastic-layout.json` directly
+2. Follow the Elastic Layout Editing Standard in STANDARDS.md
+3. Validate JSON before deploying (no trailing commas, valid structure)
+
+### 9.2 Deploying Layouts to Robot
+
+```bash
+cd FRC-2026/2026Robot
+./gradlew deploy
+```
+
+The layout JSON is deployed alongside code to the RoboRIO's deploy directory.
+The WebServer serves it on port 5800.
+
+### 9.3 Loading Layouts from Robot
+
+In Elastic Dashboard:
+1. `Ctrl+D` or `File` -> `Download Layout from Robot`
+2. Enter robot address (e.g., `10.38.43.2` or `roboRIO-3843-frc.local`)
+3. Layout loads automatically from the WebServer
+
+### 9.4 TunableNumber Data Flow
+
+The bidirectional tuning system works as follows:
+
+```
+Constants.java  -->  TunableNumber(default)  -->  NetworkTables (/Tuning/...)
+                                                       |
+                                                  Elastic Dashboard
+                                                  (user edits value)
+                                                       |
+                                                  NetworkTables (updated)
+                                                       |
+DashboardManager.periodic()  <--  TunableNumber.get()  <--  NT value
+       |
+  subsystem.setPID(newP, newI, newD)  -->  Motor Controller
+```
+
+**Key points:**
+- Values are only published to NT when `TelemetryConstants.TUNING_MODE = true`
+- When tuning mode is false, `get()` returns the compile-time default (zero overhead)
+- `hasChanged()` detects when a dashboard user edited the value
+- Changes take effect on the next robot periodic cycle (20ms)
+
+### 9.5 Dashboard Tabs
+
+| Tab | Purpose | Audience |
+|-----|---------|----------|
+| Competition | Field view, mode selectors, status indicators | Driver/Operator |
+| Tuning | PID controllers, RPM sliders, tuning guide | Programmer |
+| Motor Config | CAN IDs, gear ratios, enable/disable toggles | Programmer |
+| SysId | Characterization instructions and graphs | Programmer |
+| Diagnostics | Battery, CAN, currents, temps, swerve visualization | Pit crew |
+| Raw Sensors | Gyro, encoders, module states, vision data | Debug |
+
+### 9.6 Elastic Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+D` | Download layout from robot |
+| `Ctrl+Shift+S` | Export layout to file |
+| `Ctrl+S` | Save layout |
+| `Ctrl+Z` | Undo |
+| `Ctrl+Shift+Z` | Redo |
+| `Delete` | Remove selected widget |
+
+### 9.7 Troubleshooting
+
+**Layout not loading from robot:**
+- Verify WebServer started (check console for errors)
+- Check robot address is correct
+- Ensure `elastic-layout.json` exists in deploy directory
+- Try `http://<robot-ip>:5800/elastic-layout.json` in a browser
+
+**Widgets show "No data":**
+- Verify NT topic path matches what robot code publishes
+- Check `TelemetryConstants.ENABLE_TELEMETRY` is true
+- For tuning widgets, check `TelemetryConstants.TUNING_MODE` is true
+- Verify robot code is running (Driver Station shows connected)
+
+**PID widgets not updating:**
+- PIDController widgets require Sendable objects published via SmartDashboard.putData()
+- DashboardManager publishes these automatically
+- Verify DashboardManager.periodic() is called from Robot.robotPeriodic()
+
+================================================================================
+SECTION 10: DEVELOPER UTILITIES
+================================================================================
+
+### 10.1 Alerts System
 A persistent alerts system is available in `frc.robot.utils.Alert`.
 Use this to display critical errors (red), warnings (yellow), or info (green)
 on the dashboard that persist until resolved.

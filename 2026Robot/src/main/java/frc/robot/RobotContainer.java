@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.util.DashboardManager;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -25,6 +26,8 @@ public class RobotContainer {
 
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+
+  private final DashboardManager dashboardManager = new DashboardManager();
 
   private SendableChooser<Command> autoChooser;
 
@@ -69,6 +72,9 @@ public class RobotContainer {
       .scaleTranslation(Constants.DriveProfiles.SLOW_SPEED_SCALE)
       .allianceRelativeControl(true);
 
+  private final SendableChooser<String> driveModeChooser = new SendableChooser<>();
+  private final SendableChooser<String> assistModeChooser = new SendableChooser<>();
+
   public RobotContainer() {
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -76,6 +82,18 @@ public class RobotContainer {
     // Build the auto chooser from PathPlanner paths
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    // Drive mode chooser for dashboard
+    driveModeChooser.setDefaultOption("Standard", "STANDARD");
+    driveModeChooser.addOption("Setpoint Generator", "SETPOINT_GENERATOR");
+    SmartDashboard.putData("Drive Mode", driveModeChooser);
+
+    // Assist mode chooser for dashboard
+    assistModeChooser.setDefaultOption("Off", "OFF");
+    assistModeChooser.addOption("Auto Align", "AUTO_ALIGN");
+    assistModeChooser.addOption("Path to Pose", "PATH_TO_POSE");
+    assistModeChooser.addOption("Snap Heading", "SNAP_HEADING");
+    SmartDashboard.putData("Assist Mode", assistModeChooser);
   }
 
   private void configureBindings() {
@@ -151,5 +169,12 @@ public class RobotContainer {
    */
   public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
+  }
+
+  /**
+   * Get the DashboardManager for periodic updates from Robot.java.
+   */
+  public DashboardManager getDashboardManager() {
+    return dashboardManager;
   }
 }

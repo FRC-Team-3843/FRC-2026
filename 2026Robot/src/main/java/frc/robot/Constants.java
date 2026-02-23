@@ -24,15 +24,16 @@ public final class Constants {
    * <p>Calculated from hardware specs:
    * <ul>
    *   <li>NEO free speed: 5676 RPM</li>
-   *   <li>L1 drive gear ratio: 8.14:1</li>
+   *   <li>MK4 custom drive gear ratio: 5.8267:1 (437/75)</li>
    *   <li>Wheel diameter: 4 inches (0.1016m)</li>
-   *   <li>Formula: (5676 / 60) / 8.14 * (0.1016 * pi) = 3.71 m/s</li>
+   *   <li>Formula: (5676 / 60) / 5.8267 * (0.1016 * pi) = 5.18 m/s</li>
    * </ul>
    *
    * <p>This is the THEORETICAL maximum. Real-world speed will be slightly lower
-   * due to friction, battery sag under load, and current limits.
+   * due to friction, battery sag under load, and current limits. Drive ratio is
+   * subject to change per team's ongoing design review.
    */
-  public static final double MAX_SPEED = 3.71; // meters per second
+  public static final double MAX_SPEED = 5.18; // meters per second
 
   /**
    * Robot mass in kilograms including battery and bumpers.
@@ -234,15 +235,111 @@ public final class Constants {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // SHOOTER MODEL (FUTURE)
+  // TURRET MECHANISM
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Constants for the double turret rotation system.
+   *
+   * <p>Each turret uses a NEO 550 motor (SparkMax) with a 68:1 gear ratio.
+   * The turrets are mirrored -- left and right have independent rotation.
+   *
+   * <p>Position limits and PID values are placeholders until hardware testing.
+   */
+  public static final class TurretConstants {
+    /** Left turret rotation motor CAN ID (NEO 550 / SparkMax). */
+    public static final int LEFT_MOTOR_ID = 20;
+
+    /** Right turret rotation motor CAN ID (NEO 550 / SparkMax). */
+    public static final int RIGHT_MOTOR_ID = 21;
+
+    /** Turret gear ratio (motor rotations per turret rotation). */
+    public static final double GEAR_RATIO = 68.0;
+
+    /** Current limit for NEO 550 turret motors in amps. */
+    public static final int CURRENT_LIMIT_AMPS = 20;
+
+    // --- PID placeholders (tune on hardware) ---
+    public static final double TURRET_P = 0.1;
+    public static final double TURRET_I = 0.0;
+    public static final double TURRET_D = 0.01;
+
+    // --- Position limits (encoder rotations, tune on hardware) ---
+    /** Forward soft limit in motor rotations. */
+    public static final double FORWARD_LIMIT_ROTATIONS = 34.0; // ~180 deg turret travel
+    /** Reverse soft limit in motor rotations. */
+    public static final double REVERSE_LIMIT_ROTATIONS = -34.0;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SHOOTER MECHANISM
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Constants for the double turret shooter system.
+   *
+   * <p>Each turret has a preshooter (Kraken X44 / TalonFX, 5:8 ratio) and a
+   * main shooter (Kraken X60 / TalonFX, 5:6 ratio). All shooter motors use
+   * Phoenix6 API (no Pro features).
+   *
+   * <p>Velocity targets and PID values are placeholders until hardware testing.
+   */
   public static final class ShooterConstants {
+    // --- CAN IDs ---
+    /** Left preshooter motor CAN ID (Kraken X44 / TalonFX). */
+    public static final int LEFT_PRESHOOTER_ID = 22;
+    /** Right preshooter motor CAN ID (Kraken X44 / TalonFX). */
+    public static final int RIGHT_PRESHOOTER_ID = 23;
+    /** Left main shooter motor CAN ID (Kraken X60 / TalonFX). */
+    public static final int LEFT_MAIN_SHOOTER_ID = 24;
+    /** Right main shooter motor CAN ID (Kraken X60 / TalonFX). */
+    public static final int RIGHT_MAIN_SHOOTER_ID = 25;
+
+    // --- Gear ratios ---
+    /** Preshooter gear ratio (5:8 = 0.625, output faster than motor). */
+    public static final double PRESHOOTER_GEAR_RATIO = 0.625; // 5/8
+    /** Main shooter gear ratio (5:6 = 0.8333, output faster than motor). */
+    public static final double MAIN_SHOOTER_GEAR_RATIO = 0.8333; // 5/6 = 60/72
+
+    // --- Current limits ---
+    /** Stator current limit for preshooter motors in amps. */
+    public static final double PRESHOOTER_CURRENT_LIMIT_AMPS = 40.0;
+    /** Stator current limit for main shooter motors in amps. */
+    public static final double MAIN_SHOOTER_CURRENT_LIMIT_AMPS = 60.0;
+
+    // --- Velocity targets (placeholder, tune on hardware) ---
+    /** Default preshooter target velocity in RPM. */
+    public static final double PRESHOOTER_TARGET_RPM = 3000.0;
+    /** Default main shooter target velocity in RPM. */
+    public static final double MAIN_SHOOTER_TARGET_RPM = 4500.0;
+
+    // --- PID placeholders (tune on hardware) ---
+    public static final double SHOOTER_P = 0.1;
+    public static final double SHOOTER_I = 0.0;
+    public static final double SHOOTER_D = 0.0;
+
+    // --- Shot table ---
     /** Enable loading shooter lookup table JSON (kept false until shooter is ready). */
     public static final boolean ENABLE_SHOT_TABLE = false;
-
     /** Path relative to deploy directory for shooter table JSON. */
     public static final String SHOT_TABLE_PATH = "shooter/shooter_table.json";
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // INTAKE MECHANISM
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Placeholder constants for the intake system.
+   *
+   * <p>CAN IDs 30-39 are reserved for intake motors. Motor types and gear ratios
+   * are TBD pending mechanical design finalization.
+   */
+  public static final class IntakeConstants {
+    /** Start of reserved CAN ID range for intake motors. */
+    public static final int CAN_ID_RANGE_START = 30;
+    /** End of reserved CAN ID range for intake motors. */
+    public static final int CAN_ID_RANGE_END = 39;
   }
 
   // ─────────────────────────────────────────────────────────────────────────────

@@ -650,6 +650,86 @@ public static final class DriveConstants {
 
 ---
 
+## Elastic Dashboard Layout Editing Standard
+
+### Layout File Location
+
+The Elastic Dashboard layout is stored at `2026Robot/src/main/deploy/elastic-layout.json` and served to the dashboard via the WebServer on port 5800.
+
+### JSON Structure
+
+```json
+{
+  "version": 1.0,
+  "tabs": [
+    {
+      "name": "Tab Name",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "Widget Title",
+            "x": 0, "y": 0,
+            "width": 6, "height": 4,
+            "type": "WidgetTypeName",
+            "properties": { },
+            "topic": "/SmartDashboard/key"
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+### Widget Type Reference
+
+| Widget Type | Use Case | Key Properties | Topic Type |
+|-------------|----------|----------------|------------|
+| `Text Display` | Labels, read-only values | `fontSize` | String/Number |
+| `Number Slider` | Tunable numbers | `min_value`, `max_value`, `divisions` | Number |
+| `Toggle Switch` | Enable/disable flags | — | Boolean |
+| `Graph` | Time series data | `time_displayed` | Number |
+| `Radial Gauge` | Temp, voltage gauges | `min_value`, `max_value`, `start_angle`, `end_angle` | Number |
+| `Boolean Box` | Status indicators | `colorWhenTrue`, `colorWhenFalse` | Boolean |
+| `PIDController` | PID tuning widgets | — | Sendable PIDController |
+| `Field` | Robot position on field | `field_game`, `robot_width`, `robot_length` | Sendable Field2d |
+| `SwerveDrive` | Module state visualization | — | Sendable |
+| `Camera Stream` | Video feed | `url` | — |
+| `ComboBox Chooser` | Mode selection | — | Sendable Chooser |
+| `Network Alerts` | Fault reporting | — | Alerts topic |
+| `Match Time` | Match countdown | — | — |
+
+### Color Format
+
+Colors use ARGB integer format:
+- Blue: `4283215696`
+- Red: `4294198070`
+- Green: `4283215696`
+
+### NT Path Conventions
+
+| Prefix | Purpose | Direction |
+|--------|---------|-----------|
+| `/SmartDashboard/` | Standard WPILib publishing | Read-only |
+| `/Tuning/` | Bidirectional tuning values (DashboardManager) | Read/Write |
+| `/Control/` | Enable/disable flags | Read/Write |
+| `/Sensors/` | Read-only sensor data | Read-only |
+| `/System/` | System health metrics | Read-only |
+| `/LiveWindow/` | WPILib test mode Sendables | Read-only |
+
+### Agent Editing Rules
+
+1. Always preserve the `version` field
+2. Do not remove existing tabs unless explicitly asked
+3. Use consistent grid positioning — no overlapping widgets
+4. Include `title` on every widget for clarity
+5. Use descriptive NT paths matching DashboardManager conventions
+6. Validate JSON before committing (no trailing commas, valid JSON)
+7. Widget `width + x` must not exceed grid width (36 columns)
+8. Standard widget sizes: small displays 3x2, graphs 10x5, gauges 4x4, PID widgets 6x5
+
+---
+
 ## Legacy Code Warnings
 
 ### DO NOT Copy from FRC-2024 or FRC-2025

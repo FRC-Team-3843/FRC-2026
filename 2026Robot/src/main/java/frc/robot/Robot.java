@@ -2,10 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.WebServer;
 
 /**
  * Robot lifecycle class with AdvantageScope logging and motor brake management.
@@ -21,6 +23,9 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
 
+    // Serve deploy directory to Elastic Dashboard on port 5800
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+
     m_robotContainer = new RobotContainer();
   }
 
@@ -31,6 +36,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.getDashboardManager().periodic();
   }
 
   /**

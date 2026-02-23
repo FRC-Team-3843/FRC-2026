@@ -44,15 +44,15 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 /**
  * Vision subsystem stub for PhotonVision integration.
  * Infrastructure is ready - add cameras to the Cameras enum when hardware is mounted.
- * Uses 2025 field layout until 2026 layout is available.
+ * Uses 2026 REBUILT field layout for AprilTag localization.
  */
 public class Vision {
 
   /**
-   * AprilTag field layout. Update to k2026 when available.
+   * AprilTag field layout for 2026 REBUILT (AndyMark variant).
    */
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(
-      AprilTagFields.k2025ReefscapeAndyMark);
+      AprilTagFields.k2026RebuiltAndymark);
 
   private final double maximumAmbiguity = 0.25;
 

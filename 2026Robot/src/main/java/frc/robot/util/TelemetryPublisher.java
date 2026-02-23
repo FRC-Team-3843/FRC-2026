@@ -23,6 +23,38 @@ public final class TelemetryPublisher {
     lastPublishTime = 0.0;
   }
 
+  /**
+   * Publish mechanism status to the Sensors subtable.
+   *
+   * @param name mechanism identifier (e.g. "Turret/Left")
+   * @param enabled whether the mechanism is currently enabled
+   * @param current motor current draw in amps
+   * @param temp motor temperature in Celsius
+   * @param velocity mechanism velocity (RPM or rad/s depending on mechanism)
+   */
+  public void publishMechanismStatus(String name, boolean enabled, double current,
+      double temp, double velocity) {
+    NetworkTable sub = table.getSubTable("Mechanisms").getSubTable(name);
+    sub.getEntry("enabled").setBoolean(enabled);
+    sub.getEntry("current").setDouble(current);
+    sub.getEntry("temp").setDouble(temp);
+    sub.getEntry("velocity").setDouble(velocity);
+  }
+
+  /**
+   * Publish system-wide health metrics.
+   *
+   * @param batteryVoltage current battery voltage
+   * @param cpuLoad RoboRIO CPU load percentage (0-100)
+   * @param canUtilization CAN bus utilization percentage (0-100)
+   */
+  public void publishSystemHealth(double batteryVoltage, double cpuLoad, int canUtilization) {
+    NetworkTable sub = table.getSubTable("System");
+    sub.getEntry("batteryVoltage").setDouble(batteryVoltage);
+    sub.getEntry("cpuLoad").setDouble(cpuLoad);
+    sub.getEntry("canUtilization").setInteger(canUtilization);
+  }
+
   public void publishDrivebase(
       Pose2d pose,
       ChassisSpeeds speeds,
