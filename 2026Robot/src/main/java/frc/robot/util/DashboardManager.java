@@ -87,22 +87,22 @@ public class DashboardManager {
     m_swerveAngleD = new TunableNumber("Swerve/Angle", "D", 0.0);
 
     // Turret PID
-    m_turretLeftP = new TunableNumber("Turret/Left", "P", TurretConstants.TURRET_P);
-    m_turretLeftI = new TunableNumber("Turret/Left", "I", TurretConstants.TURRET_I);
-    m_turretLeftD = new TunableNumber("Turret/Left", "D", TurretConstants.TURRET_D);
-    m_turretRightP = new TunableNumber("Turret/Right", "P", TurretConstants.TURRET_P);
-    m_turretRightI = new TunableNumber("Turret/Right", "I", TurretConstants.TURRET_I);
-    m_turretRightD = new TunableNumber("Turret/Right", "D", TurretConstants.TURRET_D);
+    m_turretLeftP = new TunableNumber("Turret/Left", "P", TurretConstants.LEFT_KP);
+    m_turretLeftI = new TunableNumber("Turret/Left", "I", TurretConstants.LEFT_KI);
+    m_turretLeftD = new TunableNumber("Turret/Left", "D", TurretConstants.LEFT_KD);
+    m_turretRightP = new TunableNumber("Turret/Right", "P", TurretConstants.RIGHT_KP);
+    m_turretRightI = new TunableNumber("Turret/Right", "I", TurretConstants.RIGHT_KI);
+    m_turretRightD = new TunableNumber("Turret/Right", "D", TurretConstants.RIGHT_KD);
 
     // Shooter PID + targets
-    m_preshooterP = new TunableNumber("Shooter/Preshooter", "P", ShooterConstants.SHOOTER_P);
-    m_preshooterI = new TunableNumber("Shooter/Preshooter", "I", ShooterConstants.SHOOTER_I);
-    m_preshooterD = new TunableNumber("Shooter/Preshooter", "D", ShooterConstants.SHOOTER_D);
+    m_preshooterP = new TunableNumber("Shooter/Preshooter", "P", ShooterConstants.KP);
+    m_preshooterI = new TunableNumber("Shooter/Preshooter", "I", ShooterConstants.KI);
+    m_preshooterD = new TunableNumber("Shooter/Preshooter", "D", ShooterConstants.KD);
     m_preshooterTargetRPM = new TunableNumber("Shooter/Preshooter", "TargetRPM",
         ShooterConstants.PRESHOOTER_TARGET_RPM);
-    m_mainShooterP = new TunableNumber("Shooter/MainShooter", "P", ShooterConstants.SHOOTER_P);
-    m_mainShooterI = new TunableNumber("Shooter/MainShooter", "I", ShooterConstants.SHOOTER_I);
-    m_mainShooterD = new TunableNumber("Shooter/MainShooter", "D", ShooterConstants.SHOOTER_D);
+    m_mainShooterP = new TunableNumber("Shooter/MainShooter", "P", ShooterConstants.KP);
+    m_mainShooterI = new TunableNumber("Shooter/MainShooter", "I", ShooterConstants.KI);
+    m_mainShooterD = new TunableNumber("Shooter/MainShooter", "D", ShooterConstants.KD);
     m_mainShooterTargetRPM = new TunableNumber("Shooter/MainShooter", "TargetRPM",
         ShooterConstants.MAIN_SHOOTER_TARGET_RPM);
 

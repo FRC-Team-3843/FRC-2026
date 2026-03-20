@@ -10,19 +10,19 @@
     "angle": 0.25
   },
   "wheelDiameter": 4,
-  "angleGearRatio": 12,
-  "driveGearRatio": 5.8267,
+  "angleGearRatio": 12.8,
+  "driveGearRatio": 8.14,
   "anglePulsePerRotation": 1,
   "drivePulsePerRotation": 1,
   "driveMotorFreeSpeed": 5676,
   "conversionFactors": {
     "drive": {
-      "gearRatio": 5.8267,
+      "gearRatio": 8.14,
       "diameter": 4,
       "factor": 0
     },
     "angle": {
-      "gearRatio": 12,
+      "gearRatio": 12.8,
       "factor": 0
     }
   }

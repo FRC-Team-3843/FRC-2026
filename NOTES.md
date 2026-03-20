@@ -191,17 +191,20 @@ and fires FUEL into the Hub.
 
 | Component | Motor | Controller | Gear Ratio | Notes |
 |-----------|-------|------------|------------|-------|
-| Turret rotation (x2) | NEO 550 | SparkMax | 68:1 | Independent left/right aim |
-| Preshooter (x2) | Kraken X44 | TalonFX | 5:8 (0.625) | Accelerates fuel before main wheels |
-| Main shooter (x2) | Kraken X60 | TalonFX | 5:6 (0.833) | Final launch velocity |
-| Intake | TBD | TBD | TBD | Ground pickup mechanism |
-| Indexer | TBD | TBD | TBD | Fuel transport to shooter |
+| Turret rotation (x2) | NEO 550 | SparkMax | 52.987:1 (11t>68t, 14t>120t) | Both locked together, field-centric, +/-110 deg |
+| Preshooter (x2) | Kraken X44 | TalonFX | 5:8 = 0.625 (overdrive) | Runs at 66.7% of main shooter RPM |
+| Main shooter (x2) | Kraken X60 | TalonFX | 66t:72t = 0.917 (overdrive) | 4" wheel, max 5500 RPM |
+| Intake roller | Kraken X44 | TalonFX (CAN 30) | N/A | Ground pickup, passive deploy |
+| Floor conveyor | NEO 550 | SparkMax (CAN 31) | N/A | Intake -> hopper |
+| Hopper | Bag motor | TalonSRX (CAN 32) | N/A | Fuel agitation (Phoenix5) |
+| Feeder | NEO 550 | SparkMax (CAN 33) | N/A | Hopper -> both shooters |
+| Hood servos (x2) | Standard servo | PWM 0/1 | N/A | Binary near/far angle adjust |
 
-**Swerve Drive Gearing (updated):**
-- Drive gear ratio: 5.8267:1 (437/75, SDS MK4 with custom inversion plate)
-- Angle gear ratio: 12:1
-- Theoretical max speed: 5.18 m/s
-- Note: Drive ratio is flagged as possibly high -- subject to change
+**Swerve Drive Gearing (MK4 L1 standard, no modifications):**
+- Drive gear ratio: 8.14:1
+- Angle gear ratio: 12.8:1
+- Theoretical max speed: 3.71 m/s
+- Wheel diameter: 4", NEO free speed: 5676 RPM
 
 ### Key Resources
 
@@ -218,38 +221,142 @@ and fires FUEL into the Hub.
 CAN BUS ASSIGNMENTS
 ================================================================================
 
-### Swerve Drive System
-| Device | CAN ID | Description |
-|--------|--------|-------------|
-| FL Drive Motor | 1 | Front left drive |
-| FR Drive Motor | 2 | Front right drive |
-| BL Drive Motor | 3 | Back left drive |
-| BR Drive Motor | 4 | Back right drive |
-| FL Steer Motor | 5 | Front left steering |
-| FR Steer Motor | 6 | Front right steering |
-| BL Steer Motor | 7 | Back left steering |
-| BR Steer Motor | 8 | Back right steering |
-| FL CANCoder | 9 | Front left absolute encoder |
-| FR CANCoder | 10 | Front right absolute encoder |
-| BL CANCoder | 11 | Back left absolute encoder |
-| BR CANCoder | 12 | Back right absolute encoder |
+IMPORTANT: These IDs must match what is programmed into each physical device.
+Use Phoenix Tuner X for TalonFX/TalonSRX and REV Hardware Client for SparkMax.
 
-### Mechanism Motors - Double Turret Shooter
-| Device | CAN ID | Controller | Description |
-|--------|--------|------------|-------------|
-| Left Turret Motor | 20 | SparkMax | Left turret rotation (NEO 550, 68:1) |
-| Right Turret Motor | 21 | SparkMax | Right turret rotation (NEO 550, 68:1) |
-| Left Preshooter | 22 | TalonFX | Left preshooter (Kraken X44, 5:8) |
-| Right Preshooter | 23 | TalonFX | Right preshooter (Kraken X44, 5:8) |
-| Left Main Shooter | 24 | TalonFX | Left main shooter (Kraken X60, 5:6) |
-| Right Main Shooter | 25 | TalonFX | Right main shooter (Kraken X60, 5:6) |
+### Swerve Drive System (IDs 11-22)
+| Device | CAN ID | Type | Config Tool |
+|--------|--------|------|-------------|
+| FL Drive Motor | 11 | SparkMax (NEO) | REV Hardware Client |
+| FR Drive Motor | 12 | SparkMax (NEO) | REV Hardware Client |
+| BL Drive Motor | 13 | SparkMax (NEO) | REV Hardware Client |
+| BR Drive Motor | 14 | SparkMax (NEO) | REV Hardware Client |
+| FL Angle Motor | 15 | SparkMax (NEO) | REV Hardware Client |
+| FR Angle Motor | 16 | SparkMax (NEO) | REV Hardware Client |
+| BL Angle Motor | 17 | SparkMax (NEO) | REV Hardware Client |
+| BR Angle Motor | 18 | SparkMax (NEO) | REV Hardware Client |
+| FL CANCoder | 19 | CANCoder | Phoenix Tuner X |
+| FR CANCoder | 20 | CANCoder | Phoenix Tuner X |
+| BL CANCoder | 21 | CANCoder | Phoenix Tuner X |
+| BR CANCoder | 22 | CANCoder | Phoenix Tuner X |
 
-### Reserved CAN ID Ranges
-| Range | Purpose |
-|-------|---------|
-| 30-39 | Intake motors (TBD) |
-| 40-49 | Indexer motors (TBD) |
-| 50-99 | Future mechanisms |
+Swerve gear ratios (MK4 L1, no modifications):
+- Drive: 8.14:1, Angle: 12.8:1, Max speed: 3.71 m/s, Wheel: 4"
+
+### Mechanism Motors (IDs 30-39)
+| Device | CAN ID | Controller | Motor | Notes |
+|--------|--------|------------|-------|-------|
+| Intake | 30 | TalonFX | Kraken X44 | Ground intake roller |
+| Floor Conveyor | 31 | SparkMax | NEO 550 | Intake -> hopper transport |
+| Hopper | 32 | TalonSRX | Bag motor | Fuel agitation/feed (Phoenix5 API) |
+| Feeder | 33 | SparkMax | NEO 550 | Hopper -> both shooters |
+| Left Turret | 34 | SparkMax | NEO 550 | 52.987:1 (11t>68t, 14t>120t), seeds at zero, +/-90 deg |
+| Right Turret | 35 | SparkMax | NEO 550 | 52.987:1 (11t>68t, 14t>120t), seeds at zero, +/-90 deg |
+| Left Preshooter | 36 | TalonFX | Kraken X44 | 5:8 = 0.625 overdrive |
+| Right Preshooter | 37 | TalonFX | Kraken X44 | 5:8 = 0.625 overdrive |
+| Left Main Shooter | 38 | TalonFX | Kraken X60 | 66t:72t = 0.917 overdrive, 4" wheel |
+| Right Main Shooter | 39 | TalonFX | Kraken X60 | 66t:72t = 0.917 overdrive, 4" wheel |
+
+### PWM Channels (Hood Servos)
+| Device | Channel | Notes |
+|--------|---------|-------|
+| Left Hood Servo | 0 | Near=45 deg, Far=90 deg (tune on hardware) |
+| Right Hood Servo | 1 | Near=45 deg, Far=90 deg (tune on hardware) |
+
+### NavX IMU
+Connected via SPI port on RoboRIO (no CAN ID).
+
+================================================================================
+SECTION 0B: COMPETITION DAY SETUP (2026-03-18)
+================================================================================
+
+Step-by-step for first power-on at competition. Do these IN ORDER.
+
+### Step 1: Flash CAN IDs
+Using Phoenix Tuner X and REV Hardware Client, set every device to its assigned
+CAN ID from the table above. Verify all devices appear on the CAN bus with no
+errors before proceeding.
+
+### Step 2: Verify Motor Directions
+Power each mechanism individually at low duty cycle and observe rotation.
+If a motor runs backward, set the corresponding MOTOR_INVERTED constant to true
+in Constants.java and redeploy. Constants to check:
+  - IntakeConstants.MOTOR_INVERTED
+  - ConveyorConstants.MOTOR_INVERTED
+  - HopperConstants.MOTOR_INVERTED
+  - FeederConstants.MOTOR_INVERTED
+  - TurretConstants.LEFT_INVERTED / RIGHT_INVERTED
+  - ShooterConstants.LEFT_MAIN_INVERTED / RIGHT_MAIN_INVERTED
+  - ShooterConstants.LEFT_PRE_INVERTED / RIGHT_PRE_INVERTED
+
+### Step 3: SysId the Swerve
+1. Deploy code, connect to robot
+2. Manually zero gyro: driver Start button
+3. Enter Test mode in Driver Station
+4. Driver X = characterize drive motors (forward/back quasistatic + dynamic)
+5. Driver Y = characterize angle motors
+6. Open AdvantageScope -> import log -> analyze with SysId tool
+7. Update pidfproperties.json with resulting kP values
+
+### Step 4: Zero Turrets and Test
+1. Physically rotate BOTH turrets to point straight forward (robot front)
+2. Enable robot, operator presses Start -> zeros turret encoders to 0
+3. Push operator left stick to confirm turret tracks joystick direction
+4. Check direction: forward stick = turret stays forward, right stick = turret turns right
+   If reversed: set TurretConstants.LEFT_INVERTED or RIGHT_INVERTED and redeploy
+
+### Step 5: Tune Shooter
+1. Press operator D-pad UP (CLOSE preset), A to fire
+2. Observe ball trajectory. Adjust ShootingPositions.CLOSE.mainRpm() up/down
+3. Adjust HoodConstants.NEAR_ANGLE if hood angle is wrong
+4. Repeat for D-pad DOWN (FAR preset) with ShootingPositions.FAR values
+5. All presets are in Constants.java -> ShootingPositions
+
+### Step 6: Tune Hood Servos
+Hood servo angles (0-180 deg WPILib):
+  - HoodConstants.NEAR_ANGLE = 45.0 (starting value, tune up/down)
+  - HoodConstants.FAR_ANGLE  = 90.0 (starting value, tune up/down)
+Operator LBumper = near, RBumper = far for manual override anytime.
+
+### Controller Quick Reference
+DRIVER (port 0):
+  Left stick     = translate (field-relative)
+  Right stick X  = rotate
+  Left trigger   = slow mode (50%)
+  Right bumper   = intake roller + floor conveyor (hold)
+  Left bumper    = reverse intake + floor conveyor (hold)
+  Start          = zero gyro (face downfield first!)
+  POV Up         = X-lock wheels
+  Back           = center modules to 0 deg
+
+OPERATOR (port 1):
+  Left stick dir = aim both turrets (field-centric: forward = downfield always)
+  Left stick mag = spin up both shooters (more push = more RPM)
+  A (hold)       = feed chain (floor conveyor + hopper + feeder)
+  B (hold)       = reverse feed chain
+  D-pad Up       = CLOSE preset (2500 RPM, hood near)
+  D-pad Down     = FAR preset (4000 RPM, hood far)
+  D-pad Left     = ANGLE_LEFT preset (5000 RPM, +45 deg)
+  D-pad Right    = ANGLE_RIGHT preset (5000 RPM, -45 deg)
+  Y              = cancel preset, back to manual joystick
+  L bumper       = hood near
+  R bumper       = hood far
+  Start          = zero turret encoders (align to forward first!)
+
+TEST MODE (driver controller):
+  X              = SysId swerve drive (~11s)
+  Y              = SysId swerve angle (~11s)
+  A              = SysId main shooter (~20s)
+  B              = SysId preshooter (~20s)
+  LB             = SysId turret (~22s)
+
+### Vision (if cameras get mounted)
+1. Install PhotonVision on Ubuntu coprocessor (see Section 8 below)
+2. Mount both global shutter cameras rigidly, measure transforms
+3. Set VisionConstants.LEFT_CAMERA_NAME / RIGHT_CAMERA_NAME to match PV UI names
+4. Set VisionConstants.ENABLE_VISION = true in Constants.java
+5. Add camera entries to Vision.java Cameras enum with measured transforms
+6. Redeploy
 
 ================================================================================
 SECTION 1: PRE-FLIGHT CHECKLIST
