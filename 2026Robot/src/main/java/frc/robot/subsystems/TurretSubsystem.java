@@ -210,6 +210,30 @@ public class TurretSubsystem extends SubsystemBase {
     return m_leftReachable && m_rightReachable;
   }
 
+  /**
+   * True when both turrets have physically reached the given field angle within tolerance.
+   * Checks actual motor position vs the robot-relative equivalent of the target field angle.
+   * Used by auto-shoot to gate the feeder until turrets are aimed.
+   */
+  public boolean isAtFieldAngle(double targetFieldDeg, double toleranceDeg) {
+    double leftRobotTarget = fieldToRobotDeg(targetFieldDeg);
+    double rightRobotTarget = fieldToRobotDeg(targetFieldDeg);
+    // Wrap-safe error: normalize difference to ±180° before checking tolerance
+    double leftPosError = Math.abs(
+        MathUtil.inputModulus(getLeftDeg() - leftRobotTarget, -180.0, 180.0));
+    double rightPosError = Math.abs(
+        MathUtil.inputModulus(getRightDeg() - rightRobotTarget, -180.0, 180.0));
+    return leftPosError < toleranceDeg && rightPosError < toleranceDeg;
+  }
+
+  // ── Direct Control (for auto-shoot command) ──────────────────────────────
+
+  /** Command both turrets to a field-relative angle. Called from auto-shoot's run loop. */
+  public void setFieldAngle(double fieldDeg) {
+    commandLeftFieldAngle(fieldDeg);
+    commandRightFieldAngle(fieldDeg);
+  }
+
   // ── Command Factories ─────────────────────────────────────────────────────
 
   /**

@@ -28,6 +28,11 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
+  /** Set motor speed directly. Used by auto-shoot command. */
+  public void setSpeed(double speed) {
+    m_motor.set(speed);
+  }
+
   /** Run conveyor forward (toward hopper). Stops on command end. */
   public Command runCommand() {
     return this.runEnd(

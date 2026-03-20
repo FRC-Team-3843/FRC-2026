@@ -22,8 +22,12 @@ public final class Constants {
    */
   public static final double MAX_SPEED = 3.71;
 
-  /** Robot mass in kg including battery and bumpers (~105 lbs). */
-  public static final double ROBOT_MASS = 47.6;
+  /** Robot mass in kg including battery and bumpers (~140 lbs). */
+  public static final double ROBOT_MASS = 63.5;
+
+  /** Bumper-to-bumper dimensions in meters (33" x 33"). */
+  public static final double BUMPER_WIDTH_M  = 0.8382;
+  public static final double BUMPER_LENGTH_M = 0.8382;
 
   /**
    * Effective control loop time. Accounts for 20ms loop + ~110ms SparkMax CAN delay.
@@ -80,9 +84,9 @@ public final class Constants {
 
   public static final class DriveProfiles {
     public static final double FULL_SPEED_SCALE = 1.0;
-    public static final double FULL_SPEED_RAMP  = 0.25;
+    public static final double FULL_SPEED_RAMP  = 0.1;
     public static final double SLOW_SPEED_SCALE = 0.5;
-    public static final double SLOW_SPEED_RAMP  = 0.15;
+    public static final double SLOW_SPEED_RAMP  = 0.4;
   }
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -109,8 +113,35 @@ public final class Constants {
      */
     public static final String LEFT_CAMERA_NAME  = "left_cam";
     public static final String RIGHT_CAMERA_NAME = "right_cam";
-    public static final boolean ENABLE_VISION         = false;
-    public static final double  MAX_LATENCY_SECONDS   = 0.25;
+    public static final boolean ENABLE_VISION       = false;
+    public static final double  MAX_LATENCY_SECONDS = 0.25;
+
+    /**
+     * Approximate front-corner camera geometry from current competition measurements.
+     *
+     * <p>Coordinate system: +X forward, +Y left, +Z up. Re-measure and tune after final camera
+     * mounting and PhotonVision calibration.
+     */
+    public static final double CAMERA_HEIGHT_IN       = 19.0;
+    public static final double CAMERA_FRONT_OFFSET_IN = 0.25;
+    public static final double CAMERA_SIDE_OFFSET_IN  = 0.25;
+    public static final double CAMERA_DOWN_TILT_DEG   = 10.0;
+    public static final double RIGHT_CAMERA_YAW_DEG   = -45.0;
+    public static final double LEFT_CAMERA_YAW_DEG    = 45.0;
+
+    public static final double SINGLE_TAG_STD_DEV_XY_M  = 4.0;
+    public static final double SINGLE_TAG_STD_DEV_THETA = 8.0;
+    public static final double MULTI_TAG_STD_DEV_XY_M   = 0.5;
+    public static final double MULTI_TAG_STD_DEV_THETA  = 1.0;
+
+    public static final double CAMERA_X_METERS =
+        BUMPER_LENGTH_M / 2.0 - edu.wpi.first.math.util.Units.inchesToMeters(CAMERA_FRONT_OFFSET_IN);
+    public static final double RIGHT_CAMERA_Y_METERS =
+        -(BUMPER_WIDTH_M / 2.0 - edu.wpi.first.math.util.Units.inchesToMeters(CAMERA_SIDE_OFFSET_IN));
+    public static final double LEFT_CAMERA_Y_METERS =
+        BUMPER_WIDTH_M / 2.0 - edu.wpi.first.math.util.Units.inchesToMeters(CAMERA_SIDE_OFFSET_IN);
+    public static final double CAMERA_Z_METERS =
+        edu.wpi.first.math.util.Units.inchesToMeters(CAMERA_HEIGHT_IN);
   }
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -197,7 +228,7 @@ public final class Constants {
      * At low battery (10.5V) max achievable = ~5727 RPM.
      * 5500 gives consistent performance even at end-of-match battery sag.
      */
-    public static final double MAX_WHEEL_RPM = 5500.0;
+    public static final double MAX_WHEEL_RPM = 6000.0;
 
     /** Velocity PID for TalonFX — tune kP first, add kV for feedforward. */
     public static final double KP = 0.1;
@@ -253,8 +284,8 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int    MOTOR_ID          = 30;
-    public static final double INTAKE_SPEED      = 0.8; // duty cycle, 0–1
-    public static final int    CURRENT_LIMIT_AMPS = 40;
+    public static final double INTAKE_SPEED      = 1.0; // duty cycle, full speed
+    public static final int    CURRENT_LIMIT_AMPS = 80;
     public static final boolean MOTOR_INVERTED   = true;
   }
 
@@ -277,7 +308,7 @@ public final class Constants {
 
   public static final class HopperConstants {
     public static final int    MOTOR_ID       = 32;
-    public static final double HOPPER_SPEED   = 0.6;
+    public static final double HOPPER_SPEED   = 1.0;
     public static final boolean MOTOR_INVERTED = false; // VERIFY ON HARDWARE
   }
 
@@ -317,25 +348,37 @@ public final class Constants {
         boolean hoodFar
     ) {}
 
-    /** D-pad UP: close range (~2m), straight ahead at hub. Hood near. */
+    /** D-pad UP: 4500 RPM (clock: 12). */
     public static final ShootingPreset CLOSE = new ShootingPreset(
-        0.0, 0.0, 2500.0, 1668.0, false
+        0.0, 0.0, 4500.0, 3002.0, false
     );
 
-    /** D-pad DOWN: far range (~5m), straight ahead at hub. Hood far. */
-    public static final ShootingPreset FAR = new ShootingPreset(
-        0.0, 0.0, 4000.0, 2668.0, true
-    );
-
-    /** D-pad LEFT: back left corner of field, shooting to the right (~7m). Hood far. */
-    public static final ShootingPreset ANGLE_LEFT = new ShootingPreset(
-        45.0, 45.0, 5000.0, 3335.0, true
-    );
-
-    /** D-pad RIGHT: back right corner of field (~7m). Hood far. */
+    /** D-pad RIGHT: 5000 RPM (clock: 3). */
     public static final ShootingPreset ANGLE_RIGHT = new ShootingPreset(
-        -45.0, -45.0, 5000.0, 3335.0, true
+        0.0, 0.0, 5000.0, 3335.0, false
     );
+
+    /** D-pad DOWN: 5500 RPM (clock: 6). */
+    public static final ShootingPreset FAR = new ShootingPreset(
+        0.0, 0.0, 5500.0, 3669.0, false
+    );
+
+    /** D-pad LEFT: 6000 RPM (clock: 9). */
+    public static final ShootingPreset ANGLE_LEFT = new ShootingPreset(
+        0.0, 0.0, 6000.0, 4002.0, false
+    );
+  }
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // AUTO-SHOOT TOLERANCES
+  // Generous for now — tighten after tuning shooter PID and turret response.
+  // ──────────────────────────────────────────────────────────────────────────
+
+  public static final class AutoShootConstants {
+    /** RPM tolerance for "at speed" gating during auto-shoot. Generous until tuned. */
+    public static final double AT_SPEED_TOLERANCE_RPM = 500.0;
+    /** Turret angle tolerance in degrees for "at position" gating. Generous until tuned. */
+    public static final double TURRET_TOLERANCE_DEG = 8.0;
   }
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -344,7 +387,7 @@ public final class Constants {
 
   public static final class TelemetryConstants {
     public static final boolean ENABLE_TELEMETRY  = false;
-    public static final boolean TUNING_MODE       = false;
+    public static final boolean TUNING_MODE       = true;
     public static final double  PUBLISH_HZ        = 10.0;
     public static final double  TUNING_PUBLISH_HZ = 20.0;
   }

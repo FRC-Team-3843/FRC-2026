@@ -33,7 +33,7 @@ In REBUILT (presented by Haas), alliances score **Fuel** into their **Hub**, nav
 ### Vision System
 - **Library:** PhotonVision
 - **AprilTag Detection:** Field localization and pose estimation
-- **Coprocessor:** Intel N100 + Arducam (planned dual camera setup)
+- **Coprocessor:** Beelink Mini S / Intel N100 prepared for headless PhotonVision
 - **Strategy:** Heavy vision processing on coprocessor, pose fusion on RoboRIO
 
 ### Mechanisms (REBUILT Game)
@@ -89,7 +89,7 @@ cd 2026Robot
 - **AprilTag Field:** Set to 2026 REBUILT layout (k2026RebuiltAndymark)
 - **Trust Settings:** Configurable standard deviations for vision vs odometry
 - **Camera Transform:** Robot-to-camera measurements in Vision.java
-- **Status:** Framework ready, disabled until cameras are mounted (ENABLE_VISION=false)
+- **Status:** Beelink configured and PhotonVision running; code prewired for right/left front cameras, but ENABLE_VISION remains false until the right camera is mounted and calibrated
 
 ## Autonomous
 PathPlanner-based autonomous with:
@@ -126,7 +126,7 @@ PathPlanner-based autonomous with:
   - Shooter RPM and turret angle tuning for presets
   - Hood servo angle calibration
   - Autonomous path creation
-  - Vision camera mounting and calibration
+  - Vision right camera mounting and calibration
 
 ## Resources
 - [WPILib Docs](https://docs.wpilib.org/en/stable/)

@@ -17,12 +17,12 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import java.util.ArrayList;
 import java.util.List;
@@ -178,20 +178,46 @@ public class Vision {
   }
 
   /**
-   * Camera enum - add entries here when cameras are physically mounted on the robot.
-   *
-   * Example entry (uncomment and modify when adding a camera):
-   * <pre>
-   * FRONT_CAM("front",
-   *           new Rotation3d(0, Math.toRadians(-15), 0),
-   *           new Translation3d(Units.inchesToMeters(12), 0, Units.inchesToMeters(8)),
-   *           VecBuilder.fill(4, 4, 8),
-   *           VecBuilder.fill(0.5, 0.5, 1))
-   * </pre>
+   * Camera enum. Cameras can be listed here before they are physically installed; a missing
+   * PhotonVision camera simply contributes no results until the hardware and PV config exist.
    */
   enum Cameras {
-    // No cameras defined yet - add entries above when hardware is ready
-    ;
+    RIGHT_CAM(
+        Constants.VisionConstants.RIGHT_CAMERA_NAME,
+        new Rotation3d(
+            0.0,
+            Math.toRadians(-Constants.VisionConstants.CAMERA_DOWN_TILT_DEG),
+            Math.toRadians(Constants.VisionConstants.RIGHT_CAMERA_YAW_DEG)),
+        new Translation3d(
+            Constants.VisionConstants.CAMERA_X_METERS,
+            Constants.VisionConstants.RIGHT_CAMERA_Y_METERS,
+            Constants.VisionConstants.CAMERA_Z_METERS),
+        VecBuilder.fill(
+            Constants.VisionConstants.SINGLE_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.SINGLE_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.SINGLE_TAG_STD_DEV_THETA),
+        VecBuilder.fill(
+            Constants.VisionConstants.MULTI_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.MULTI_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.MULTI_TAG_STD_DEV_THETA)),
+    LEFT_CAM(
+        Constants.VisionConstants.LEFT_CAMERA_NAME,
+        new Rotation3d(
+            0.0,
+            Math.toRadians(-Constants.VisionConstants.CAMERA_DOWN_TILT_DEG),
+            Math.toRadians(Constants.VisionConstants.LEFT_CAMERA_YAW_DEG)),
+        new Translation3d(
+            Constants.VisionConstants.CAMERA_X_METERS,
+            Constants.VisionConstants.LEFT_CAMERA_Y_METERS,
+            Constants.VisionConstants.CAMERA_Z_METERS),
+        VecBuilder.fill(
+            Constants.VisionConstants.SINGLE_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.SINGLE_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.SINGLE_TAG_STD_DEV_THETA),
+        VecBuilder.fill(
+            Constants.VisionConstants.MULTI_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.MULTI_TAG_STD_DEV_XY_M,
+            Constants.VisionConstants.MULTI_TAG_STD_DEV_THETA));
 
     public final Alert latencyAlert;
     public final PhotonCamera camera;

@@ -20,6 +20,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -68,7 +69,9 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Heading correction should only be used while controlling via direct angle
-    swerveDrive.setHeadingCorrection(false);
+    // Heading correction: hold heading when not commanding rotation.
+    // Deadband in radians — rotation stick input below this triggers heading hold.
+    swerveDrive.setHeadingCorrection(true, 0.05);
     // Reduces wheel scrub when modules change direction
     swerveDrive.setCosineCompensator(true);
     // Corrects translational skew that worsens with angular velocity
@@ -124,6 +127,15 @@ public class SwerveSubsystem extends SubsystemBase {
     if (vision != null) {
       vision.updatePoseEstimation(swerveDrive);
     }
+
+    // Always publish odometry position for drive calibration
+    Pose2d pose = getPose();
+    SmartDashboard.putNumber("Odometry/X_meters", pose.getX());
+    SmartDashboard.putNumber("Odometry/Y_meters", pose.getY());
+    SmartDashboard.putNumber("Odometry/HeadingDeg", pose.getRotation().getDegrees());
+    double distFromOrigin = Math.hypot(pose.getX(), pose.getY());
+    SmartDashboard.putNumber("Odometry/DistanceFromOrigin_m", distFromOrigin);
+
     if (telemetry != null) {
       if (Constants.TelemetryConstants.TUNING_MODE) {
         telemetry.publishDrivebaseTuning(
@@ -533,8 +545,63 @@ public class SwerveSubsystem extends SubsystemBase {
    * <p>Non-command version of lockCommand(). Use this when you need to lock wheels
    * from within another command's execute() method.
    */
+  /** Toggle heading correction on/off. */
+  public void toggleHeadingCorrection() {
+    boolean current = swerveDrive.headingCorrection;
+    swerveDrive.setHeadingCorrection(!current, 0.05);
+    SmartDashboard.putBoolean("Drive/HeadingLock", !current);
+  }
+
   public void lock() {
     swerveDrive.lockPose();
+  }
+
+  /**
+   * Reset odometry to origin (0, 0, 0°). Use before a drive distance test.
+   *
+   * @return Command that resets odometry to the origin once.
+   */
+  public Command resetOdometryCommand() {
+    return Commands.runOnce(() -> resetOdometry(new Pose2d()))
+        .withName("ResetOdometry");
+  }
+
+  /**
+   * Drive distance calibration test for wheel diameter verification.
+   *
+   * <p>Resets odometry, drives forward at 1 m/s for the time needed to cover the
+   * commanded distance, then stops. Read "Odometry/X_meters" from SmartDashboard,
+   * measure the actual distance with a tape measure, then calculate:
+   * <pre>
+   *   corrected_diameter = current_diameter * (actual_distance / odometry_distance)
+   * </pre>
+   *
+   * <p>Update wheelDiameter in physicalproperties.json with the corrected value.
+   *
+   * @param distanceMeters Commanded distance in meters (e.g. 3.0 for a 3m test).
+   * @return Command that drives forward and stops.
+   */
+  public Command driveDistanceTestCommand(double distanceMeters) {
+    double speedMps = 1.0; // slow, consistent speed
+    double durationSeconds = distanceMeters / speedMps;
+    return Commands.sequence(
+        Commands.runOnce(() -> {
+          resetOdometry(new Pose2d());
+          SmartDashboard.putNumber("DriveTest/CommandedDistance_m", distanceMeters);
+          SmartDashboard.putString("DriveTest/Status", "RUNNING");
+        }),
+        this.run(() -> swerveDrive.drive(
+                new ChassisSpeeds(speedMps, 0, 0)))
+            .withTimeout(durationSeconds),
+        Commands.runOnce(() -> {
+          swerveDrive.drive(new ChassisSpeeds(0, 0, 0));
+          double odomX = getPose().getX();
+          SmartDashboard.putNumber("DriveTest/OdometryDistance_m", odomX);
+          SmartDashboard.putString("DriveTest/Status",
+              "DONE — Measure actual distance, then: new_diameter = 4.0 * (actual / " +
+              String.format("%.3f", odomX) + ")");
+        })
+    ).withName("DriveDistanceTest");
   }
 
   /**

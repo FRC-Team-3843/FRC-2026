@@ -33,6 +33,13 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
+  /** Set motor speed directly. No-op when disabled. Used by auto-shoot command. */
+  public void setSpeed(double speed) {
+    if (FeederConstants.ENABLED && m_motor != null) {
+      m_motor.set(speed);
+    }
+  }
+
   /** Run feeder (fire). No-op when disabled. */
   public Command runCommand() {
     if (!FeederConstants.ENABLED) {

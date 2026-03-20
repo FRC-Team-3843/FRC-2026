@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.HoodConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.util.HoodConfig;
 import java.util.function.DoubleSupplier;
 
 /**
@@ -108,6 +109,9 @@ public class ShooterSubsystem extends SubsystemBase {
   private double m_targetMainRpm  = 0.0;
   private double m_targetPreRpm   = 0.0;
 
+  // Hood config — loaded from JSON, tunable from dashboard, saveable
+  private final HoodConfig m_hoodConfig = new HoodConfig();
+
   public ShooterSubsystem() {
     configureMotor(m_leftMain,  ShooterConstants.LEFT_MAIN_INVERTED,
         ShooterConstants.MAIN_SHOOTER_CURRENT_LIMIT_AMPS);
@@ -189,27 +193,42 @@ public class ShooterSubsystem extends SubsystemBase {
     m_targetPreRpm  = 0.0;
   }
 
-  /** Set both hood servos to near or far position. */
+  /** Set both hood servos to near or far position. Uses per-servo angles from HoodConfig (JSON-backed). */
   private void setHoodFar(boolean far) {
-    double angle = far ? HoodConstants.FAR_ANGLE : HoodConstants.NEAR_ANGLE;
-    m_leftHood.setAngle(angle);
-    m_rightHood.setAngle(angle);
+    m_leftHood.setAngle(m_hoodConfig.getLeftAngle(far));
+    m_rightHood.setAngle(m_hoodConfig.getRightAngle(far));
   }
 
   // ── Status ────────────────────────────────────────────────────────────────
 
   /**
-   * Returns true when BOTH main shooters are within tolerance of their target.
+   * Returns true when BOTH main shooters are within default tolerance of their target.
    * Use this to gate feeder activation.
    */
   public boolean atSpeed() {
+    return atSpeed(ShooterConstants.AT_SPEED_TOLERANCE_RPM);
+  }
+
+  /**
+   * Returns true when BOTH main shooters are within the specified tolerance of their target.
+   * Used by auto-shoot with a wider tolerance before tuning is complete.
+   */
+  public boolean atSpeed(double toleranceRpm) {
     if (m_targetMainRpm < 100.0) return false; // not spinning up
     double leftRpm  = m_leftMain.getVelocity().getValueAsDouble()  * 60.0
         / ShooterConstants.MAIN_SHOOTER_GEAR_RATIO;
     double rightRpm = m_rightMain.getVelocity().getValueAsDouble() * 60.0
         / ShooterConstants.MAIN_SHOOTER_GEAR_RATIO;
-    return Math.abs(leftRpm  - m_targetMainRpm) < ShooterConstants.AT_SPEED_TOLERANCE_RPM
-        && Math.abs(rightRpm - m_targetMainRpm) < ShooterConstants.AT_SPEED_TOLERANCE_RPM;
+    return Math.abs(leftRpm  - m_targetMainRpm) < toleranceRpm
+        && Math.abs(rightRpm - m_targetMainRpm) < toleranceRpm;
+  }
+
+  // ── Direct Control (for auto-shoot command) ──────────────────────────────
+
+  /** Set RPM and hood position directly. Called from auto-shoot's run loop. */
+  public void setRpmAndHood(double mainRpm, double preRpm, boolean hoodFar) {
+    applyRpm(mainRpm, preRpm);
+    setHoodFar(hoodFar);
   }
 
   // ── Command Factories ─────────────────────────────────────────────────────
@@ -252,8 +271,7 @@ public class ShooterSubsystem extends SubsystemBase {
       m_targetMainRpm = maxMag > deadband ? maxMag * ShooterConstants.MAX_WHEEL_RPM : 0.0;
       m_targetPreRpm  = m_targetMainRpm * ShooterConstants.PRESHOOTER_SPEED_RATIO;
 
-      // Hood auto-position based on max magnitude
-      setHoodFar(maxMag >= HoodConstants.AUTO_HOOD_THRESHOLD);
+      // Hood controlled manually via LB/RB — no auto-switching
     }).withName("ShooterDualManual")
       .finallyDo(interrupted -> stopAll());
   }
@@ -325,7 +343,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // Update hood config from dashboard + check save button
+    m_hoodConfig.update();
+
     SmartDashboard.putNumber("Shooter/TargetMainRPM",  m_targetMainRpm);
+    SmartDashboard.putNumber("Shooter/TargetPreRPM",   m_targetPreRpm);
     SmartDashboard.putBoolean("Shooter/AtSpeed",       atSpeed());
     SmartDashboard.putNumber("Shooter/LeftMainRPM",
         m_leftMain.getVelocity().getValueAsDouble() * 60.0
@@ -333,5 +355,13 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter/RightMainRPM",
         m_rightMain.getVelocity().getValueAsDouble() * 60.0
             / ShooterConstants.MAIN_SHOOTER_GEAR_RATIO);
+    SmartDashboard.putNumber("Shooter/LeftPreRPM",
+        m_leftPre.getVelocity().getValueAsDouble() * 60.0
+            / ShooterConstants.PRESHOOTER_GEAR_RATIO);
+    SmartDashboard.putNumber("Shooter/RightPreRPM",
+        m_rightPre.getVelocity().getValueAsDouble() * 60.0
+            / ShooterConstants.PRESHOOTER_GEAR_RATIO);
+    SmartDashboard.putNumber("Hood/LeftCurrentAngle", m_leftHood.getAngle());
+    SmartDashboard.putNumber("Hood/RightCurrentAngle", m_rightHood.getAngle());
   }
 }

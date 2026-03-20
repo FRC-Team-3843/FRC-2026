@@ -1,159 +1,175 @@
 {
   "version": 1.0,
+  "grid_size": 128,
   "tabs": [
     {
       "name": "Match",
       "grid_layout": {
-        "layouts": [
-          {
-            "title": "Field Position",
-            "x": 0,
-            "y": 0,
-            "width": 18,
-            "height": 10,
-            "type": "Field",
-            "properties": {
-              "field_game": "Rebuilt",
-              "robot_width": 0.6858,
-              "robot_length": 0.6858
-            },
-            "topic": "/SmartDashboard/Field"
-          },
+        "layouts": [],
+        "containers": [
           {
             "title": "Auto Chooser",
-            "x": 18,
-            "y": 0,
-            "width": 10,
-            "height": 3,
+            "x": 0.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 128.0,
             "type": "ComboBox Chooser",
-            "properties": {},
-            "topic": "/SmartDashboard/Auto Chooser"
+            "properties": {
+              "topic": "/SmartDashboard/Auto Chooser",
+              "period": 0.033
+            }
           },
           {
-            "title": "Match Time",
-            "x": 28,
-            "y": 0,
-            "width": 8,
-            "height": 3,
-            "type": "Match Time",
-            "properties": {},
-            "topic": ""
-          },
-          {
-            "title": "Shooter RPM",
-            "x": 18,
-            "y": 3,
-            "width": 6,
-            "height": 3,
+            "title": "Target RPM",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {"fontSize": 20},
-            "topic": "/SmartDashboard/Shooter/TargetMainRPM"
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/TargetMainRPM",
+              "period": 0.033
+            }
           },
           {
             "title": "At Speed",
-            "x": 24,
-            "y": 3,
-            "width": 4,
-            "height": 3,
+            "x": 512.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Boolean Box",
             "properties": {
-              "colorWhenTrue": 4283215696,
-              "colorWhenFalse": 4294198070
-            },
-            "topic": "/SmartDashboard/Shooter/AtSpeed"
+              "topic": "/SmartDashboard/Shooter/AtSpeed",
+              "period": 0.033,
+              "true_color": 4283215696,
+              "false_color": 4294198070
+            }
           },
           {
             "title": "Turret Reachable",
-            "x": 28,
-            "y": 3,
-            "width": 4,
-            "height": 3,
+            "x": 640.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Boolean Box",
             "properties": {
-              "colorWhenTrue": 4283215696,
-              "colorWhenFalse": 4294198070
-            },
-            "topic": "/SmartDashboard/Turret/Reachable"
+              "topic": "/SmartDashboard/Turret/Reachable",
+              "period": 0.033,
+              "true_color": 4283215696,
+              "false_color": 4294198070
+            }
           },
           {
-            "title": "Turret L",
-            "x": 32,
-            "y": 3,
-            "width": 4,
-            "height": 3,
+            "title": "AutoShoot Ready",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/AutoShoot/Ready",
+              "period": 0.033,
+              "true_color": 4283215696,
+              "false_color": 4294198070
+            }
+          },
+          {
+            "title": "Heading Lock",
+            "x": 128.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Drive/HeadingLock",
+              "period": 0.033,
+              "true_color": 4283215696,
+              "false_color": 4294198070
+            }
+          },
+          {
+            "title": "Left Turret",
+            "x": 256.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {"fontSize": 16},
-            "topic": "/SmartDashboard/Turret/LeftDeg"
+            "properties": {
+              "topic": "/SmartDashboard/Turret/LeftDeg",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Right Turret",
+            "x": 384.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Turret/RightDeg",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Hood Angle",
+            "x": 512.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Hood/CurrentAngle",
+              "period": 0.033
+            }
           },
           {
             "title": "Battery",
-            "x": 18,
-            "y": 6,
-            "width": 4,
-            "height": 4,
-            "type": "Radial Gauge",
-            "properties": {
-              "min_value": 8,
-              "max_value": 14,
-              "start_angle": 225,
-              "end_angle": -45
-            },
-            "topic": "/System/batteryVoltage"
-          },
-          {
-            "title": "CAN %",
-            "x": 22,
-            "y": 6,
-            "width": 4,
-            "height": 4,
-            "type": "Radial Gauge",
-            "properties": {
-              "min_value": 0,
-              "max_value": 100,
-              "start_angle": 225,
-              "end_angle": -45
-            },
-            "topic": "/System/canUtilization"
-          },
-          {
-            "title": "Alerts",
-            "x": 26,
-            "y": 6,
-            "width": 10,
-            "height": 4,
-            "type": "Network Alerts",
-            "properties": {},
-            "topic": "/SmartDashboard/Alerts"
-          },
-          {
-            "title": "Swerve",
-            "x": 0,
-            "y": 10,
-            "width": 8,
-            "height": 6,
-            "type": "SwerveDrive",
-            "properties": {},
-            "topic": "/SmartDashboard/swerve"
-          },
-          {
-            "title": "L Turret Field Target",
-            "x": 8,
-            "y": 10,
-            "width": 5,
-            "height": 3,
+            "x": 640.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {"fontSize": 14},
-            "topic": "/SmartDashboard/Turret/LeftFieldTarget"
+            "properties": {
+              "topic": "/System/batteryVoltage",
+              "period": 0.033
+            }
           },
           {
-            "title": "R Turret Field Target",
-            "x": 13,
-            "y": 10,
-            "width": 5,
-            "height": 3,
+            "title": "Odometry X",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {"fontSize": 14},
-            "topic": "/SmartDashboard/Turret/RightFieldTarget"
+            "properties": {
+              "topic": "/SmartDashboard/Odometry/X_meters",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Odometry Y",
+            "x": 128.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Odometry/Y_meters",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Heading",
+            "x": 256.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Odometry/HeadingDeg",
+              "period": 0.033
+            }
           }
         ]
       }
@@ -161,221 +177,197 @@
     {
       "name": "Shooter",
       "grid_layout": {
-        "layouts": [
+        "layouts": [],
+        "containers": [
           {
             "title": "Left Main RPM",
-            "x": 0,
-            "y": 0,
-            "width": 12,
-            "height": 5,
+            "x": 0.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 256.0,
             "type": "Graph",
-            "properties": {"time_displayed": 10},
-            "topic": "/SmartDashboard/Shooter/LeftMainRPM"
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/LeftMainRPM",
+              "period": 0.033,
+              "time_displayed": 10.0
+            }
           },
           {
             "title": "Right Main RPM",
-            "x": 12,
-            "y": 0,
-            "width": 12,
-            "height": 5,
+            "x": 384.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 256.0,
             "type": "Graph",
-            "properties": {"time_displayed": 10},
-            "topic": "/SmartDashboard/Shooter/RightMainRPM"
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/RightMainRPM",
+              "period": 0.033,
+              "time_displayed": 10.0
+            }
           },
           {
-            "title": "Target RPM",
-            "x": 24,
-            "y": 0,
-            "width": 6,
-            "height": 3,
+            "title": "Left Pre RPM",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 256.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/LeftPreRPM",
+              "period": 0.033,
+              "time_displayed": 10.0
+            }
+          },
+          {
+            "title": "Right Pre RPM",
+            "x": 384.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 256.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/RightPreRPM",
+              "period": 0.033,
+              "time_displayed": 10.0
+            }
+          },
+          {
+            "title": "Target Main",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {"fontSize": 24},
-            "topic": "/SmartDashboard/Shooter/TargetMainRPM"
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/TargetMainRPM",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Target Pre",
+            "x": 896.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter/TargetPreRPM",
+              "period": 0.033
+            }
           },
           {
             "title": "At Speed",
-            "x": 30,
-            "y": 0,
-            "width": 6,
-            "height": 3,
+            "x": 768.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Boolean Box",
             "properties": {
-              "colorWhenTrue": 4283215696,
-              "colorWhenFalse": 4294198070
-            },
-            "topic": "/SmartDashboard/Shooter/AtSpeed"
+              "topic": "/SmartDashboard/Shooter/AtSpeed",
+              "period": 0.033,
+              "true_color": 4283215696,
+              "false_color": 4294198070
+            }
           },
           {
-            "title": "Shooter PID",
-            "x": 24,
-            "y": 3,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Shooter"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Turret",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "Left Turret Angle (deg)",
-            "x": 0,
-            "y": 0,
-            "width": 12,
-            "height": 5,
-            "type": "Graph",
-            "properties": {"time_displayed": 10},
-            "topic": "/SmartDashboard/Turret/LeftDeg"
-          },
-          {
-            "title": "Right Turret Angle (deg)",
-            "x": 12,
-            "y": 0,
-            "width": 12,
-            "height": 5,
-            "type": "Graph",
-            "properties": {"time_displayed": 10},
-            "topic": "/SmartDashboard/Turret/RightDeg"
-          },
-          {
-            "title": "Reachable",
-            "x": 24,
-            "y": 0,
-            "width": 6,
-            "height": 3,
-            "type": "Boolean Box",
-            "properties": {
-              "colorWhenTrue": 4283215696,
-              "colorWhenFalse": 4294198070
-            },
-            "topic": "/SmartDashboard/Turret/Reachable"
-          },
-          {
-            "title": "L Field Target",
-            "x": 30,
-            "y": 0,
-            "width": 6,
-            "height": 3,
+            "title": "L Current",
+            "x": 896.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {"fontSize": 16},
-            "topic": "/SmartDashboard/Turret/LeftFieldTarget"
-          },
-          {
-            "title": "R Field Target",
-            "x": 30,
-            "y": 3,
-            "width": 6,
-            "height": 3,
-            "type": "Text Display",
-            "properties": {"fontSize": 16},
-            "topic": "/SmartDashboard/Turret/RightFieldTarget"
-          },
-          {
-            "title": "Turret PID",
-            "x": 24,
-            "y": 6,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Turret"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Diagnostics",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "Battery Voltage",
-            "x": 0,
-            "y": 0,
-            "width": 4,
-            "height": 4,
-            "type": "Radial Gauge",
             "properties": {
-              "min_value": 8,
-              "max_value": 14,
-              "start_angle": 225,
-              "end_angle": -45
-            },
-            "topic": "/System/batteryVoltage"
+              "topic": "/SmartDashboard/Hood/LeftCurrentAngle",
+              "period": 0.033
+            }
           },
           {
-            "title": "CAN Utilization %",
-            "x": 4,
-            "y": 0,
-            "width": 4,
-            "height": 4,
-            "type": "Radial Gauge",
-            "properties": {
-              "min_value": 0,
-              "max_value": 100,
-              "start_angle": 225,
-              "end_angle": -45
-            },
-            "topic": "/System/canUtilization"
-          },
-          {
-            "title": "Swerve Drive",
-            "x": 8,
-            "y": 0,
-            "width": 8,
-            "height": 8,
-            "type": "SwerveDrive",
-            "properties": {},
-            "topic": "/SmartDashboard/swerve"
-          },
-          {
-            "title": "Field",
-            "x": 16,
-            "y": 0,
-            "width": 12,
-            "height": 8,
-            "type": "Field",
-            "properties": {
-              "field_game": "Rebuilt",
-              "robot_width": 0.6858,
-              "robot_length": 0.6858
-            },
-            "topic": "/SmartDashboard/Field"
-          },
-          {
-            "title": "IMU Raw",
-            "x": 28,
-            "y": 0,
-            "width": 8,
-            "height": 3,
+            "title": "R Current",
+            "x": 1024.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
             "type": "Text Display",
-            "properties": {},
-            "topic": "/SmartDashboard/swerve/imu/adjusted"
+            "properties": {
+              "topic": "/SmartDashboard/Hood/RightCurrentAngle",
+              "period": 0.033
+            }
           },
           {
-            "title": "Alerts",
-            "x": 0,
-            "y": 4,
-            "width": 8,
-            "height": 4,
-            "type": "Network Alerts",
-            "properties": {},
-            "topic": "/SmartDashboard/Alerts"
+            "title": "L Near Angle",
+            "x": 768.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/Hood/LeftNearAngle",
+              "period": 0.033,
+              "min_value": 0.0,
+              "max_value": 180.0,
+              "divisions": 180,
+              "update_continuously": true
+            }
           },
           {
-            "title": "Swerve Module States",
-            "x": 0,
-            "y": 8,
-            "width": 18,
-            "height": 4,
-            "type": "Text Display",
-            "properties": {"fontSize": 11},
-            "topic": "",
-            "default_value": "CAN IDs — Drive: FL=11 FR=12 BL=13 BR=14 | Angle: FL=15 FR=16 BL=17 BR=18 | CANCoder: FL=19 FR=20 BL=21 BR=22\nMechanisms — Intake=30 Conveyor=31 Hopper=32 Feeder=33 | Turret L/R=34/35 | Pre L/R=36/37 | Main L/R=38/39"
+            "title": "L Far Angle",
+            "x": 768.0,
+            "y": 384.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/Hood/LeftFarAngle",
+              "period": 0.033,
+              "min_value": 0.0,
+              "max_value": 180.0,
+              "divisions": 180,
+              "update_continuously": true
+            }
+          },
+          {
+            "title": "R Near Angle",
+            "x": 768.0,
+            "y": 512.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/Hood/RightNearAngle",
+              "period": 0.033,
+              "min_value": 0.0,
+              "max_value": 180.0,
+              "divisions": 180,
+              "update_continuously": true
+            }
+          },
+          {
+            "title": "R Far Angle",
+            "x": 768.0,
+            "y": 640.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/Hood/RightFarAngle",
+              "period": 0.033,
+              "min_value": 0.0,
+              "max_value": 180.0,
+              "divisions": 180,
+              "update_continuously": true
+            }
+          },
+          {
+            "title": "Save Hood",
+            "x": 768.0,
+            "y": 768.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Button",
+            "properties": {
+              "topic": "/SmartDashboard/Hood/Save",
+              "period": 0.033
+            }
           }
         ]
       }
@@ -383,66 +375,151 @@
     {
       "name": "Tuning",
       "grid_layout": {
-        "layouts": [
+        "layouts": [],
+        "containers": [
           {
-            "title": "Swerve Drive PID",
-            "x": 0,
-            "y": 0,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Swerve Drive"
+            "title": "Pos1 Slip Main",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/Pos1SlipMain",
+              "period": 0.033,
+              "min_value": 0.3,
+              "max_value": 1.0,
+              "divisions": 70,
+              "update_continuously": true
+            }
           },
           {
-            "title": "Swerve Angle PID",
-            "x": 6,
-            "y": 0,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Swerve Angle"
+            "title": "Pos1 Slip Pre",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/Pos1SlipPre",
+              "period": 0.033,
+              "min_value": 0.3,
+              "max_value": 1.0,
+              "divisions": 70,
+              "update_continuously": true
+            }
           },
           {
-            "title": "Turret PID",
-            "x": 12,
-            "y": 0,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Turret"
+            "title": "Pos2 Slip Main",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/Pos2SlipMain",
+              "period": 0.033,
+              "min_value": 0.3,
+              "max_value": 1.0,
+              "divisions": 70,
+              "update_continuously": true
+            }
           },
           {
-            "title": "Shooter PID",
-            "x": 18,
-            "y": 0,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Shooter"
+            "title": "Pos2 Slip Pre",
+            "x": 384.0,
+            "y": 128.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/Pos2SlipPre",
+              "period": 0.033,
+              "min_value": 0.3,
+              "max_value": 1.0,
+              "divisions": 70,
+              "update_continuously": true
+            }
           },
           {
-            "title": "Auton Translation PID",
-            "x": 24,
-            "y": 0,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Auton Translation"
+            "title": "Hub X (blue)",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/HubX_blue",
+              "period": 0.033,
+              "min_value": 0.0,
+              "max_value": 16.54,
+              "divisions": 165,
+              "update_continuously": true
+            }
           },
           {
-            "title": "Auton Rotation PID",
-            "x": 30,
-            "y": 0,
-            "width": 6,
-            "height": 5,
-            "type": "PIDController",
-            "properties": {},
-            "topic": "/SmartDashboard/PID/Auton Rotation"
+            "title": "Hub Y (blue)",
+            "x": 384.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/HubY_blue",
+              "period": 0.033,
+              "min_value": 0.0,
+              "max_value": 8.07,
+              "divisions": 81,
+              "update_continuously": true
+            }
+          },
+          {
+            "title": "Calc Distance",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/DistanceM",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Calc RPM",
+            "x": 128.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/MainRPM",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Landing Angle",
+            "x": 256.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/LandingAngleDeg",
+              "period": 0.033
+            }
+          },
+          {
+            "title": "Turret Angle",
+            "x": 384.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/ShotCalc/TurretAngleDeg",
+              "period": 0.033
+            }
           }
         ]
       }

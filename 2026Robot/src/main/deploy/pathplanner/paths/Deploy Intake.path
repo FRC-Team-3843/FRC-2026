@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8653637660526594,
-        "y": 3.9250213980045086
+        "x": 3.5,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.80936376605266,
-        "y": 3.9250213980045086
+        "x": 2.4800975198863564,
+        "y": 4.4176153603986625
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2627389443693504,
-        "y": 3.9250213980045086
+        "x": 1.8,
+        "y": 4.0
       },
       "prevControl": {
-        "x": 2.2627389443693504,
-        "y": 3.9250213980045086
+        "x": 2.785946213984158,
+        "y": 3.6790006836658318
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of Intake Deploy"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.508996401439417,
+      "rotationDegrees": 90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,

@@ -200,11 +200,17 @@ and fires FUEL into the Hub.
 | Feeder | NEO 550 | SparkMax (CAN 33) | N/A | Hopper -> both shooters |
 | Hood servos (x2) | Standard servo | PWM 0/1 | N/A | Binary near/far angle adjust |
 
+**Robot Physical Properties:**
+- Total mass with bumpers + battery: ~140 lbs (63.5 kg)
+- Bumper-to-bumper dimensions: 33" x 33" (0.8382m x 0.8382m)
+- Frame/wheelbase: 27" x 27" (0.6858m x 0.6858m)
+
 **Swerve Drive Gearing (MK4 L1 standard, no modifications):**
 - Drive gear ratio: 8.14:1
 - Angle gear ratio: 12.8:1
 - Theoretical max speed: 3.71 m/s
-- Wheel diameter: 4", NEO free speed: 5676 RPM
+- Wheel diameter: 4" (nominal — calibrate with drive distance test)
+- NEO free speed: 5676 RPM
 
 ### Key Resources
 
@@ -351,12 +357,12 @@ TEST MODE (driver controller):
   LB             = SysId turret (~22s)
 
 ### Vision (if cameras get mounted)
-1. Install PhotonVision on Ubuntu coprocessor (see Section 8 below)
-2. Mount both global shutter cameras rigidly, measure transforms
-3. Set VisionConstants.LEFT_CAMERA_NAME / RIGHT_CAMERA_NAME to match PV UI names
-4. Set VisionConstants.ENABLE_VISION = true in Constants.java
-5. Add camera entries to Vision.java Cameras enum with measured transforms
-6. Redeploy
+1. Beelink Mini S coprocessor is already prepped (PhotonVision + SSH + robot-side static IP)
+2. Mount the right camera rigidly and plug it into the Beelink
+3. In PhotonVision, create the camera as `right_cam`
+4. Calibrate the camera and verify live AprilTag detections
+5. If pose looks sane, set VisionConstants.ENABLE_VISION = true in Constants.java
+6. Redeploy and validate pose estimation on the field
 
 ================================================================================
 SECTION 1: PRE-FLIGHT CHECKLIST
@@ -484,6 +490,35 @@ SECTION 3: PHOTONVISION SETUP
 Vision extends your robot's awareness beyond just encoders and gyros. When set
 up correctly, AprilTags let the robot know exactly where it is on the field.
 
+### 3.0 Competition Coprocessor Status (2026-03-20)
+
+The Beelink Mini S vision computer was set up and verified before pit install.
+
+**Current machine state:**
+- Ubuntu 24.04.4 LTS
+- PhotonVision installed and running as a `systemd` service on boot
+- PhotonVision version: `v2026.3.2`
+- OpenSSH enabled and running on boot
+- Hostname set to `photonvision`
+- Sleep/suspend/hibernate masked for headless operation
+- GRUB timeout reduced to 5 seconds
+- Wi-Fi management IP at time of setup: `192.168.100.215`
+- PhotonVision networking settings verified:
+  - Team number set to `3843`
+  - NetworkTables server left `off` (client mode)
+  - Managed robot Ethernet set to static `10.38.43.11`
+
+**How to reach it:**
+- Over current Wi-Fi: `http://192.168.100.215:5800`
+- On the robot network: `http://10.38.43.11:5800`
+- SSH on robot network: `ssh murray-robotics-3843@10.38.43.11`
+
+**Important:**
+- The Beelink is ready to run headless once mounted on the robot
+- BIOS auto-power-on after power loss has been configured by the team
+- Hotspot/Wi-Fi IPs are temporary; prefer `10.38.43.11` once the Beelink is on the robot radio
+- If time allows, confirm the behavior once on the robot by cycling power through the final wiring path
+
 ### 3.1 Camera Mounting & Calibration
 
 **Physical Mounting:**
@@ -493,7 +528,7 @@ up correctly, AprilTags let the robot know exactly where it is on the field.
 - For best results, angle camera down 10-30 degrees
 
 **PhotonVision Calibration:**
-1. Access PhotonVision UI (usually http://photonvision.local:5800)
+1. Access PhotonVision UI (`http://10.38.43.11:5800` on the robot network)
 2. Go to Settings -> Cameras and run camera calibration
 3. Print the calibration target and follow the wizard
 4. This step is CRITICAL - skip it and your pose estimates will be garbage
@@ -505,8 +540,23 @@ Reference: https://docs.photonvision.org/en/latest/docs/calibration/calibration.
 The code needs to know where the camera is mounted. Measure from the robot's
 CENTER POINT on the floor to the camera lens.
 
-Open `Vision.java` and look for the `Cameras` enum (currently empty). When you
-add a camera, you'll need:
+`Vision.java` already contains prewired `RIGHT_CAM` and `LEFT_CAM` entries. The
+current constants assume front-corner camera mounts and should be treated as
+starting estimates, not final surveyed values.
+
+**Current estimated geometry in code:**
+- Height: `19 in`
+- Front offset from bumper edge: `0.25 in`
+- Side offset from bumper edge: `0.25 in`
+- Pitch: `-10 deg` (downward)
+- Right camera yaw: `-45 deg`
+- Left camera yaw: `+45 deg`
+- PhotonVision names: `right_cam`, `left_cam`
+- Vision enable flag remains `false` until the real camera is mounted and tested
+
+If these mounts change, update `Constants.VisionConstants`.
+
+When re-measuring a camera, you'll need:
 
 **Translation (position):**
 - X: + forward, - backward (in meters)
