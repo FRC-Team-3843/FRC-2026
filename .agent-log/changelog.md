@@ -12,6 +12,18 @@ Track all significant changes made by AI agents (Claude, Gemini, Codex) in the F
 
 ---
 
+## 2026-03-20
+
+### [2026-03-20 09:00] CLAUDE [DOCS]
+- Updated README.md and NOTES.md to reflect current competition state
+- Repo: FRC-2026
+- Files modified:
+  - `README.md` (mechanisms section: replaced "design in progress" with actual hardware; vision: corrected to 2026 REBUILT layout; development status: updated to competition phase with accurate implemented/in-progress lists)
+  - `NOTES.md` (Section 3.3: marked AprilTag field layout update as DONE, removed stale ACTION REQUIRED)
+- Notes: Docs were stale from pre-mechanism-implementation era. Code has been competition-ready since 2026-03-18 but docs still referenced design phase.
+
+---
+
 ## 2026-03-19
 
 ### [2026-03-19 22:00] CLAUDE [FIX]

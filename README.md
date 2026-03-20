@@ -37,15 +37,15 @@ In REBUILT (presented by Haas), alliances score **Fuel** into their **Hub**, nav
 - **Strategy:** Heavy vision processing on coprocessor, pose fusion on RoboRIO
 
 ### Mechanisms (REBUILT Game)
-*[Design in progress -- see NOTES.md Section 0 for game requirements]*
 
-**Required for REBUILT:**
-- Fuel intake (collect 5.91" balls from depot, neutral zone, human player)
-- Fuel shooter/scorer (deposit into Hub -- top opening of 47" x 47" structure)
-- Tower climber (3 rung levels, rungs are 1-1/4" Sch 40 pipe, 18" apart)
-- Field traversal (Bumps at ~6.5" or Trench at 22.25" clearance)
+**Double Turret Shooter Design:**
+- **Intake:** Kraken X44 ground roller (passive deploy) -> NEO 550 floor conveyor -> Bag motor hopper -> NEO 550 feeder
+- **Turrets (x2):** NEO 550 with 52.987:1 gearing, field-centric joystick control, +/-110 deg travel
+- **Shooters (x2 per side):** Kraken X44 preshooters (0.625 overdrive) + Kraken X60 main shooters (0.917 overdrive), velocity PID
+- **Hood servos (x2):** Binary near/far angle adjust (PWM 0/1)
+- **Superstructure:** Orchestrates intake chain, reverse/unjam, and shooting presets
 
-*See NOTES.md for CAN bus assignments*
+*See NOTES.md for CAN bus assignments and controller quick reference*
 
 ## Software Stack
 - WPILib 2026.1.1+
@@ -86,9 +86,10 @@ cd 2026Robot
 
 ## Vision & Localization
 - **Pose Estimator:** Fuses vision measurements with odometry
-- **AprilTag Field:** Currently set to 2025 Reefscape (**UPDATE NEEDED** to 2026 REBUILT layout)
+- **AprilTag Field:** Set to 2026 REBUILT layout (k2026RebuiltAndymark)
 - **Trust Settings:** Configurable standard deviations for vision vs odometry
 - **Camera Transform:** Robot-to-camera measurements in Vision.java
+- **Status:** Framework ready, disabled until cameras are mounted (ENABLE_VISION=false)
 
 ## Autonomous
 PathPlanner-based autonomous with:
@@ -117,14 +118,15 @@ PathPlanner-based autonomous with:
 *For detailed setup and configuration, see NOTES.md*
 
 ## Development Status
-- **Phase:** Active development (game: REBUILT)
-- **Focus:** Swerve drive foundation complete, mechanism design in progress
-- **Next Steps:**
-  - Design and implement fuel intake/shooter mechanisms
-  - Implement tower climbing mechanism
-  - Update Vision.java to 2026 REBUILT AprilTag field layout
-  - Mount cameras and calibrate PhotonVision
-  - Implement driver assist commands for Hub scoring
+- **Phase:** Competition (Smokey Mountain Regional, 2025-03-19)
+- **Focus:** Hardware tuning and calibration at event
+- **Implemented:** Swerve drive, double turret shooter, full intake chain, hood servos, SysId, dashboard tuning, PathPlanner auto framework
+- **In Progress:**
+  - Motor inversion verification on hardware
+  - Shooter RPM and turret angle tuning for presets
+  - Hood servo angle calibration
+  - Autonomous path creation
+  - Vision camera mounting and calibration
 
 ## Resources
 - [WPILib Docs](https://docs.wpilib.org/en/stable/)

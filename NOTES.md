@@ -529,19 +529,14 @@ FRONT_CAM("frontcam",
 
 Reference: https://docs.photonvision.org/en/latest/docs/apriltag-pipelines/coordinate-systems.html        
 
-### 3.3 Field Layout (UPDATE REQUIRED)
+### 3.3 Field Layout (DONE)
 
-The code currently loads the 2025 Reefscape field layout. **The 2026 game
-(REBUILT) has been released -- this MUST be updated.**
-
-**ACTION REQUIRED:** Update Vision.java to use the 2026 REBUILT AprilTag layout:
+Vision.java has been updated to load the 2026 REBUILT AprilTag field layout:
 ```java
-AprilTagFields.k2025ReefscapeAndyMark  ->  AprilTagFields.k2026Rebuilt
+AprilTagFields.k2026RebuiltAndymark
 ```
-(Check WPILib/PhotonVision release notes for the exact enum name.)
 
-If you skip this step and run on a 2026 REBUILT field, the robot will use the
-wrong tag positions and localize incorrectly.
+This was completed on 2026-02-15. No further action needed for field layout.
 
 ### 3.4 Trust Settings (Standard Deviations)
 
