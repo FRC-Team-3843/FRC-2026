@@ -75,10 +75,10 @@ public class ShooterCalculator {
 
   // ── Tunable Slip Factors (read from SmartDashboard) ─────────────────────
 
-  private double m_pos1SlipMain = 0.75;
-  private double m_pos1SlipPre  = 0.70;
-  private double m_pos2SlipMain = 0.75;
-  private double m_pos2SlipPre  = 0.70;
+  private double m_pos1SlipMain = 0.26;
+  private double m_pos1SlipPre  = 0.24;
+  private double m_pos2SlipMain = 0.26;
+  private double m_pos2SlipPre  = 0.24;
 
   // ── Result Record ──────────────────────────────────────────────────────
 

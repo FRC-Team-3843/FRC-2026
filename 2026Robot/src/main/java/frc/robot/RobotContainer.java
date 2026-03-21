@@ -104,8 +104,8 @@ public class RobotContainer {
 
   private final SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
           drivebase.getSwerveDrive(),
-          () -> driverXbox.getLeftY(),
-          () -> driverXbox.getLeftX())
+          () -> -driverXbox.getLeftY(),
+          () -> -driverXbox.getLeftX())
       .withControllerRotationAxis(() -> -driverXbox.getRightX())
       .deadband(Constants.OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.DriveProfiles.FULL_SPEED_SCALE)
@@ -117,8 +117,8 @@ public class RobotContainer {
 
   private final SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(
           drivebase.getSwerveDrive(),
-          () -> driverXbox.getLeftY(),
-          () -> driverXbox.getLeftX())
+          () -> -driverXbox.getLeftY(),
+          () -> -driverXbox.getLeftX())
       .withControllerRotationAxis(() -> -driverXbox.getRightX())
       .deadband(Constants.OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.DriveProfiles.SLOW_SPEED_SCALE)
@@ -175,10 +175,9 @@ public class RobotContainer {
         () -> true // always locked — both turrets track left stick
     ));
 
-    // Shooter default: right trigger controls speed (0 = stop, 1 = max RPM)
-    DoubleSupplier shooterMagnitude = () -> operatorXbox.getRightTriggerAxis();
-    m_shooter.setDefaultCommand(m_shooter.spinFromDualMagnitudeCommand(
-        shooterMagnitude, shooterMagnitude
+    // Shooter default: right trigger controls raw voltage (0 = stop, full pull = full power)
+    m_shooter.setDefaultCommand(m_shooter.spinDutyCycleCommand(
+        () -> operatorXbox.getRightTriggerAxis()
     ));
 
     // ── Driver Bindings ─────────────────────────────────────────────────────
@@ -239,17 +238,13 @@ public class RobotContainer {
 
     // --- D-pad preset speeds (RPM + hood only, turret stays on joystick) ---
     operatorXbox.povUp().onTrue(m_shooter.holdRpmCommand(
-        ShootingPositions.CLOSE.mainRpm(), ShootingPositions.CLOSE.preshooterRpm(),
-        ShootingPositions.CLOSE.hoodFar()));
+        ShootingPositions.CLOSE.mainRpm(), ShootingPositions.CLOSE.preshooterRpm()));
     operatorXbox.povDown().onTrue(m_shooter.holdRpmCommand(
-        ShootingPositions.FAR.mainRpm(), ShootingPositions.FAR.preshooterRpm(),
-        ShootingPositions.FAR.hoodFar()));
+        ShootingPositions.FAR.mainRpm(), ShootingPositions.FAR.preshooterRpm()));
     operatorXbox.povLeft().onTrue(m_shooter.holdRpmCommand(
-        ShootingPositions.ANGLE_LEFT.mainRpm(), ShootingPositions.ANGLE_LEFT.preshooterRpm(),
-        ShootingPositions.ANGLE_LEFT.hoodFar()));
+        ShootingPositions.ANGLE_LEFT.mainRpm(), ShootingPositions.ANGLE_LEFT.preshooterRpm()));
     operatorXbox.povRight().onTrue(m_shooter.holdRpmCommand(
-        ShootingPositions.ANGLE_RIGHT.mainRpm(), ShootingPositions.ANGLE_RIGHT.preshooterRpm(),
-        ShootingPositions.ANGLE_RIGHT.hoodFar()));
+        ShootingPositions.ANGLE_RIGHT.mainRpm(), ShootingPositions.ANGLE_RIGHT.preshooterRpm()));
 
     // --- Y: clear RPM preset, return to trigger-controlled speed ---
     operatorXbox.y().onTrue(m_shooter.stopCommand());
@@ -268,8 +263,8 @@ public class RobotContainer {
         m_feeder.reverseCommand()
     ));
 
-    // --- X (held): auto-calculated shot from ShooterCalculator ---
-    operatorXbox.x().whileTrue(buildAutoShootCommand());
+    // --- X: start auto-calculated shot, Y cancels (via stopCommand interrupting shooter) ---
+    operatorXbox.x().onTrue(buildAutoShootCommand());
 
     // --- Hood manual overrides ---
     operatorXbox.leftBumper().onTrue(m_shooter.hoodNearCommand());

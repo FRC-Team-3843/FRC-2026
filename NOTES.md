@@ -319,16 +319,17 @@ in Constants.java and redeploy. Constants to check:
 5. All presets are in Constants.java -> ShootingPositions
 
 ### Step 6: Tune Hood Servos
-Hood servo angles (0-180 deg WPILib):
-  - HoodConstants.NEAR_ANGLE = 45.0 (starting value, tune up/down)
-  - HoodConstants.FAR_ANGLE  = 90.0 (starting value, tune up/down)
+Hood servo angles are stored in deploy/hood-config.json (per-servo: L near, L far, R near, R far).
+Tune from the Elastic Dashboard Shooter tab sliders, then press "Save Hood" to persist to JSON.
+Current values: L near=120, L far=35, R near=120, R far=35.
 Operator LBumper = near, RBumper = far for manual override anytime.
 
 ### Controller Quick Reference
 DRIVER (port 0):
-  Left stick     = translate (field-relative)
+  Left stick     = translate (field-relative, alliance-aware)
   Right stick X  = rotate
   Left trigger   = slow mode (50%)
+  A              = toggle heading lock (on by default)
   Right bumper   = intake roller + floor conveyor (hold)
   Left bumper    = reverse intake + floor conveyor (hold)
   Start          = zero gyro (face downfield first!)
@@ -337,16 +338,17 @@ DRIVER (port 0):
 
 OPERATOR (port 1):
   Left stick dir = aim both turrets (field-centric: forward = downfield always)
-  Left stick mag = spin up both shooters (more push = more RPM)
+  Right trigger  = shooter speed (raw voltage: 0 = stop, full pull = full power)
+  X              = auto-calculated shot (ShooterCalculator: aims turret, sets RPM, fires when ready)
   A (hold)       = feed chain (floor conveyor + hopper + feeder)
   B (hold)       = reverse feed chain
-  D-pad Up       = CLOSE preset (2500 RPM, hood near)
-  D-pad Down     = FAR preset (4000 RPM, hood far)
-  D-pad Left     = ANGLE_LEFT preset (5000 RPM, +45 deg)
-  D-pad Right    = ANGLE_RIGHT preset (5000 RPM, -45 deg)
-  Y              = cancel preset, back to manual joystick
-  L bumper       = hood near
-  R bumper       = hood far
+  D-pad Up       = 3000 RPM preset (RPM only, no hood change)
+  D-pad Right    = 4000 RPM preset
+  D-pad Down     = 5000 RPM preset
+  D-pad Left     = 6000 RPM preset (max)
+  Y              = cancel preset/auto-shoot, back to trigger control
+  L bumper       = hood near (pos 1)
+  R bumper       = hood far (pos 2)
   Start          = zero turret encoders (align to forward first!)
 
 TEST MODE (driver controller):

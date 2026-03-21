@@ -348,19 +348,19 @@ public final class Constants {
         boolean hoodFar
     ) {}
 
-    /** D-pad UP: 4500 RPM (clock: 12). */
+    /** D-pad UP: 3000 RPM (clock: 12). */
     public static final ShootingPreset CLOSE = new ShootingPreset(
-        0.0, 0.0, 4500.0, 3002.0, false
+        0.0, 0.0, 3000.0, 2001.0, false
     );
 
-    /** D-pad RIGHT: 5000 RPM (clock: 3). */
+    /** D-pad RIGHT: 4000 RPM (clock: 3). */
     public static final ShootingPreset ANGLE_RIGHT = new ShootingPreset(
-        0.0, 0.0, 5000.0, 3335.0, false
+        0.0, 0.0, 4000.0, 2668.0, false
     );
 
-    /** D-pad DOWN: 5500 RPM (clock: 6). */
+    /** D-pad DOWN: 5000 RPM (clock: 6). */
     public static final ShootingPreset FAR = new ShootingPreset(
-        0.0, 0.0, 5500.0, 3669.0, false
+        0.0, 0.0, 5000.0, 3335.0, false
     );
 
     /** D-pad LEFT: 6000 RPM (clock: 9). */

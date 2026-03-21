@@ -41,13 +41,18 @@ Last updated: 2026-03-19 evening
 
 ## STRETCH — Vision
 
-- [ ] Install PhotonVision on Ubuntu coprocessor
-- [ ] Mount and wire both global shutter cameras
-- [ ] Calibrate cameras (checkerboard pattern, ~15 min each)
-- [ ] Measure camera transforms (X/Y/Z from robot center, pitch/yaw/roll)
-- [ ] Set VisionConstants camera names and ENABLE_VISION = true
-- [ ] Add camera entries to Vision.java Cameras enum
-- [ ] Test and verify pose estimation
+- [x] Install PhotonVision on Ubuntu coprocessor
+- [x] Configure Beelink for headless use (SSH + PhotonVision on boot, sleep disabled)
+- [x] Verify PhotonVision networking settings (team `3843`, NT server off, robot Ethernet static `10.38.43.11`)
+- [x] Prewire `right_cam` / `left_cam` names and approximate transforms in code
+- [ ] Mount and wire right global shutter camera
+- [ ] Create `right_cam` in PhotonVision and verify live detections
+- [ ] Calibrate right camera (checkerboard pattern, ~15 min)
+- [ ] Verify right camera transform on hardware (current values are estimates)
+- [ ] Set VisionConstants.ENABLE_VISION = true
+- [ ] Test and verify single-camera pose estimation
+- [ ] Mount and wire left camera later
+- [ ] Create/calibrate `left_cam` and re-verify mirrored transforms
 
 ---
 

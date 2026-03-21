@@ -223,6 +223,35 @@ public class ShooterSubsystem extends SubsystemBase {
         && Math.abs(rightRpm - m_targetMainRpm) < toleranceRpm;
   }
 
+  /**
+   * Raw duty cycle control — trigger magnitude directly sets motor output.
+   * Full trigger = full power. No PID, no RPM target. Preshooter runs at speed ratio.
+   */
+  public Command spinDutyCycleCommand(DoubleSupplier magnitude) {
+    return this.run(() -> {
+      double mag = magnitude.getAsDouble();
+      double deadband = Constants.TurretConstants.JOYSTICK_DEADBAND;
+
+      if (mag > deadband) {
+        double preMag = mag * ShooterConstants.PRESHOOTER_SPEED_RATIO;
+        m_leftMain.set(mag);
+        m_rightMain.set(mag);
+        m_leftPre.set(preMag);
+        m_rightPre.set(preMag);
+        m_targetMainRpm = mag * ShooterConstants.MAX_WHEEL_RPM; // estimate for dashboard
+        m_targetPreRpm = m_targetMainRpm * ShooterConstants.PRESHOOTER_SPEED_RATIO;
+      } else {
+        m_leftMain.set(0);
+        m_rightMain.set(0);
+        m_leftPre.set(0);
+        m_rightPre.set(0);
+        m_targetMainRpm = 0;
+        m_targetPreRpm = 0;
+      }
+    }).withName("ShooterDutyCycle")
+      .finallyDo(interrupted -> stopAll());
+  }
+
   // ── Direct Control (for auto-shoot command) ──────────────────────────────
 
   /** Set RPM and hood position directly. Called from auto-shoot's run loop. */
@@ -277,14 +306,23 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /**
-   * Hold a fixed RPM — used for D-pad preset positions.
-   * Runs continuously until cancelled (Y button or new D-pad press).
+   * Hold a fixed RPM without touching hood — used for D-pad preset positions.
+   * Hood is controlled separately via LB/RB. Runs until cancelled (Y button or new D-pad press).
+   */
+  public Command holdRpmCommand(double mainRpm, double preRpm) {
+    return this.run(() -> applyRpm(mainRpm, preRpm))
+        .withName("ShooterHoldRpm")
+        .finallyDo(interrupted -> stopAll());
+  }
+
+  /**
+   * Hold a fixed RPM AND set hood — used by auto-shoot only.
    */
   public Command holdRpmCommand(double mainRpm, double preRpm, boolean hoodFar) {
     return this.run(() -> {
       applyRpm(mainRpm, preRpm);
       setHoodFar(hoodFar);
-    }).withName("ShooterHoldRpm")
+    }).withName("ShooterHoldRpmHood")
       .finallyDo(interrupted -> stopAll());
   }
 
