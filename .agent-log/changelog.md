@@ -12,6 +12,29 @@ Track all significant changes made by AI agents (Claude, Gemini, Codex) in the F
 
 ---
 
+## 2026-03-21
+
+### [2026-03-21 12:00] CLAUDE [FIX]
+- Competition day 3 driver control changes
+- Repo: FRC-2026
+- Changes:
+  - Fixed red alliance inverted controls: disabled `allianceRelativeControl` — was double-flipping with `zeroGyroWithAlliance()` causing inverted X/Y on red
+  - Center modules moved from Back button to POV Down
+  - Slow mode changed from binary 50% toggle (left trigger > 0.5) to progressive scaling (80% at no pull → 20% at full pull)
+  - Added right trigger progressive intake (0% → 100% speed for intake roller + floor conveyor)
+  - Kept right bumper full-speed intake alongside right trigger
+  - Added `setSpeed()` method to IntakeSubsystem for variable-speed control
+  - Removed unused `driveAngularVelocitySlow` drive stream
+  - Marked completed TODO items: motor inversions verified, FR angle motor OK, shooter presets tuned, hood servo angles dialed in, PathPlanner named commands already registered, auto routines confirmed
+  - Added SysId shooter & preshooter to TODO list
+- Files modified:
+  - `2026Robot/src/main/java/frc/robot/RobotContainer.java` (bindings, drive stream, allianceRelativeControl)
+  - `2026Robot/src/main/java/frc/robot/subsystems/IntakeSubsystem.java` (added setSpeed)
+  - `2026Robot/TODO-COMPETITION.md` (updated completed/pending items)
+- Notes: allianceRelativeControl(true) + zeroGyroWithAlliance() = double-flip on red alliance. Only use ONE alliance compensation method.
+
+---
+
 ## 2026-03-20
 
 ### [2026-03-20 09:00] CLAUDE [DOCS]
@@ -407,3 +430,33 @@ Track all significant changes made by AI agents (Claude, Gemini, Codex) in the F
 - Repo: FRC-2026
 - Files modified: .agent-log/changelog.md
 - Notes: Findings focused on match-risk issues: no autonomous routines present, operator control mismatches in RobotContainer, untuned live shooting presets, no feed gating on shooter/turret readiness, dashboard controls that do not affect behavior, and vision path not competition-ready while disabled
+
+### [2026-03-20 10:25] CODEX [CONFIG]
+- Added approximate front-corner PhotonVision camera transforms for current competition mounting plan
+- Repo: FRC-2026
+- Files modified: 2026Robot/src/main/java/frc/robot/Constants.java, 2026Robot/src/main/java/frc/robot/subsystems/swervedrive/Vision.java
+- Notes: Vision remains globally disabled until cameras are mounted/calibrated. Right and left camera names are prewired as `right_cam` and `left_cam`; missing cameras simply produce no results until present in PhotonVision.
+- PENDING: Verify left camera yaw sign on hardware, re-measure final transforms after mounting, then set ENABLE_VISION=true and validate pose estimation on the field
+
+### [2026-03-20 10:31] CODEX [CONFIG]
+- Corrected left camera yaw sign to mirror the right camera based on updated mounting description
+- Repo: FRC-2026
+- Files modified: 2026Robot/src/main/java/frc/robot/Constants.java
+- Notes: Front-right camera yaw remains `-45 deg`; front-left is now `+45 deg` because both cameras look outward along the robot-center-to-camera line
+
+### [2026-03-20 11:04] CODEX [DOCS]
+- Documented the Beelink/PhotonVision competition setup and updated the vision TODO sequence to match the current staged bring-up plan
+- Repo: FRC-2026
+- Files modified: NOTES.md, README.md, 2026Robot/TODO-COMPETITION.md
+- Notes: Added the verified machine state (PhotonVision on boot, SSH on boot, headless sleep disabled, robot-side static IP, GRUB timeout change, BIOS power-loss note) and updated docs to reflect right-camera-first deployment
+
+### [2026-03-20 11:06] CODEX [DOCS]
+- Updated Beelink notes after final reboot verification and BIOS power-on confirmation
+- Repo: FRC-2026
+- Files modified: NOTES.md, .agent-log/changelog.md
+- Notes: Verified SSH and PhotonVision auto-start after reboot; BIOS power-loss behavior is now documented as configured by the team
+### [2026-03-20 13:56] CODEX [CONFIG]
+- Verified PhotonVision networking against the official docs and corrected the saved settings on the Beelink
+- Repo: FRC-2026
+- Files modified: NOTES.md, 2026Robot/TODO-COMPETITION.md, .agent-log/changelog.md
+- Notes: PhotonVision is now confirmed in NT client mode with team `3843`, managed static robot Ethernet `10.38.43.11`, and HTTP/SSH still reachable after service restart. Hotspot Wi-Fi remains usable but temporary.

@@ -326,15 +326,16 @@ Operator LBumper = near, RBumper = far for manual override anytime.
 
 ### Controller Quick Reference
 DRIVER (port 0):
-  Left stick     = translate (field-relative, alliance-aware)
+  Left stick     = translate (field-relative)
   Right stick X  = rotate
-  Left trigger   = slow mode (50%)
+  Left trigger   = progressive slow mode (80% no pull -> 20% full pull)
+  Right trigger  = intake + conveyor (progressive 0% -> 100%)
   A              = toggle heading lock (on by default)
-  Right bumper   = intake roller + floor conveyor (hold)
+  Right bumper   = intake + conveyor full speed (hold)
   Left bumper    = reverse intake + floor conveyor (hold)
   Start          = zero gyro (face downfield first!)
   POV Up         = X-lock wheels
-  Back           = center modules to 0 deg
+  POV Down       = center modules to 0 deg
 
 OPERATOR (port 1):
   Left stick dir = aim both turrets (field-centric: forward = downfield always)

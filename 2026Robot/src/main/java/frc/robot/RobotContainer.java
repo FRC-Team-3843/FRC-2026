@@ -33,12 +33,13 @@ import swervelib.SwerveInputStream;
  * <p>DRIVER (port 0):
  *   Left stick        — translate (field-relative)
  *   Right stick X     — rotate
- *   Left trigger held — slow mode
- *   Right bumper held — intake (intake + conveyor + hopper)
+ *   Left trigger      — progressive slow mode (80% → 20%)
+ *   Right trigger     — intake + conveyor (progressive 0% → 100%)
+ *   Right bumper held — intake + conveyor (full speed)
  *   Left bumper held  — reverse intake (eject/unjam)
  *   Start             — zero gyro (alliance-aware)
  *   POV Up            — lock wheels (X-pattern defense)
- *   Back              — center all modules to 0°
+ *   POV Down          — center all modules to 0°
  *   X (test mode)     — SysId drive motors
  *   Y (test mode)     — SysId angle motors
  *   A                 — toggle heading lock (on by default)
@@ -104,25 +105,16 @@ public class RobotContainer {
 
   private final SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
           drivebase.getSwerveDrive(),
-          () -> -driverXbox.getLeftY(),
-          () -> -driverXbox.getLeftX())
+          () -> -driverXbox.getLeftY() * (0.8 - 0.6 * driverXbox.getLeftTriggerAxis()),
+          () -> -driverXbox.getLeftX() * (0.8 - 0.6 * driverXbox.getLeftTriggerAxis()))
       .withControllerRotationAxis(() -> -driverXbox.getRightX())
       .deadband(Constants.OperatorConstants.DEADBAND)
       .scaleTranslation(Constants.DriveProfiles.FULL_SPEED_SCALE)
-      .allianceRelativeControl(true);
+      .allianceRelativeControl(false);
 
   private final SwerveInputStream driveDirectAngle = driveAngularVelocity.copy()
       .withControllerHeadingAxis(driverXbox::getRightX, driverXbox::getRightY)
       .headingWhile(true);
-
-  private final SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(
-          drivebase.getSwerveDrive(),
-          () -> -driverXbox.getLeftY(),
-          () -> -driverXbox.getLeftX())
-      .withControllerRotationAxis(() -> -driverXbox.getRightX())
-      .deadband(Constants.OperatorConstants.DEADBAND)
-      .scaleTranslation(Constants.DriveProfiles.SLOW_SPEED_SCALE)
-      .allianceRelativeControl(true);
 
   // ── Dashboard Choosers ────────────────────────────────────────────────────
 
@@ -189,16 +181,27 @@ public class RobotContainer {
     driverXbox.povUp().whileTrue(drivebase.lockCommand());
 
     // Center all modules to 0°
-    driverXbox.back().whileTrue(drivebase.centerModulesCommand());
+    driverXbox.povDown().whileTrue(drivebase.centerModulesCommand());
 
     // Toggle heading lock (A button, normal operation only)
     driverXbox.a().and(() -> !DriverStation.isTest())
         .onTrue(Commands.runOnce(() -> drivebase.toggleHeadingCorrection()));
 
-    // Slow mode
-    driverXbox.leftTrigger(0.5).whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
+    // Driver intake: right trigger scales intake roller + floor conveyor (0% → 100%)
+    new Trigger(() -> driverXbox.getRightTriggerAxis() > 0.05)
+        .and(() -> !DriverStation.isTest())
+        .whileTrue(Commands.run(() -> {
+            double speed = driverXbox.getRightTriggerAxis();
+            m_intake.setSpeed(speed);
+            m_conveyor.setSpeed(speed);
+        }, m_intake, m_conveyor)
+        .finallyDo(interrupted -> {
+            m_intake.setSpeed(0);
+            m_conveyor.setSpeed(0);
+        })
+        .withName("TriggerIntake"));
 
-    // Driver intake: intake roller + floor conveyor only
+    // Driver intake: right bumper full speed intake + conveyor
     driverXbox.rightBumper().and(() -> !DriverStation.isTest())
         .whileTrue(Commands.parallel(
             m_intake.runCommand(),

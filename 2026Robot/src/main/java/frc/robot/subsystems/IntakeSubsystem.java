@@ -35,6 +35,11 @@ public class IntakeSubsystem extends SubsystemBase {
     m_motor.getConfigurator().apply(config);
   }
 
+  /** Set motor speed directly. Used by trigger-controlled intake. */
+  public void setSpeed(double speed) {
+    m_motor.setControl(m_output.withOutput(speed));
+  }
+
   /** Run intake forward (ingesting fuel). Stops motor on command end. */
   public Command runCommand() {
     return this.runEnd(

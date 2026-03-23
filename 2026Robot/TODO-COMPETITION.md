@@ -1,7 +1,7 @@
 # Competition TODO — Team 3843
 
 Status: At competition, driving and shooting operational.
-Last updated: 2026-03-19 evening
+Last updated: 2026-03-23 (day 3 Smokey Mountain Regional)
 
 ---
 
@@ -30,14 +30,15 @@ Last updated: 2026-03-19 evening
 
 ## STILL NEEDED — Between Matches
 
-- [ ] **Verify remaining motor inversions** — conveyor, hopper, turrets L/R, all shooter motors
-- [ ] **Investigate FR angle motor** — SysId showed 3x higher friction (kS=1.08 vs 0.33-0.40)
+- [x] **Verify remaining motor inversions** — all verified good on hardware (day 3)
+- [x] **FR angle motor** — friction was transient during tuning, operating normally (day 3)
 - [ ] **Fix main shooter CAN 38** — firmware error on TalonFX 38, needs Phoenix6 firmware flash
 - [ ] **SysId swerve drive** — need space for a run, update pidfproperties.json
-- [ ] **Tune shooter presets** — D-pad RPMs are placeholders, tune for actual hub shots
-- [ ] **Tune hood servo angles** — NEAR_ANGLE=45, FAR_ANGLE=90 are starting values
-- [ ] **Register PathPlanner named commands** — needed for autonomous routines
-- [ ] **Create autonomous routines** — HP station pickup + shoot
+- [x] **Tune shooter presets** — D-pad RPMs tuned for actual hub shots (day 3)
+- [x] **Tune hood servo angles** — servo angles dialed in (day 3)
+- [x] **Register PathPlanner named commands** — autoShoot and stopShooter registered
+- [x] **Create autonomous routines** — "Just Shoot Auto" and "Main Auto" configured with auto chooser (day 3)
+- [ ] **SysId shooter & preshooter** — need characterization runs for velocity PID tuning
 
 ## STRETCH — Vision
 
@@ -125,12 +126,13 @@ Last updated: 2026-03-19 evening
 |---------|--------|
 | Left stick | Translate (field-relative) |
 | Right stick X | Rotate |
-| Left trigger | Slow mode (50%) |
-| Right bumper (hold) | Intake roller + floor conveyor |
+| Left trigger | Progressive slow mode (80% → 20%) |
+| Right trigger | Intake + conveyor (progressive 0% → 100%) |
+| Right bumper (hold) | Intake + conveyor (full speed) |
 | Left bumper (hold) | Reverse intake + floor conveyor |
 | Start | Zero gyro (face downfield first!) |
 | POV Up | X-lock wheels |
-| Back | Center modules |
+| POV Down | Center modules |
 
 ### OPERATOR (port 1)
 | Control | Action |
