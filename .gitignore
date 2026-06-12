@@ -189,3 +189,6 @@ compile_commands.json
 # Agent working directories
 .scratch/
 .research/
+
+# ACC local-only transcripts (never git-tracked)
+.transcripts/
