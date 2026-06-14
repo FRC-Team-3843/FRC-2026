@@ -4,7 +4,7 @@ Per-scope entity surface for the FRC-2026 repo. Same 5-column shape as the perso
 
 | entity | aliases | scope | notes/sources | status |
 |---|---|---|---|---|
-| frc-2026 | 2026 robot, rebuilt, 2026Robot | FRC-2026 | `FRC-2026\.notes\frc-2026-repo-source-202606120630.md`; robot code in `2026Robot\` | active |
+| frc-2026 | 2026 robot, rebuilt, 2026Robot | FRC-2026 | `FRC-2026\.notes\frc-2026-repo-source.md`; robot code in `2026Robot\` | active |
 | yagsl | yet another generic swerve library, yagsl-2026.1.20 | FRC-2026 | swerve library driving SwerveSubsystem; JSON config in `deploy/swerve/` `.notes\yagsl.md` | active |
 | photonvision | photonlib, photon vision | FRC-2026 | vision library / AprilTag pose fusion on RIO `.notes\photonvision.md` | active |
 | photonvision-coprocessor | vision coprocessor, beelink mini s, vision pi | FRC-2026 | Beelink Mini S on robot at `10.38.43.11:5800`; NOT the home-lab beelink `.notes\photonvision-coprocessor.md` | active |

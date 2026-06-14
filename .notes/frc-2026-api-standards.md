@@ -1,5 +1,7 @@
 ---
-id: frc-2026-api-standards-202606120630
+id: frc-2026-api-standards
+model: unattributed
+model_basis: unattributed
 title: FRC-2026 coding standards — 2026 motor APIs, no Phoenix Pro, no warning suppression
 type: decision
 schema_version: 1

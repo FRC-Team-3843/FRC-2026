@@ -32,7 +32,7 @@ provenance:
 
 ## Context
 
-Phoenix6 (`Phoenix6-replay-26.1.0` vendordep, `com.ctre.phoenix6.*`) drives every Kraken motor on the 2026 robot via `TalonFX`, plus the swerve `CANcoder`s. Team STANDARDS forbid Phoenix Pro features — only non-Pro control requests are allowed (`VelocityVoltage`, `VoltageOut`, `DutyCycleOut`). This is verified in `frc-2026-api-standards-202606120630`. Note the project ALSO uses legacy Phoenix5 for one device (the hopper Bag motor) — see `phoenix5-6-coexistence`.
+Phoenix6 (`Phoenix6-replay-26.1.0` vendordep, `com.ctre.phoenix6.*`) drives every Kraken motor on the 2026 robot via `TalonFX`, plus the swerve `CANcoder`s. Team STANDARDS forbid Phoenix Pro features — only non-Pro control requests are allowed (`VelocityVoltage`, `VoltageOut`, `DutyCycleOut`). This is verified in `frc-2026-api-standards`. Note the project ALSO uses legacy Phoenix5 for one device (the hopper Bag motor) — see `phoenix5-6-coexistence`.
 
 ## Observations
 
@@ -49,5 +49,5 @@ Main-shooter TalonFX on CAN 38 has a firmware error needing a Phoenix6 flash (op
 
 - relates-to [[frc-2026]] (motor-controller library for the 2026 robot)
 - relates-to [[phoenix5-ctre]] (legacy CTRE API also present, for the hopper)
-- relates-to [[frc-2026-api-standards-202606120630]] (the no-Phoenix-Pro standard)
+- relates-to [[frc-2026-api-standards]] (the no-Phoenix-Pro standard)
 - relates-to [[phoenix-tuner-x]] (the config/flash tool for these devices)

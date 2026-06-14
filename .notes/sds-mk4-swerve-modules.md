@@ -32,7 +32,7 @@ provenance:
 
 ## Context
 
-The drivetrain uses Swerve Drive Specialties MK4 modules in the **L1** configuration, stock orientation: drive 8.14:1, angle 12.8:1, 4" wheel. Each module has a NEO drive motor, a NEO angle motor, and a CTRE CANcoder for absolute steering position. The gearing question is settled in the scope: repo docs (L1, 8.14:1/12.8:1) win. The 5.8267:1 + custom inversion-plate setup was the *planned* inversion that a subteam failed to complete; the team improvised with stock modules and never flipped them. Full resolution lives in `frc-2026-shooter-swerve-hardware-202606120630`.
+The drivetrain uses Swerve Drive Specialties MK4 modules in the **L1** configuration, stock orientation: drive 8.14:1, angle 12.8:1, 4" wheel. Each module has a NEO drive motor, a NEO angle motor, and a CTRE CANcoder for absolute steering position. The gearing question is settled in the scope: repo docs (L1, 8.14:1/12.8:1) win. The 5.8267:1 + custom inversion-plate setup was the *planned* inversion that a subteam failed to complete; the team improvised with stock modules and never flipped them. Full resolution lives in `frc-2026-shooter-swerve-hardware`.
 
 ## Observations
 
@@ -43,10 +43,10 @@ The drivetrain uses Swerve Drive Specialties MK4 modules in the **L1** configura
 
 ## Open Questions
 
-None — the historical gearing divergence is resolved in `frc-2026-shooter-swerve-hardware-202606120630`.
+None — the historical gearing divergence is resolved in `frc-2026-shooter-swerve-hardware`.
 
 ## Relations
 
 - relates-to [[frc-2026]] (the swerve modules of the 2026 robot)
 - relates-to [[yagsl]] (these modules are configured/driven by YAGSL)
-- relates-to [[frc-2026-shooter-swerve-hardware-202606120630]] (gearing resolution)
+- relates-to [[frc-2026-shooter-swerve-hardware]] (gearing resolution)

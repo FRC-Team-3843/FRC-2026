@@ -48,4 +48,4 @@ None — class structure verified at seed time.
 ## Relations
 
 - relates-to [[frc-2026]] (the command architecture of the 2026 robot)
-- relates-to [[frc-2026-api-standards-202606120630]] (strict command-based + DI; RobotContainer is the only binding site)
+- relates-to [[frc-2026-api-standards]] (strict command-based + DI; RobotContainer is the only binding site)

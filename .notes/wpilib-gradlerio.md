@@ -32,13 +32,13 @@ provenance:
 
 ## Context
 
-GradleRIO (2026.2.1) is the WPILib Gradle plugin that drives the robot build lifecycle: `./gradlew build`, `deploy`, `test`, `simulateJava`. It is invoked from the `2026Robot/` project directory, not the repo root. The critical build-environment requirement — that builds must use the WPILib JDK17 because the system `java` is Java 8 — is fully captured in `frc-2026-build-env-java17-202606120630`; this note intentionally cross-links rather than restating it.
+GradleRIO (2026.2.1) is the WPILib Gradle plugin that drives the robot build lifecycle: `./gradlew build`, `deploy`, `test`, `simulateJava`. It is invoked from the `2026Robot/` project directory, not the repo root. The critical build-environment requirement — that builds must use the WPILib JDK17 because the system `java` is Java 8 — is fully captured in `frc-2026-build-env-java17`; this note intentionally cross-links rather than restating it.
 
 ## Observations
 
 - [registry] GradleRIO 2026.2.1; tasks `build` / `deploy` / `test` / `simulateJava`. #build
 - [registry] Run from the `2026Robot/` project dir, not the repo root. #build
-- [registry] JDK17/JAVA_HOME requirement lives in `frc-2026-build-env-java17-202606120630` — see that note, not duplicated here. #build
+- [registry] JDK17/JAVA_HOME requirement lives in `frc-2026-build-env-java17` — see that note, not duplicated here. #build
 
 ## Open Questions
 
@@ -47,5 +47,5 @@ None from the corpus.
 ## Relations
 
 - relates-to [[frc-2026]] (build/deploy tooling for the 2026 robot)
-- relates-to [[frc-2026-build-env-java17-202606120630]] (the JDK17 build-env rule)
+- relates-to [[frc-2026-build-env-java17]] (the JDK17 build-env rule)
 - relates-to [[roborio]] (the deploy target)

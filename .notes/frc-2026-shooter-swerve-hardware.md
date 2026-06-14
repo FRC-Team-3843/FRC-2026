@@ -1,5 +1,7 @@
 ---
-id: frc-2026-shooter-swerve-hardware-202606120630
+id: frc-2026-shooter-swerve-hardware
+model: unattributed
+model_basis: unattributed
 title: FRC-2026 hardware — double-turret shooter, swerve config, vision split
 type: decision
 schema_version: 1

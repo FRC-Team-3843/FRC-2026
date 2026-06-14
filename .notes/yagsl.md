@@ -45,7 +45,7 @@ Docs: https://broncbotz3481.github.io/YAGSL-Example/
 
 ## Open Questions
 
-None from the corpus — the L1/stock-orientation question (vs the planned 5.8267:1 inversion-plate variant) is already settled in `frc-2026-shooter-swerve-hardware-202606120630` (repo docs win).
+None from the corpus — the L1/stock-orientation question (vs the planned 5.8267:1 inversion-plate variant) is already settled in `frc-2026-shooter-swerve-hardware` (repo docs win).
 
 ## Relations
 

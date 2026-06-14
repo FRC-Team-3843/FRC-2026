@@ -32,7 +32,7 @@ provenance:
 
 ## Context
 
-REVLib (`REVLib.json` vendordep) drives every NEO and NEO 550 motor on the 2026 robot through SparkMax controllers. Team STANDARDS mandate the 2026 API — `SparkMax` / `SparkMaxConfig` — and explicitly prohibit the older `CANSparkMax`/`CANSparkMaxConfig` classes (verified in `frc-2026-api-standards-202606120630`). The SparkMax CAN-frame latency is also why `Constants.LOOP_TIME` is set high — see `sparkmax-loop-time`.
+REVLib (`REVLib.json` vendordep) drives every NEO and NEO 550 motor on the 2026 robot through SparkMax controllers. Team STANDARDS mandate the 2026 API — `SparkMax` / `SparkMaxConfig` — and explicitly prohibit the older `CANSparkMax`/`CANSparkMaxConfig` classes (verified in `frc-2026-api-standards`). The SparkMax CAN-frame latency is also why `Constants.LOOP_TIME` is set high — see `sparkmax-loop-time`.
 
 ## Observations
 
@@ -48,5 +48,5 @@ None from the corpus.
 ## Relations
 
 - relates-to [[frc-2026]] (motor-controller library for the 2026 robot)
-- relates-to [[frc-2026-api-standards-202606120630]] (the SparkMax-not-CANSparkMax standard)
+- relates-to [[frc-2026-api-standards]] (the SparkMax-not-CANSparkMax standard)
 - relates-to [[rev-hardware-client]] (the config/flash tool for SparkMax)

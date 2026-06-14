@@ -41,7 +41,7 @@ Docs: https://docs.photonvision.org/
 - [registry] Vendordep `photonlib.json` present in `2026Robot/vendordeps/`. #vision
 - [registry] Camera naming convention: `right_cam` / `left_cam`; pose fusion happens on the RIO, not the coprocessor. #vision
 - [registry] `Vision.java` (in `subsystems/swervedrive/`) is among the more-churned source files (4 commits). #vision
-- [registry] AprilTag field set is `k2026RebuiltAndymark` (see `frc-2026-shooter-swerve-hardware-202606120630`). #vision
+- [registry] AprilTag field set is `k2026RebuiltAndymark` (see `frc-2026-shooter-swerve-hardware`). #vision
 
 ## Open Questions
 

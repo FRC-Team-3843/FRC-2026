@@ -1,5 +1,7 @@
 ---
-id: frc-2026-build-env-java17-202606120630
+id: frc-2026-build-env-java17
+model: unattributed
+model_basis: unattributed
 title: FRC-2026 build requires WPILib JDK17 (system java is 8)
 type: decision
 schema_version: 1
