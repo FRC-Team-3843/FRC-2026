@@ -1,8 +1,7 @@
 ---
 id: superstructure-pattern
 title: Superstructure coordinates the feed chain — don't bypass it
-type: project
-schema_version: 1
+schema_version: 2
 created: 2026-06-13T21:55:41Z
 updated: 2026-06-13T21:55:41Z
 valid_until: null
@@ -24,6 +23,9 @@ provenance:
   recall-extract: claude-sonnet-4-6
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
+artifact_kind: memory
+memory_class: semantic
+semantic_kind: state
 ---
 
 # Superstructure coordinates the feed chain — don't bypass it

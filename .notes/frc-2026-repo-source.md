@@ -1,8 +1,7 @@
 ---
 id: frc-2026-repo-source
 title: FRC-2026 Robot Repository
-type: reference
-schema_version: 1
+schema_version: 2
 created: 2026-06-12T06:30:00Z
 updated: 2026-06-12T06:30:00Z
 path: C:\GitHub\FRC-2026
@@ -13,6 +12,9 @@ model: unattributed                              # Phase-7 note predates RC-PROV
 model_basis: unattributed
 tags: [frc, robotics, source, build]
 aliases: [2026 robot, rebuilt, 2026Robot, team 3843 robot]
+lifecycle: active
+artifact_kind: reference
+author: claude
 ---
 
 # FRC-2026 Robot Repository

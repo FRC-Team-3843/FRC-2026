@@ -1,8 +1,7 @@
 ---
 id: wpilib-gradlerio
 title: WPILib GradleRIO (build/deploy plugin)
-type: reference
-schema_version: 1
+schema_version: 2
 created: 2026-06-13T21:55:41Z
 updated: 2026-06-13T21:55:41Z
 valid_until: null
@@ -24,6 +23,10 @@ provenance:
   recall-extract: claude-sonnet-4-6
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
+lifecycle: active
+artifact_kind: memory
+memory_class: semantic
+semantic_kind: entity_profile
 ---
 
 # WPILib GradleRIO (build/deploy plugin)

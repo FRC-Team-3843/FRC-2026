@@ -3,8 +3,7 @@ id: frc-2026-build-env-java17
 model: unattributed
 model_basis: unattributed
 title: FRC-2026 build requires WPILib JDK17 (system java is 8)
-type: decision
-schema_version: 1
+schema_version: 2
 created: 2026-06-12T06:30:00Z
 updated: 2026-06-12T06:30:00Z
 valid_until: null
@@ -19,6 +18,9 @@ source_basis: conversation
 human_edited: false
 sensitivity: normal
 decisions: []
+artifact_kind: memory
+memory_class: semantic
+semantic_kind: state
 ---
 
 # FRC-2026 build requires WPILib JDK17 (system java is 8)
