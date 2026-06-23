@@ -18,7 +18,7 @@ related: [recovered-2026-03-20-0a6281e5, recovered-2026-03-21-ef7e1f2d]
 status: active
 supersedes: null
 confidence: 55
-source_basis: recovered-reconstruction
+source_basis: transcript
 human_edited: false
 sensitivity: normal
 decisions: []
