@@ -20,9 +20,6 @@ source_basis: conversation
 human_edited: false
 sensitivity: normal
 decisions: []
-artifact_kind: memory
-memory_class: semantic
-semantic_kind: state
 ---
 
 # FRC-2026 coding standards — 2026 motor APIs, no Phoenix Pro, no warning suppression

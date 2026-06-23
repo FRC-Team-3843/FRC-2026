@@ -3,7 +3,7 @@ id: phoenix5-6-coexistence
 title: Phoenix5 + Phoenix6 coexist — hopper is the Phoenix5 exception
 schema_version: 2
 artifact_kind: memory
-memory_class: semantic
+memory_class: procedural
 created: 2026-06-13T21:55:41Z
 updated: 2026-06-13T21:55:41Z
 valid_until: null
@@ -25,8 +25,6 @@ provenance:
   recall-extract: claude-sonnet-4-6
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
-artifact_kind: memory
-memory_class: procedural
 enforceability: preferred
 ---
 

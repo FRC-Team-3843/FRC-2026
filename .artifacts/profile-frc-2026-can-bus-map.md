@@ -25,9 +25,6 @@ provenance:
   recall-extract: claude-sonnet-4-6
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
-artifact_kind: memory
-memory_class: semantic
-semantic_kind: state
 ---
 
 # FRC-2026 CAN bus map (device → controller → motor)

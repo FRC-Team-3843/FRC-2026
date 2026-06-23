@@ -23,8 +23,6 @@ decisions: []
 load_profile: scope_entry
 load_priority: 20
 source_rel: FRC-2026\.protocol.md
-artifact_kind: memory
-memory_class: procedural
 enforceability: mandatory
 trigger: before any code change or hardware deploy in FRC-2026
 preconditions: working in the FRC-2026 repo

@@ -22,7 +22,6 @@ decisions: []
 load_profile: scope_entry
 load_priority: 195
 source_rel: FRC-2026\.standards.md
-artifact_kind: reference
 ---
 
 # FRC-2026 common build errors (2026 migration lookup)

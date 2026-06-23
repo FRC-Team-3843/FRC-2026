@@ -23,8 +23,6 @@ decisions: []
 load_profile: scope_entry
 load_priority: 160
 source_rel: FRC-2026\.standards.md
-artifact_kind: memory
-memory_class: procedural
 enforceability: preferred
 ---
 

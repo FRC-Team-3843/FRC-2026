@@ -12,7 +12,7 @@ model: claude-opus-4-8
 model_basis: confirmed
 tags: [frc, todo, decisions, status]
 aliases: [frc live todo, competition todo, frc-2026 open tasks, frc recent decisions]
-status: active
+status: open
 supersedes: null
 confidence: 60
 source_basis: document
@@ -22,9 +22,6 @@ decisions: []
 load_profile: scope_entry
 load_priority: 10
 source_rel: FRC-2026\.context.md
-artifact_kind: memory
-memory_class: semantic
-semantic_kind: state
 ---
 
 # FRC-2026 live competition TODO + recent decisions

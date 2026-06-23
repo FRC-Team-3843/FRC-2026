@@ -23,7 +23,6 @@ decisions: []
 load_profile: scope_entry
 load_priority: 155
 source_rel: FRC-2026\.standards.md
-artifact_kind: reference
 ---
 
 # FRC-2026 brake management pattern (disabled-mode brake delay)

@@ -26,9 +26,6 @@ provenance:
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
 lifecycle: active
-artifact_kind: memory
-memory_class: semantic
-semantic_kind: entity_profile
 ---
 
 # PhotonVision coprocessor (Beelink Mini S, robot vision)
