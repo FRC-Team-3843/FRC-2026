@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-02-15-eb68377f
+id: game-docs-hardware-constants-elastic-dashboard
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-eb68377f
 original_session_date: 2026-02-15
 tags: [recovered, reconstructed, frc, game-docs, hardware-config, elastic-dashboard, swerve]
-aliases: []
+aliases: [recovered-2026-02-15-eb68377f]
 related: []
 status: active
 supersedes: null

@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-01-22-d3843a9e
+id: build-fix-competitive-swerve-drivetrain-plan
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-d3843a9e
 original_session_date: 2026-01-22
 tags: [recovered, reconstructed, frc, build, swerve, planning]
-aliases: []
+aliases: [recovered-2026-01-22-d3843a9e]
 related: [recovered-2026-01-22-d2c697a7]
 status: active
 supersedes: null

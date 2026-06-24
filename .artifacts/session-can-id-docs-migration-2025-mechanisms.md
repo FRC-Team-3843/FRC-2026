@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-01-26-7babc4c3
+id: can-id-docs-migration-2025-mechanisms
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-7babc4c3
 original_session_date: 2026-01-26
 tags: [recovered, reconstructed, frc, documentation, can, frc-2025]
-aliases: []
+aliases: [recovered-2026-01-26-7babc4c3]
 related: []
 status: active
 supersedes: null

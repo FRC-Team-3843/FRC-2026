@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-03-16-f4be7a52
+id: cross-team-assist-11037-tank-drive-shooter
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-f4be7a52
 original_session_date: 2026-03-16
 tags: [recovered, reconstructed, frc, cross-team-assist, tank-drive, elastic-dashboard]
-aliases: []
+aliases: [recovered-2026-03-16-f4be7a52]
 related: []
 status: active
 supersedes: null

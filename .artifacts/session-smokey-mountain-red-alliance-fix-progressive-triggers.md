@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-03-21-ef7e1f2d
+id: smokey-mountain-red-alliance-fix-progressive-triggers
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-ef7e1f2d
 original_session_date: 2026-03-21
 tags: [recovered, reconstructed, frc, competition]
-aliases: []
+aliases: [recovered-2026-03-21-ef7e1f2d]
 related: [recovered-2026-03-17-aa7616b8, recovered-2026-03-20-0a6281e5]
 status: active
 supersedes: null

@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-01-22-d2c697a7
+id: yagsl-swerve-drivetrain-implementation-docs
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-d2c697a7
 original_session_date: 2026-01-22
 tags: [recovered, reconstructed, frc, swerve, yagsl, drivetrain, documentation]
-aliases: []
+aliases: [recovered-2026-01-22-d2c697a7]
 related: [recovered-2026-01-22-d3843a9e]
 status: active
 supersedes: null

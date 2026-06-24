@@ -1,5 +1,5 @@
 ---
-id: recovered-2026-01-30-be53c7cf
+id: roborio-firmware-imaging-mdns-discovery
 model: claude-sonnet-4-6
 model_basis: confirmed
 original_session_model: unattributed
@@ -13,7 +13,7 @@ author: claude
 session: recovered-be53c7cf
 original_session_date: 2026-01-30
 tags: [recovered, reconstructed, frc, roborio, hardware-setup, mdns]
-aliases: []
+aliases: [recovered-2026-01-30-be53c7cf]
 related: []
 status: active
 supersedes: null
