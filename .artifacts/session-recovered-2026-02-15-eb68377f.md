@@ -25,6 +25,7 @@ decisions: []
 artifact_kind: memory
 memory_class: episodic
 semantic_kind: state
+scope: FRC-2026
 ---
 
 # recovered: 2026 game docs + hardware constants + Elastic Dashboard system

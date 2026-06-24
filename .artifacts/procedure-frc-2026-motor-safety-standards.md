@@ -27,6 +27,7 @@ enforceability: mandatory
 trigger: configuring any motor or authoring any mechanism command
 preconditions: working in FRC-2026 robot code
 verification: every motor has a current limit; mechanisms have soft limits; mechanism commands have timeouts + clean interrupt handling
+scope: FRC-2026
 ---
 
 # FRC-2026 motor safety standards (current/soft limits, timeouts, failsafe)

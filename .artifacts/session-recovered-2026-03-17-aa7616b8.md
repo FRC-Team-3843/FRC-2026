@@ -25,6 +25,7 @@ decisions: []
 artifact_kind: memory
 memory_class: episodic
 semantic_kind: state
+scope: FRC-2026
 ---
 
 # recovered: Smokey Mountain Days 1-2 — mechanism impl, swerve SysId, competition floor tuning

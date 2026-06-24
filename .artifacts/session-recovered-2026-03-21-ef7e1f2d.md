@@ -25,6 +25,7 @@ decisions: []
 artifact_kind: memory
 memory_class: episodic
 semantic_kind: state
+scope: FRC-2026
 ---
 
 # recovered: Smokey Mountain Day 3 — red alliance fix, progressive triggers, final commit

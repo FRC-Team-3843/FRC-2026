@@ -23,6 +23,7 @@ decisions: []
 load_profile: scope_entry
 load_priority: 170
 source_rel: FRC-2026\.standards.md
+scope: FRC-2026
 ---
 
 # FRC-2026 Elastic Dashboard layout-JSON editing standard

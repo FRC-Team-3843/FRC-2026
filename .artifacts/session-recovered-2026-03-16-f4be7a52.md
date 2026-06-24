@@ -25,6 +25,7 @@ decisions: []
 artifact_kind: memory
 memory_class: episodic
 semantic_kind: state
+scope: FRC-2026
 ---
 
 # recovered: cross-team assist — FRC team 11037 tank drive + shooter (flash drive)

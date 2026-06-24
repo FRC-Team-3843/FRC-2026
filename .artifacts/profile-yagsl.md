@@ -27,6 +27,7 @@ provenance:
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
 lifecycle: active
+scope: FRC-2026
 ---
 
 # YAGSL (Yet Another Generic Swerve Library)

@@ -24,6 +24,7 @@ load_profile: scope_entry
 load_priority: 60
 source_rel: FRC-2026\.standards.md
 enforceability: preferred
+scope: FRC-2026
 ---
 
 # FRC-2026 Java naming conventions + Constants.java structure

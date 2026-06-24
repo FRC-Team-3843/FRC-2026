@@ -24,6 +24,7 @@ load_profile: scope_entry
 load_priority: 130
 source_rel: FRC-2026\.standards.md
 enforceability: preferred
+scope: FRC-2026
 ---
 
 # FRC-2026 logging + telemetry standards (DataLog, NT naming)

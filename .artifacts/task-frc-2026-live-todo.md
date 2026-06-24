@@ -22,6 +22,7 @@ decisions: []
 load_profile: scope_entry
 load_priority: 10
 source_rel: FRC-2026\.context.md
+scope: FRC-2026
 ---
 
 # FRC-2026 live competition TODO + recent decisions

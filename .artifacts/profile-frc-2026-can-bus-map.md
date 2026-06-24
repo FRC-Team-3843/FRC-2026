@@ -25,6 +25,7 @@ provenance:
   recall-extract: claude-sonnet-4-6
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
+scope: FRC-2026
 ---
 
 # FRC-2026 CAN bus map (device → controller → motor)

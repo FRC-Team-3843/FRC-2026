@@ -26,6 +26,7 @@ provenance:
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
 enforceability: preferred
+scope: FRC-2026
 ---
 
 # LOOP_TIME = 0.13 accounts for SparkMax CAN delay

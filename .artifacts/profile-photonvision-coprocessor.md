@@ -26,6 +26,7 @@ provenance:
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
 lifecycle: active
+scope: FRC-2026
 ---
 
 # PhotonVision coprocessor (Beelink Mini S, robot vision)

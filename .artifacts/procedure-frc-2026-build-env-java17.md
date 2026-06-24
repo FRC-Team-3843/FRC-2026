@@ -20,6 +20,7 @@ source_basis: conversation
 human_edited: false
 sensitivity: normal
 decisions: []
+scope: FRC-2026
 ---
 
 # FRC-2026 build requires WPILib JDK17 (system java is 8)

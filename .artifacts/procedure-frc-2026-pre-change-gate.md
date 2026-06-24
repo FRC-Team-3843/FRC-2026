@@ -27,6 +27,7 @@ enforceability: mandatory
 trigger: before any code change or hardware deploy in FRC-2026
 preconditions: working in the FRC-2026 repo
 verification: JAVA_HOME points at the WPILib JDK17; STANDARDS read this session; CAN IDs checked against the map
+scope: FRC-2026
 ---
 
 # FRC-2026 pre-change gate — read STANDARDS, set JDK17, verify CAN IDs

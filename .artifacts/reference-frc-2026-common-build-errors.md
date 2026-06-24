@@ -12,6 +12,7 @@ model: claude-opus-4-8
 model_basis: confirmed
 tags: [frc, reference, build, errors, migration]
 aliases: [frc build errors, cansparkmax error, controlmode error, 2026 migration errors]
+source: compiled from FRC-2026 2026Robot build + 2026 REBUILT migration experience (decomposed from .standards.md)
 status: active
 supersedes: null
 confidence: 60
@@ -22,6 +23,7 @@ decisions: []
 load_profile: scope_entry
 load_priority: 195
 source_rel: FRC-2026\.standards.md
+scope: FRC-2026
 ---
 
 # FRC-2026 common build errors (2026 migration lookup)

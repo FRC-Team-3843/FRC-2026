@@ -26,6 +26,7 @@ provenance:
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
 enforceability: preferred
+scope: FRC-2026
 ---
 
 # Hood angles live in deploy/hood-config.json, not Constants

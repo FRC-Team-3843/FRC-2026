@@ -15,6 +15,7 @@ aliases: [2026 robot, rebuilt, 2026Robot, team 3843 robot]
 lifecycle: active
 artifact_kind: reference
 author: claude
+scope: FRC-2026
 ---
 
 # FRC-2026 Robot Repository
