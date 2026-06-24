@@ -14,7 +14,7 @@ session: recovered-d2c697a7
 original_session_date: 2026-01-22
 tags: [recovered, reconstructed, frc, swerve, yagsl, drivetrain, documentation]
 aliases: [recovered-2026-01-22-d2c697a7]
-related: [recovered-2026-01-22-d3843a9e]
+related: [build-fix-competitive-swerve-drivetrain-plan]
 status: active
 supersedes: null
 confidence: 50

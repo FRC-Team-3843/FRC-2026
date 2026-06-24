@@ -14,7 +14,7 @@ session: recovered-0a6281e5
 original_session_date: 2026-03-20
 tags: [recovered, reconstructed, frc, competition]
 aliases: [recovered-2026-03-20-0a6281e5]
-related: [recovered-2026-03-17-aa7616b8, recovered-2026-03-21-ef7e1f2d]
+related: [smokey-mountain-mechanism-swerve-sysid-tuning, smokey-mountain-red-alliance-fix-progressive-triggers]
 status: active
 supersedes: null
 confidence: 57

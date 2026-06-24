@@ -14,7 +14,7 @@ session: recovered-aa7616b8
 original_session_date: 2026-03-17
 tags: [recovered, reconstructed, frc, competition]
 aliases: [recovered-2026-03-17-aa7616b8]
-related: [recovered-2026-03-20-0a6281e5, recovered-2026-03-21-ef7e1f2d]
+related: [smokey-mountain-shootercalculator-hoodconfig-alliance-bug, smokey-mountain-red-alliance-fix-progressive-triggers]
 status: active
 supersedes: null
 confidence: 55

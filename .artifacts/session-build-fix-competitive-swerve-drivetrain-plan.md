@@ -14,7 +14,7 @@ session: recovered-d3843a9e
 original_session_date: 2026-01-22
 tags: [recovered, reconstructed, frc, build, swerve, planning]
 aliases: [recovered-2026-01-22-d3843a9e]
-related: [recovered-2026-01-22-d2c697a7]
+related: [yagsl-swerve-drivetrain-implementation-docs]
 status: active
 supersedes: null
 confidence: 35
