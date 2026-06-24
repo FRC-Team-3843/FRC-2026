@@ -4,7 +4,7 @@ title: FRC-2026 live competition TODO + recent decisions
 schema_version: 2
 artifact_kind: task
 created: 2026-06-23T00:54:31Z
-updated: 2026-06-23T00:54:31Z
+updated: 2026-06-23T01:30:00Z
 valid_until: null
 author: claude
 session: acc-monolith-decomp-pilot-20260623
@@ -37,13 +37,13 @@ Decomposed from the `.context.md` monolith's `@always` block (TODO + Recent Deci
 - [question] SysId swerve drive (needs space) + update pidf properties #robotics. Source: `TODO-COMPETITION.md`.
 - [question] SysId shooter + preshooter for velocity PID tuning #robotics. Source: `TODO-COMPETITION.md`.
 - [question] Vision bring-up: mount/wire/calibrate right camera, then set `VisionConstants.ENABLE_VISION = true` #vision. Source: `TODO-COMPETITION.md`, `README.md`.
-- [decision] 2026-02-15 — AprilTag field set to `AprilTagFields.k2026RebuiltAndymark` (lowercase 'm'); compiles, done #vision. Source: `NOTES.md` §3.3.
-- [decision] 2026-03 — Mirrored double-turret shooter is the committed mechanism design #architecture. Source: `README.md`, `NOTES.md`.
+- [decision] 2026-02-15 — AprilTag field set to `AprilTagFields.k2026RebuiltAndymark` (lowercase 'm'); compiles, done #vision. Source: `ROBOT NOTES.md` §3.3.
+- [decision] 2026-03 — Mirrored double-turret shooter is the committed mechanism design #architecture. Source: `README.md`, `ROBOT NOTES.md`.
 - [decision] 2026-01-25 — Phoenix Pro features explicitly NOT used; Phoenix6 non-Pro control requests only #standards. Source: `STANDARDS.md` §3, changelog.
 - [decision] 2026-01-23 — `STANDARDS.md` is the single source of truth; strict command-based + DI mandatory #standards. Source: `STANDARDS.md`.
 
 ## Notes for Future Sessions
-The legacy `.project-context.md` template was stale (2026-01-23 pre-season) and has been retired — `README.md` / `NOTES.md` / `2026Robot\TODO-COMPETITION.md` are the live truth. The swerve-ratio and design decisions are detailed in `frc-2026-shooter-swerve-hardware`.
+The legacy `.project-context.md` template was stale (2026-01-23 pre-season) and has been retired — `README.md` / `ROBOT NOTES.md` / `2026Robot\TODO-COMPETITION.md` are the live truth. The swerve-ratio and design decisions are detailed in `frc-2026-shooter-swerve-hardware`.
 
 ## Relations
 - relates-to [[frc-2026]] (live status of the 2026 robot)

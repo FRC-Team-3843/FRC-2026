@@ -5,7 +5,7 @@ schema_version: 2
 artifact_kind: memory
 memory_class: semantic
 created: 2026-06-13T21:55:41Z
-updated: 2026-06-13T21:55:41Z
+updated: 2026-06-23T00:00:00Z
 valid_until: null
 author: claude
 session: null
@@ -34,7 +34,7 @@ scope: FRC-2026
 
 ## Context
 
-The 2026 robot mixes three motor-controller ecosystems (Phoenix6, Phoenix5, REVLib) on one CAN bus, plus PWM and SPI devices off the bus. The authoritative table lives in `2026Robot/TODO-COMPETITION.md` and `NOTES.md` §0B; the per-device facts below are corroborated by the CAN-ID comments in `Constants.java`. Keep this as a single reference because the mapping is spread across multiple Constants inner-classes and two docs.
+The 2026 robot mixes three motor-controller ecosystems (Phoenix6, Phoenix5, REVLib) on one CAN bus, plus PWM and SPI devices off the bus. The authoritative table lives in `2026Robot/TODO-COMPETITION.md` and `ROBOT NOTES.md` §0B; the per-device facts below are corroborated by the CAN-ID comments in `Constants.java`. Keep this as a single reference because the mapping is spread across multiple Constants inner-classes and two docs.
 
 ## Observations
 
@@ -51,7 +51,7 @@ The 2026 robot mixes three motor-controller ecosystems (Phoenix6, Phoenix5, REVL
 
 ## Open Questions
 
-Main-shooter TalonFX on CAN 38 has a firmware error (needs a Phoenix6 flash) — open TODO in `.context.md`.
+Main-shooter TalonFX on CAN 38 has a firmware error (needs a Phoenix6 flash) — open TODO in [[frc-2026-live-todo]] / `2026Robot\TODO-COMPETITION.md`.
 
 ## Relations
 

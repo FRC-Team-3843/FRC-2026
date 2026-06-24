@@ -6,7 +6,7 @@ artifact_kind: memory
 memory_class: semantic
 semantic_kind: entity_profile
 created: 2026-06-13T21:55:41Z
-updated: 2026-06-13T21:55:41Z
+updated: 2026-06-23T00:00:00Z
 valid_until: null
 author: claude
 session: null
@@ -47,7 +47,7 @@ Phoenix6 (`Phoenix6-replay-26.1.0` vendordep, `com.ctre.phoenix6.*`) drives ever
 
 ## Open Questions
 
-Main-shooter TalonFX on CAN 38 has a firmware error needing a Phoenix6 flash (open TODO in `.context.md`).
+Main-shooter TalonFX on CAN 38 has a firmware error needing a Phoenix6 flash (open TODO in [[frc-2026-live-todo]] / `2026Robot\TODO-COMPETITION.md`).
 
 ## Relations
 

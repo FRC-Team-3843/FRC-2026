@@ -6,7 +6,7 @@ artifact_kind: memory
 memory_class: semantic
 semantic_kind: entity_profile
 created: 2026-06-13T21:55:41Z
-updated: 2026-06-13T21:55:41Z
+updated: 2026-06-23T00:00:00Z
 valid_until: null
 author: claude
 session: null
@@ -36,7 +36,7 @@ scope: FRC-2026
 
 ## Context
 
-AdvantageScope is the desktop viewer for `.wpilog` telemetry files and SysId analysis on the 2026 robot. SysId runs (logged by the RIO to `/home/lvuser/`) are pulled and analyzed here to produce drive/shooter/preshooter velocity-PID gains. It is referenced in NOTES §4 and §6 as the telemetry/analysis tool. The deferred SysId runs (drive, shooter, preshooter) noted in `.context.md` would be analyzed in AdvantageScope.
+AdvantageScope is the desktop viewer for `.wpilog` telemetry files and SysId analysis on the 2026 robot. SysId runs (logged by the RIO to `/home/lvuser/`) are pulled and analyzed here to produce drive/shooter/preshooter velocity-PID gains. It is referenced in NOTES §4 and §6 as the telemetry/analysis tool. The deferred SysId runs (drive, shooter, preshooter) noted in [[frc-2026-live-todo]] / `2026Robot\TODO-COMPETITION.md` would be analyzed in AdvantageScope.
 
 ## Observations
 

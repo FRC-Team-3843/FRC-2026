@@ -5,7 +5,7 @@ schema_version: 2
 artifact_kind: memory
 memory_class: semantic
 created: 2026-06-13T21:55:41Z
-updated: 2026-06-13T21:55:41Z
+updated: 2026-06-23T00:00:00Z
 valid_until: null
 author: claude
 session: null
@@ -35,7 +35,7 @@ scope: FRC-2026
 
 ## Context
 
-A dedicated coprocessor on the robot runs the AprilTag vision pipeline so the RoboRIO only does pose fusion. It is a Beelink Mini S (Intel N100) running Ubuntu 24.04 with PhotonVision as a headless systemd service. On the robot network it answers at `10.38.43.11:5800`. The vision system is wired but gated off (`VisionConstants.ENABLE_VISION = false`) until the right camera is mounted and calibrated (see `.context.md` TODO).
+A dedicated coprocessor on the robot runs the AprilTag vision pipeline so the RoboRIO only does pose fusion. It is a Beelink Mini S (Intel N100) running Ubuntu 24.04 with PhotonVision as a headless systemd service. On the robot network it answers at `10.38.43.11:5800`. The vision system is wired but gated off (`VisionConstants.ENABLE_VISION = false`) until the right camera is mounted and calibrated (see [[frc-2026-live-todo]] / `2026Robot\TODO-COMPETITION.md` TODO).
 
 IMPORTANT — this is NOT the same machine as the PersonalContext `beelink` entity. That Beelink is the home-lab Proxmox host (tailnet `100.71.104.115`, runs the HomeHub HA VM). This one is a separate physical box living on the robot for vision only.
 
@@ -45,7 +45,7 @@ IMPORTANT — this is NOT the same machine as the PersonalContext `beelink` enti
 - [registry] Robot-network address: `10.38.43.11:5800` (PhotonVision dashboard/stream). #vision
 - [registry] SSH access cited as `murray-robotics-3843@10.38.43.11`; setup-time Wi-Fi address was `192.168.100.215`. #vision
 - [registry] DISTINCT from PersonalContext `beelink` (Proxmox host `100.71.104.115`) — different machine, different purpose. #hardware
-- [registry] Vision is disabled (`ENABLE_VISION = false`) pending right-camera mount/wire/calibrate (open TODO in `.context.md`). #vision
+- [registry] Vision is disabled (`ENABLE_VISION = false`) pending right-camera mount/wire/calibrate (open TODO in [[frc-2026-live-todo]] / `2026Robot\TODO-COMPETITION.md`). #vision
 
 ## Open Questions
 
