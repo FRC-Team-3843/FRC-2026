@@ -27,6 +27,7 @@ provenance:
   precision-judge: claude-opus-4-8
 enforceability: preferred
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # Phoenix5 + Phoenix6 coexist — hopper is the Phoenix5 exception

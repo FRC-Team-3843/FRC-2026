@@ -26,6 +26,7 @@ provenance:
   find-missing: claude-sonnet-4-6
   precision-judge: claude-opus-4-8
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # Superstructure coordinates the feed chain — don't bypass it

@@ -27,6 +27,7 @@ provenance:
   precision-judge: claude-opus-4-8
 enforceability: preferred
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # Hood angles live in deploy/hood-config.json, not Constants

@@ -26,6 +26,7 @@ artifact_kind: memory
 memory_class: episodic
 semantic_kind: state
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # recovered: Smokey Mountain Day 3 — red alliance fix, progressive triggers, final commit

@@ -27,6 +27,7 @@ provenance:
   precision-judge: claude-opus-4-8
 enforceability: preferred
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # LOOP_TIME = 0.13 accounts for SparkMax CAN delay

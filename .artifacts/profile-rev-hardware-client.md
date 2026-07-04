@@ -28,6 +28,7 @@ provenance:
   precision-judge: claude-opus-4-8
 lifecycle: active
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # REV Hardware Client (SparkMax config tool)

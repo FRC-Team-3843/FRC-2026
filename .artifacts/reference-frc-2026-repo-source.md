@@ -16,6 +16,7 @@ lifecycle: active
 artifact_kind: reference
 author: claude
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # FRC-2026 Robot Repository

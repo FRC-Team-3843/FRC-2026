@@ -21,6 +21,7 @@ human_edited: false
 sensitivity: normal
 decisions: []
 scope: FRC-2026
+load_profile: on_demand
 ---
 
 # FRC-2026 hardware — double-turret shooter, swerve config, vision split
