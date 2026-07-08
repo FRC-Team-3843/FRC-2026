@@ -95,3 +95,7 @@ load_profile: on_demand
 ## Likely missing
 
 On-field tuned shooter RPM values actually used in matches, which specific turret SysId runs produced usable data, match outcomes, and what was tried-and-reverted during the ~20-exchange block [81-99].
+
+## Relations
+- relates_to [[feeder-hopper-geometry-guidelines]] (The reference is unvalidated AI design advice explicitly flagged 'confirm against prototype testing'; this session documents the actual built FeederSu) <!-- @dreaming 2026-07-08 -->
+- relates_to [[feeder-opening-geometry-foam-balls]] (This episodic note's own Open Questions ask whether a final feeder/hopper geometry was ever chosen and built; this session is the corpus's actual buil) <!-- @dreaming 2026-07-08 -->

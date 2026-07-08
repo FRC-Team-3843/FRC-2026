@@ -41,3 +41,5 @@ This is unvalidated AI design advice, not measured/tested data - treat as a star
 - derived_from [[session-feeder-opening-geometry-foam-balls]] (source conversation, FRC-2026 episodic note)
 - relates_to [[FeederSubsystem]]
 - relates_to [[HopperSubsystem]]
+- relates_to [[feeder-opening-geometry-foam-balls]] (The reference artifact already declares derived_from this episodic session, but the session's Relations section doesn't link back to the companion ref) <!-- @dreaming 2026-07-08 -->
+- relates_to [[smokey-mountain-mechanism-swerve-sysid-tuning]] (The reference is unvalidated AI design advice explicitly flagged 'confirm against prototype testing'; this session documents the actual built FeederSu) <!-- @dreaming 2026-07-08 -->

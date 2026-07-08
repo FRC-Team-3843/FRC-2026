@@ -53,3 +53,4 @@ Conversation with the FRC team mentor (single monochrome global-shutter camera q
 - relates_to [[photonvision-coprocessor]] (this session's hardware-selection research plausibly precedes/feeds the currently-recorded Beelink Mini S N100 coprocessor)
 - relates_to [[photonvision]] (software the sourced hardware runs)
 - relates_to [[task-frc-2026-live-todo]] (open "Vision bring-up: mount/wire/calibrate right camera" item this research supports)
+- relates_to [[frc-2026-live-todo]] (Session already relates_to frc-2026-live-todo (the vision bring-up TODO its sourcing research supports); the task's Relations section doesn't link bac) <!-- @dreaming 2026-07-08 -->

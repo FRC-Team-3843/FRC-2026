@@ -49,3 +49,4 @@ The legacy `.project-context.md` template was stale (2026-01-23 pre-season) and 
 - relates-to [[frc-2026]] (live status of the 2026 robot)
 - relates-to [[frc-2026-shooter-swerve-hardware]] (the design decisions referenced here)
 - relates-to [[frc-2026-can-bus-map]] (CAN 38 main-shooter device)
+- relates_to [[photonvision-4-camera-coprocessor-selection]] (Session already relates_to frc-2026-live-todo (the vision bring-up TODO its sourcing research supports); the task's Relations section doesn't link bac) <!-- @dreaming 2026-07-08 -->

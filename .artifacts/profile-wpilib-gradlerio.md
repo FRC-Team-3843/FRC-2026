@@ -55,3 +55,4 @@ None from the corpus.
 - relates-to [[frc-2026]] (build/deploy tooling for the 2026 robot)
 - relates-to [[frc-2026-build-env-java17]] (the JDK17 build-env rule)
 - relates-to [[roborio]] (the deploy target)
+- relates_to [[frc-laptop-setup-doc-review]] (Profile's per-year-install/no-uninstall-needed fact is cited inline as sourced from this session, but neither Relations section links them.) <!-- @dreaming 2026-07-08 -->

@@ -36,3 +36,5 @@ sensitivity: normal
 
 ## Relations
 - relates_to [[session-frc-laptop-setup-doc-review]] (source conversation)
+- relates_to [[frc-laptop-setup-doc-review]] (frc-laptop-fleet-config already relates_to this session as its source conversation; the session's own Relations section doesn't link back to the confi) <!-- @dreaming 2026-07-08 -->
+- relates_to [[frc-team-3843]] (Cross-scope (FRC-2026 to PersonalContext): frc-laptop-fleet-config declares entities:[frc-team-3843] but has no link to the team's entity profile; the) <!-- @dreaming 2026-07-08 -->

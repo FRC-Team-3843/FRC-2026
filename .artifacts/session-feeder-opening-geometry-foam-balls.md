@@ -49,3 +49,5 @@ This is design-advice content only — no repo files, CAD documents, or code wer
 ## Relations
 - relates_to [[FeederSubsystem]] (this conversation's geometry guidance targets the mechanism this subsystem drives)
 - relates_to [[HopperSubsystem]] (adjacent mechanism in the same ball-handling path)
+- relates_to [[feeder-hopper-geometry-guidelines]] (The reference artifact already declares derived_from this episodic session, but the session's Relations section doesn't link back to the companion ref) <!-- @dreaming 2026-07-08 -->
+- relates_to [[smokey-mountain-mechanism-swerve-sysid-tuning]] (This episodic note's own Open Questions ask whether a final feeder/hopper geometry was ever chosen and built; this session is the corpus's actual buil) <!-- @dreaming 2026-07-08 -->

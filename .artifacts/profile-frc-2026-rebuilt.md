@@ -53,3 +53,4 @@ None from the corpus (full rules in NOTES §0 and the linked 2026 Game Manual).
 ## Relations
 
 - relates-to [[frc-2026]] (the game the 2026 robot is designed for)
+- relates_to [[frc-team-3843]] (cross-scope: the team's entity profile and the current 2026 REBUILT game are the team's active competition context this season) <!-- @dreaming 2026-07-08 -->

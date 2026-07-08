@@ -57,3 +57,4 @@ Main-shooter TalonFX on CAN 38 has a firmware error needing a Phoenix6 flash (op
 - relates-to [[phoenix5-ctre]] (legacy CTRE API also present, for the hopper)
 - relates-to [[frc-2026-api-standards]] (the no-Phoenix-Pro standard)
 - relates-to [[phoenix-tuner-x]] (the config/flash tool for these devices)
+- relates_to [[cancoder-firmware-vk-vh-selection]] (Session already relates_to phoenix6-ctre (the CANcoder hardware-generation fact this session established is now inline in the profile's Observations);) <!-- @dreaming 2026-07-08 -->

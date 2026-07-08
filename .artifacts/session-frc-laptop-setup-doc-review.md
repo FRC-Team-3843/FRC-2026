@@ -59,3 +59,9 @@ Source doc: a Google Doc ("FRC laptop setup") Bryant shared read-only via the Dr
 
 ## Relations
 - relates_to [[reference-frc-2026-repo-source]] (team GitHub repo the laptops are configured to clone/push, per this doc's VS Code setup section)
+- relates_to [[phoenix-tuner-x]] (Profile's 'remove legacy Phoenix Tuner v1' gotcha is cited inline as sourced from this session, but neither artifact's Relations section carries the l) <!-- @dreaming 2026-07-08 -->
+- relates_to [[rev-hardware-client]] (Profile's 'legacy RHC1 conflicts with RHC2' gotcha is cited inline as sourced from this session, but neither Relations section links them.) <!-- @dreaming 2026-07-08 -->
+- relates_to [[wpilib-gradlerio]] (Profile's per-year-install/no-uninstall-needed fact is cited inline as sourced from this session, but neither Relations section links them.) <!-- @dreaming 2026-07-08 -->
+- relates_to [[choreolib]] (Profile's 'Choreo distributed via GitHub releases, not the Microsoft Store' correction is cited inline as sourced from this session, but neither Relat) <!-- @dreaming 2026-07-08 -->
+- relates_to [[frc-laptop-fleet-config]] (frc-laptop-fleet-config already relates_to this session as its source conversation; the session's own Relations section doesn't link back to the confi) <!-- @dreaming 2026-07-08 -->
+- relates_to [[frc-team-3843]] (Cross-scope (FRC-2026 to PersonalContext): session entities:[frc-team-3843] documents team-owned equipment setup but isn't linked from the team's enti) <!-- @dreaming 2026-07-08 -->

@@ -57,3 +57,5 @@ None from the corpus.
 - relates-to [[phoenix6-ctre]] (configures Phoenix6 TalonFX/CANcoder devices)
 - relates-to [[phoenix5-ctre]] (also flashes the Phoenix5 TalonSRX)
 - relates-to [[rev-hardware-client]] (the paired tool for REV/SparkMax devices)
+- relates_to [[cancoder-firmware-vk-vh-selection]] (Session already relates_to phoenix-tuner-x (used its hidden firmware-picker dropdown to resolve the vK/vH question); profile lacks the reciprocal back) <!-- @dreaming 2026-07-08 -->
+- relates_to [[frc-laptop-setup-doc-review]] (Profile's 'remove legacy Phoenix Tuner v1' gotcha is cited inline as sourced from this session, but neither artifact's Relations section carries the l) <!-- @dreaming 2026-07-08 -->

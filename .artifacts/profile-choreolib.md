@@ -53,3 +53,4 @@ Is Choreo actually used, or a vestigial dependency? No Choreo trajectory assets 
 
 - relates-to [[frc-2026]] (trajectory library present in the 2026 robot project)
 - relates-to [[pathplanner]] (the auto library actually wired up; Choreo coexists with it)
+- relates_to [[frc-laptop-setup-doc-review]] (Profile's 'Choreo distributed via GitHub releases, not the Microsoft Store' correction is cited inline as sourced from this session, but neither Relat) <!-- @dreaming 2026-07-08 -->

@@ -54,3 +54,4 @@ None from the corpus.
 - relates-to [[frc-2026]] (config tool for the 2026 robot's REV devices)
 - relates-to [[revlib-sparkmax]] (configures the SparkMax controllers REVLib drives)
 - relates-to [[phoenix-tuner-x]] (the paired CTRE-side tool)
+- relates_to [[frc-laptop-setup-doc-review]] (Profile's 'legacy RHC1 conflicts with RHC2' gotcha is cited inline as sourced from this session, but neither Relations section links them.) <!-- @dreaming 2026-07-08 -->

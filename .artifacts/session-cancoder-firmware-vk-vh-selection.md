@@ -45,5 +45,5 @@ Conversation from 2026-01-17 (imported 2026-07-05). User was updating CANcoder f
 - This complements the existing `[[phoenix-tuner-x]]` and `[[phoenix6-ctre]]` profiles (proposed as a reconcile-append; see distill proposals) rather than duplicating them.
 
 ## Relations
-- relates_to [[phoenix-tuner-x]] (the tool used to determine hardware revision + flash firmware)
-- relates_to [[phoenix6-ctre]] (Phoenix 6 framework the CANcoder firmware must match)
+- relates_to [[phoenix-tuner-x]] (the tool used to determine hardware revision + flash firmware) <!-- @dreaming 2026-07-08 reciprocal -->
+- relates_to [[phoenix6-ctre]] (Phoenix 6 framework the CANcoder firmware must match) <!-- @dreaming 2026-07-08 reciprocal -->
