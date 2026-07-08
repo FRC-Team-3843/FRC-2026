@@ -44,6 +44,7 @@ GradleRIO (2026.2.1) is the WPILib Gradle plugin that drives the robot build lif
 - [registry] GradleRIO 2026.2.1; tasks `build` / `deploy` / `test` / `simulateJava`. #build
 - [registry] Run from the `2026Robot/` project dir, not the repo root. #build
 - [registry] JDK17/JAVA_HOME requirement lives in `frc-2026-build-env-java17` — see that note, not duplicated here. #build
+- [fact] WPILib installs per-year to separate folders — updating to a new season's release does not require uninstalling the prior year; re-running the new year's installer in place is sufficient, and VS Code offers to upgrade an existing robot project on next open. Running the FULL installer (not just opening VS Code) is required to also pick up that year's updated desktop tools (Elastic, AdvantageScope) #frc-2026 <!-- @claude 2026-07-07T00:00:00Z, source: session-frc-laptop-setup-doc-review -->
 
 ## Open Questions
 

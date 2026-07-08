@@ -45,6 +45,7 @@ Phoenix6 (`Phoenix6-replay-26.1.0` vendordep, `com.ctre.phoenix6.*`) drives ever
 - [registry] Drives Kraken TalonFX motors: intake CAN 30 (X44), preshooters 36-37 (X44), main shooters 38-39 (X60); plus swerve CANcoders 19-22. #can
 - [registry] Pro features forbidden — only `VelocityVoltage` / `VoltageOut` / `DutyCycleOut` control requests appear in subsystem code (verified in `ShooterSubsystem.java`, `IntakeSubsystem.java`). #standards
 - [registry] Coexists with Phoenix5 in the same project (hopper TalonSRX) — do not assume one CTRE API everywhere. #ctre
+- [registry] CANcoder hardware ships in at least two generations: original, and "vH" (introduced late 2022 for the chip shortage) — CTRE officially documents only these two. A third label, "vK", appears in CTRE's GitHub firmware filenames but is undocumented anywhere (confirmed via Chief Delphi — other teams equally confused). Phoenix Tuner X's device list "Hardware" column shows which generation is actually connected; if it does NOT say vH, vK firmware is the correct first try (unbricking-safe — Tuner X rejects a firmware file for the wrong hardware rather than bricking the device). #ctre #gotcha (source: session-cancoder-firmware-vk-vh-selection, 2026-01-17) <!-- @claude 2026-07-07T00:00:00Z -->
 
 ## Open Questions
 

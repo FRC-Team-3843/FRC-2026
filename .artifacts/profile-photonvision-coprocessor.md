@@ -52,8 +52,11 @@ IMPORTANT — this is NOT the same machine as the PersonalContext `beelink` enti
 
 PhotonVision version was cited as v2026.3.2 in the candidate harvest but not re-verified against the box at seed time — confirm on next robot session.
 
+- A 2026-02-09 sourcing-research conversation ([[photonvision-4-camera-coprocessor-selection]]) explored a 4-ThriftyCam-camera setup (Radxa Zero 3E rejected on performance, Orange Pi 4 Pro rejected as unsupported/wrong-SoC, Jetson Orion ruled out on cost) and converged on testing an owned Beelink S12 (Intel N95) for all 4 cameras before buying anything new — same Alder-Lake-N family as the N100 in this profile; unclear whether that research directly led to this specific N100 unit, or whether the final camera count actually fits on one board. Worth confirming against `2026Robot\TODO-COMPETITION.md` when vision bring-up actually happens. <!-- @claude 2026-07-07T00:00:00Z -->
+
 ## Relations
 
 - relates-to [[frc-2026]] (vision coprocessor for the 2026 robot)
 - relates-to [[photonvision]] (runs the PhotonVision software / pipeline)
 - different-from [[beelink]] (NOT the home-lab Proxmox host — same vendor, different machine)
+- relates_to [[photonvision-4-camera-coprocessor-selection]] (earlier hardware-sourcing research session, FRC-2026 scope) <!-- @claude 2026-07-07T00:00:00Z -->

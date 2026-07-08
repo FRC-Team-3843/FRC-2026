@@ -43,6 +43,7 @@ The REV Hardware Client is used to configure CAN IDs and flash firmware on the r
 
 - [registry] Used to flash CAN IDs + firmware on SparkMax controllers (NEO / NEO 550 devices). #tool
 - [registry] REV-side counterpart to Phoenix Tuner X; the two cover the full mixed CAN bus. #pit
+- [gotcha] Legacy REV Hardware Client (v1) conflicts with REV Hardware Client 2 (RHC2) if both are installed — uninstall the legacy client before installing RHC2 #frc-2026 <!-- @claude 2026-07-07T00:00:00Z, source: session-frc-laptop-setup-doc-review -->
 
 ## Open Questions
 

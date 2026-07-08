@@ -44,6 +44,8 @@ Phoenix Tuner X is the CTRE configuration utility used to assign CAN IDs and fla
 - [registry] Used to flash CAN IDs + firmware on CTRE TalonFX / TalonSRX / CANcoder. #tool
 - [registry] Competition-setup Step 1 per NOTES §0B. #pit
 - [registry] Paired with REV Hardware Client as the two mandatory pit config tools. #pit
+- [gotcha] Legacy Phoenix Tuner (v1), if present, should be removed to avoid confusion/conflict with Phoenix Tuner X #frc-2026 <!-- @claude 2026-07-07T00:00:00Z, source: session-frc-laptop-setup-doc-review -->
+- [registry] Firmware-update UX gotcha: after selecting Phoenix version + year and clicking "Update Firmware", the actual firmware-file picker is a blank/unlabeled dropdown you must click to reveal options — miss it and the tool appears to just dump every firmware file ever made with no compatibility filtering. #gotcha (source: session-cancoder-firmware-vk-vh-selection, 2026-01-17) <!-- @claude 2026-07-07T00:00:00Z -->
 
 ## Open Questions
 

@@ -45,6 +45,7 @@ PathPlanner (`PathplannerLib-2026.1.2` vendordep) generates and follows autonomo
 - [registry] `deploy/pathplanner/settings.json` holds robot width/length/mass/COF for path planning (heavily tuned — 4 commits). #autonomous
 - [registry] NamedCommands registered for autos include `autoShoot` and `stopShooter`. #autonomous
 - [registry] A PathPlanner `navgrid` was added for pathfinding (commit "Update docs for competition state, add PathPlanner navgrid"). #autonomous
+- [constraint] Git-hygiene for PathPlanner: gitignore `**/generatedJSON/` (regenerated on every build/deploy) but KEEP `.path`/`.auto` files, `navgrid.json`, and `settings.json` tracked in git so paths sync across team computers — confirmed via FRC-2025 cleanup session (2026-01-20, web-claude-web-20d9f262-c217-4f58-b237-08ace8a48da8): `git rm -r --cached **/generatedJSON/` + matching `.gitignore` entry removed 54,012 lines of regenerable trajectory JSON from FRC-2025 tracking without affecting path sync. #git-hygiene <!-- @claude 2026-07-07T00:00:00Z -->
 
 ## Open Questions
 

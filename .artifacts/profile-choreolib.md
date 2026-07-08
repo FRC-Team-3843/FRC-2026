@@ -43,6 +43,7 @@ ChoreoLib (`ChoreoLib2026.json` vendordep) is a trajectory-generation library pr
 
 - [registry] Vendordep `ChoreoLib2026.json` present in `2026Robot/vendordeps/`. #autonomous
 - [registry] Coexists with PathPlanner; PathPlanner is the library with visible auto wiring. #autonomous
+- [correction] Choreo is NOT distributed via the Microsoft Store — install from GitHub releases instead #frc-2026 <!-- @claude 2026-07-07T00:00:00Z, source: session-frc-laptop-setup-doc-review -->
 
 ## Open Questions
 
